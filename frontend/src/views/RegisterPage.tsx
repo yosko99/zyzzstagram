@@ -22,7 +22,7 @@ const RegisterPage = () => {
     const formData = new FormData(e.target as HTMLFormElement);
 
     axios.post(USERS_ROUTE, formData).then((response) => {
-      if (response.data.status !== 200) {
+      if (response.status !== 201) {
         setAlert(<CustomAlert variant="danger" text={response.data.message} />);
       } else {
         setAlert(
