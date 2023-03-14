@@ -6,6 +6,7 @@ import io from 'socket.io-client';
 import { SocketContext } from './context/SocketContext';
 import GlobalCSS from './styles/global.css';
 import LoginPage from './views/LoginPage';
+import MainPage from './views/MainPage';
 import RegisterPage from './views/RegisterPage';
 import './styles/bootstrap.min.css';
 
@@ -17,6 +18,7 @@ const App = () => {
       <SocketContext.Provider value={socket}>
         <GlobalCSS />
         <Routes>
+          <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
         </Routes>
