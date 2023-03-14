@@ -8,6 +8,7 @@ import { CreateUserDto } from '../../dto/CreateUser.dto';
 
 import { PrismaService } from '../../prisma/prisma.service';
 import IUser from 'src/interfaces/IUser';
+import { LoginUserDto } from 'src/dto/LogiUser.dto';
 
 @Injectable()
 export class UsersService {
@@ -46,6 +47,27 @@ export class UsersService {
 
     return {
       message: 'User deleted successfully',
+    };
+  }
+
+  async loginUser({ email, password }: LoginUserDto) {
+    const user = await this.prisma.user.findUnique({ where: { email } });
+
+    if (user === null) {
+      throw new HttpException('User with provided email does not exist', 404);
+    }
+
+    const doesPasswordMatch = await bcrypt.compare(password, user.password);
+
+    if (!doesPasswordMatch) {
+      throw new HttpException('Provided invalid password', 401);
+    }
+
+    const token = this.generateToken(email, password);
+
+    return {
+      message: 'Logged in successfully',
+      token,
     };
   }
 

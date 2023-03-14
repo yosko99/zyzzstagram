@@ -11,6 +11,7 @@ import CustomAlert from '../components/utils/CustomAlert';
 import { USERS_ROUTE } from '../constants/apiRoutes';
 import useTokenRedirect from '../hooks/useTokenRedirect';
 import CenteredItems from '../styles/CenteredItems';
+import ExtendedAxiosError from '../types/ExtendedAxiosError';
 
 const RegisterPage = () => {
   useTokenRedirect();
@@ -23,10 +24,9 @@ const RegisterPage = () => {
     const formData = new FormData(e.target as HTMLFormElement);
     formData.set('image', imageRef.current!);
 
-    axios.post(USERS_ROUTE, formData).then((response) => {
-      if (response.status !== 201) {
-        setAlert(<CustomAlert variant="danger" text={response.data.message} />);
-      } else {
+    axios
+      .post(USERS_ROUTE, formData)
+      .then((response) => {
         setAlert(
           <CustomAlert variant="success" text={response.data.message} />
         );
@@ -34,8 +34,12 @@ const RegisterPage = () => {
           localStorage.setItem('token', response.data.token);
           window.location.href = '/';
         }, 1000);
-      }
-    });
+      })
+      .catch((err) => {
+        const { response } = err as ExtendedAxiosError;
+
+        setAlert(<CustomAlert variant="danger" text={response.data.message} />);
+      });
   };
 
   return (

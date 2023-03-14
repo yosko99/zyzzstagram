@@ -10,6 +10,7 @@ import CustomAlert from '../components/utils/CustomAlert';
 import { LOGIN_ROUTE } from '../constants/apiRoutes';
 import useTokenRedirect from '../hooks/useTokenRedirect';
 import CenteredItems from '../styles/CenteredItems';
+import ExtendedAxiosError from '../types/ExtendedAxiosError';
 
 interface LoginDataType {
   email: string;
@@ -27,10 +28,9 @@ const LoginPage = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    axios.post(LOGIN_ROUTE, { ...loginData }).then((response) => {
-      if (response.data.status !== 200) {
-        setAlert(<CustomAlert variant="danger" text={response.data.message} />);
-      } else {
+    axios
+      .post(LOGIN_ROUTE, { ...loginData })
+      .then((response) => {
         setAlert(
           <CustomAlert variant="success" text={response.data.message} />
         );
@@ -38,8 +38,12 @@ const LoginPage = () => {
           localStorage.setItem('token', response.data.token);
           window.location.href = '/';
         }, 1000);
-      }
-    });
+      })
+      .catch((err) => {
+        const { response } = err as ExtendedAxiosError;
+
+        setAlert(<CustomAlert variant="danger" text={response.data.message} />);
+      });
   };
 
   const handleChange = (e: React.FormEvent<HTMLFormElement>) => {

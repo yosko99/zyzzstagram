@@ -12,10 +12,12 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { HttpCode } from '@nestjs/common/decorators';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 import { CreateUserDto } from '../../dto/CreateUser.dto';
+import { LoginUserDto } from 'src/dto/LogiUser.dto';
 
 import { UsersService } from './users.service';
 
@@ -45,9 +47,9 @@ export class UsersController {
     )
     file: Express.Multer.File,
     @Body()
-    userDto: CreateUserDto,
+    createUserDto: CreateUserDto,
   ) {
-    return this.usersService.createUser(userDto, file.filename);
+    return this.usersService.createUser(createUserDto, file.filename);
   }
 
   @Delete('/:id')
@@ -56,5 +58,15 @@ export class UsersController {
   @ApiResponse({ status: 404, description: 'User not found' })
   deleteUser(@RequestData('user') user: IUser) {
     return this.usersService.deleteUser(user);
+  }
+
+  @Post('/login')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Login a user' })
+  @ApiResponse({ status: 200, description: 'Logged in successfully' })
+  @ApiResponse({ status: 404, description: 'Non existent email' })
+  @ApiResponse({ status: 401, description: 'Password mismatch' })
+  loginUser(@Body() loginUserDto: LoginUserDto) {
+    return this.usersService.loginUser(loginUserDto);
   }
 }

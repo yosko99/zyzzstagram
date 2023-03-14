@@ -53,4 +53,58 @@ describe('Test users API', () => {
       expect(result.message).toEqual('User deleted successfully');
     });
   });
+
+  describe('test loginUser service', () => {
+    test('should login successfully', async () => {
+      const createUserResult = await userService.createUser(
+        createUserDto,
+        filename,
+      );
+
+      const loginResult = await userService.loginUser({
+        email: createUserResult.user.email,
+        password: createUserDto.password,
+      });
+
+      expect(loginResult.message).toEqual('Logged in successfully');
+      expect(loginResult.token).toBeTruthy();
+
+      await userService.deleteUser(createUserResult.user);
+    });
+
+    test('should throw error of non existent email', async () => {
+      try {
+        await userService.loginUser({
+          email: 'invalid@gmail.com',
+          password: 'a',
+        });
+      } catch (err) {
+        const error = err as unknown as HttpException;
+
+        expect(error.message).toEqual(
+          'User with provided email does not exist',
+        );
+      }
+    });
+
+    test('should throw error of password mismatch', async () => {
+      const createUserResult = await userService.createUser(
+        createUserDto,
+        filename,
+      );
+
+      try {
+        await userService.loginUser({
+          email: createUserDto.email,
+          password: 'invalid',
+        });
+      } catch (err) {
+        const error = err as unknown as HttpException;
+
+        expect(error.message).toEqual('Provided invalid password');
+      }
+
+      await userService.deleteUser(createUserResult.user);
+    });
+  });
 });
