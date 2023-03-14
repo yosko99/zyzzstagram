@@ -4,11 +4,11 @@ import axios from 'axios';
 import { Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
+import EmailInput from '../components/inputs/EmailInput';
+import PasswordInput from '../components/inputs/PasswordInput';
 import CustomAlert from '../components/utils/CustomAlert';
 import { LOGIN_ROUTE } from '../constants/apiRoutes';
 import useTokenRedirect from '../hooks/useTokenRedirect';
-import EmailInput from '../inputs/EmailInput';
-import PasswordInput from '../inputs/PasswordInput';
 import CenteredItems from '../styles/CenteredItems';
 
 interface LoginDataType {

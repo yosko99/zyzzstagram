@@ -40,7 +40,7 @@ export class UsersController {
   createUser(
     @UploadedFile(
       new ParseFilePipe({
-        validators: [new FileTypeValidator({ fileType: 'jpeg' })],
+        validators: [new FileTypeValidator({ fileType: /(jpg|jpeg|png)$/ })],
       }),
     )
     file: Express.Multer.File,

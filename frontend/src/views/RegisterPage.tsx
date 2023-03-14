@@ -1,25 +1,27 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import axios from 'axios';
 import { Button, Form } from 'react-bootstrap';
 
+import EmailInput from '../components/inputs/EmailInput';
+import ImageUploadInput from '../components/inputs/ImageUploadInput';
+import PasswordInput from '../components/inputs/PasswordInput';
+import UsernameInput from '../components/inputs/UsernameInput';
 import CustomAlert from '../components/utils/CustomAlert';
 import { USERS_ROUTE } from '../constants/apiRoutes';
 import useTokenRedirect from '../hooks/useTokenRedirect';
-import EmailInput from '../inputs/EmailInput';
-import FileInput from '../inputs/FileInput';
-import PasswordInput from '../inputs/PasswordInput';
-import UsernameInput from '../inputs/UsernameInput';
 import CenteredItems from '../styles/CenteredItems';
 
 const RegisterPage = () => {
   useTokenRedirect();
   const [alert, setAlert] = useState<React.ReactNode>();
+  const imageRef = useRef<File>();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.target as HTMLFormElement);
+    formData.set('image', imageRef.current!);
 
     axios.post(USERS_ROUTE, formData).then((response) => {
       if (response.status !== 201) {
@@ -38,13 +40,17 @@ const RegisterPage = () => {
 
   return (
     <CenteredItems>
-      <Form className="shadow-lg p-5" onSubmit={(e) => handleSubmit(e)}>
+      <Form
+        id="register-form"
+        className="shadow-lg p-5"
+        onSubmit={(e) => handleSubmit(e)}
+      >
         <p className="fs-1">Register to Zysstragram</p>
 
         <EmailInput />
         <UsernameInput />
         <PasswordInput />
-        <FileInput />
+        <ImageUploadInput imageRef={imageRef} />
 
         <Button variant="primary" className="w-100" type="submit">
           Register
