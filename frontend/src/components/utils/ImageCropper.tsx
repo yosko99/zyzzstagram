@@ -3,6 +3,8 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import Cropper from 'react-easy-crop';
 
+import toggleThumbnail from '../../functions/toggleThumbnail';
+
 interface Props {
   imageURL: string | ArrayBuffer | null;
   imageRef: React.MutableRefObject<File | undefined>;
@@ -30,7 +32,7 @@ const ImageCropper = ({ imageURL, imageRef }: Props) => {
     []
   );
 
-  const drawCroppedImageToCanvas = (croppedAreaPixels: ICroppedArea) => {
+  const drawCroppedImageToHiddenCanvas = (croppedAreaPixels: ICroppedArea) => {
     const canvas = document.createElement('canvas');
     const ctx = canvas!.getContext('2d');
 
@@ -51,8 +53,10 @@ const ImageCropper = ({ imageURL, imageRef }: Props) => {
         croppedAreaPixels.width,
         croppedAreaPixels.height
       );
+
       croppedImageBase64.current = canvas.toDataURL();
       createFileFromBase64(croppedImageBase64);
+      toggleThumbnail(canvas);
     };
     img.src = imageURL as string;
   };
@@ -70,7 +74,7 @@ const ImageCropper = ({ imageURL, imageRef }: Props) => {
   };
 
   const handleCloseModal = () => {
-    drawCroppedImageToCanvas(croppedAreaPixelsRef.current!);
+    drawCroppedImageToHiddenCanvas(croppedAreaPixelsRef.current!);
     setModalShow(false);
   };
 

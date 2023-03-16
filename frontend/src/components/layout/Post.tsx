@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Image } from 'react-bootstrap';
 import {
   AiOutlineComment,
   AiOutlineHeart,
@@ -30,7 +31,9 @@ const Post = ({ user, post }: Props) => {
               </div>
               <FaAngleDoubleDown role={'button'} />
             </div>
-            <img
+            <Image
+              fluid
+              style={{ objectFit: 'contain' }}
               src={post.imageURL}
               className="post-image"
               alt={`${user.username} post`}

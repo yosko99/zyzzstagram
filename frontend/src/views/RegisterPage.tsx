@@ -9,12 +9,12 @@ import PasswordInput from '../components/inputs/PasswordInput';
 import UsernameInput from '../components/inputs/UsernameInput';
 import CustomAlert from '../components/utils/CustomAlert';
 import { USERS_ROUTE } from '../constants/apiRoutes';
-import useTokenRedirect from '../hooks/useTokenRedirect';
+import useAuth from '../hooks/useAuth';
 import CenteredItems from '../styles/CenteredItems';
 import ExtendedAxiosError from '../types/ExtendedAxiosError';
 
 const RegisterPage = () => {
-  useTokenRedirect();
+  useAuth('/register');
   const [alert, setAlert] = useState<React.ReactNode>();
   const imageRef = useRef<File>();
 

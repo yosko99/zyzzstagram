@@ -8,7 +8,7 @@ import EmailInput from '../components/inputs/EmailInput';
 import PasswordInput from '../components/inputs/PasswordInput';
 import CustomAlert from '../components/utils/CustomAlert';
 import { LOGIN_ROUTE } from '../constants/apiRoutes';
-import useTokenRedirect from '../hooks/useTokenRedirect';
+import useAuth from '../hooks/useAuth';
 import CenteredItems from '../styles/CenteredItems';
 import ExtendedAxiosError from '../types/ExtendedAxiosError';
 
@@ -18,7 +18,7 @@ interface LoginDataType {
 }
 
 const LoginPage = () => {
-  useTokenRedirect();
+  useAuth('/login');
 
   const [loginData, setLoginData] = useState<LoginDataType>({
     email: '',

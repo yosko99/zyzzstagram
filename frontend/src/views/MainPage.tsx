@@ -4,11 +4,13 @@ import Navigation from '../components/layout/Navigation';
 import Post from '../components/layout/Post';
 import StoriesHolder from '../components/layout/StoriesHolder';
 import Story from '../components/layout/Story';
+import useAuth from '../hooks/useAuth';
 import IPost from '../interfaces/IPost';
 import IStory from '../interfaces/IStory';
 import IUser from '../interfaces/IUser';
 
 const MainPage = () => {
+  useAuth('/login');
   const user: IUser = {
     username: 'yosko99',
     email: 'azis@asdsa.com',
@@ -22,7 +24,8 @@ const MainPage = () => {
 
   const post: IPost = {
     id: '1',
-    imageURL: 'https://pbs.twimg.com/media/CJOYk7QXAAA_0fd.jpg',
+    imageURL:
+      'https://img-s2.onedio.com/id-5d12321b352f4df72b2ae76d/rev-0/w-635/listing/f-jpg-webp/s-26ac11675c6dbb789c1e202cac0428be2487c4a9.webp',
     published: true,
     description: 'nice',
     author: user,
