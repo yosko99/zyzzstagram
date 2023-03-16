@@ -5,13 +5,18 @@ import * as jwt from 'jsonwebtoken';
 import IToken from 'src/interfaces/IToken';
 
 type ExtendedRequest = Request & {
-  userDataFromToken: IToken;
+  userDataFromToken?: IToken;
 };
 
 @Injectable()
 export class VerifyJWTMiddleware implements NestMiddleware {
   async use(req: ExtendedRequest, res: Response, next: NextFunction) {
-    const tokenHeader = req.headers.authorization;
+    const tokenHeader = req.headers?.authorization;
+
+    if (tokenHeader === undefined) {
+      return res.status(401).json({ message: 'No token provided' });
+    }
+
     const token = tokenHeader && tokenHeader.split(' ')[1];
 
     if (token === null) {

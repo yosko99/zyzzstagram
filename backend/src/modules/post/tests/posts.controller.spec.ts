@@ -3,10 +3,7 @@ import { PostService } from '../post.service';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { UserService } from '../../../modules/user/user.service';
 
-import {
-  createUserDto,
-  createUserForPostDto,
-} from '../../../dto/mock/user.mock';
+import { createUserForPostDto } from '../../../dto/mock/user.mock';
 import { createPostDto } from '../../../dto/mock/post.mock';
 
 import IToken from '../../../interfaces/IToken';
@@ -26,8 +23,8 @@ describe('Test posts API', () => {
       );
 
       const tokenData: IToken = {
-        email: createUserDto.email,
-        password: createUserDto.password,
+        email: createUserForPostDto.email,
+        password: createUserForPostDto.password,
       };
 
       const createdPost = await postService.createPost(
