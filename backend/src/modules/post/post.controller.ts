@@ -23,7 +23,7 @@ import { multerFilter } from '../../config/multer';
 
 import { RequestData } from '../../decorators/requestData.decorator';
 
-import { PostsService } from './posts.service';
+import { PostService } from './post.service';
 
 import { CreatePostDto } from '../../dto/CreatePostDto';
 
@@ -32,8 +32,8 @@ import IPost from '../../interfaces/IPost';
 
 @Controller('/posts')
 @ApiTags('Posts')
-export class PostsController {
-  constructor(private readonly postsService: PostsService) {}
+export class PostController {
+  constructor(private readonly postService: PostService) {}
 
   @Post()
   @ApiOperation({ summary: 'Create post' })
@@ -55,11 +55,7 @@ export class PostsController {
     createPostDto: CreatePostDto,
     @RequestData('userDataFromToken') tokenData: IToken,
   ) {
-    return this.postsService.createPost(
-      createPostDto,
-      file.filename,
-      tokenData,
-    );
+    return this.postService.createPost(createPostDto, file.filename, tokenData);
   }
 
   @Delete('/:id')
@@ -67,6 +63,6 @@ export class PostsController {
   @ApiResponse({ status: 204, description: 'Post deleted' })
   @ApiResponse({ status: 404, description: 'Post not found' })
   deleteUser(@RequestData('post') post: IPost) {
-    return this.postsService.deletePost(post);
+    return this.postService.deletePost(post);
   }
 }

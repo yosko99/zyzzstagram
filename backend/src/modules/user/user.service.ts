@@ -11,7 +11,7 @@ import IUser from 'src/interfaces/IUser';
 import { LoginUserDto } from 'src/dto/LogiUser.dto';
 
 @Injectable()
-export class UsersService {
+export class UserService {
   constructor(private prisma: PrismaService) {}
 
   async createUser(

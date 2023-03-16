@@ -2,7 +2,7 @@
 import { PrismaClientValidationError } from '@prisma/client/runtime/library';
 import { HttpException } from '@nestjs/common';
 
-import { UsersService } from '../users.service';
+import { UserService } from '../user.service';
 import { PrismaService } from '../../../prisma/prisma.service';
 
 import {
@@ -12,7 +12,7 @@ import {
 
 describe('Test users API', () => {
   const prisma = new PrismaService();
-  const userService = new UsersService(prisma);
+  const userService = new UserService(prisma);
   const filename = 'testimage.jpg';
 
   describe('test createUser service', () => {

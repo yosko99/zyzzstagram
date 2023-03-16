@@ -11,7 +11,7 @@ import IPost from '../../interfaces/IPost';
 import deleteImage from '../../functions/deleteImage';
 
 @Injectable()
-export class PostsService {
+export class PostService {
   constructor(private prisma: PrismaService) {}
 
   async createPost(

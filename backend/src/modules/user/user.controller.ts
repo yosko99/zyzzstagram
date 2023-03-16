@@ -22,7 +22,7 @@ import {
 import { CreateUserDto } from '../../dto/CreateUser.dto';
 import { LoginUserDto } from 'src/dto/LogiUser.dto';
 
-import { UsersService } from './users.service';
+import { UserService } from './user.service';
 
 import { multerFilter } from '../../config/multer';
 
@@ -32,8 +32,8 @@ import IUser from '../../interfaces/IUser';
 
 @Controller('/users')
 @ApiTags('Users')
-export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+export class UserController {
+  constructor(private readonly userService: UserService) {}
 
   @Post()
   @ApiOperation({ summary: 'Create user' })
@@ -53,7 +53,7 @@ export class UsersController {
     @Body()
     createUserDto: CreateUserDto,
   ) {
-    return this.usersService.createUser(createUserDto, file.filename);
+    return this.userService.createUser(createUserDto, file.filename);
   }
 
   @Delete('/:id')
@@ -61,7 +61,7 @@ export class UsersController {
   @ApiResponse({ status: 204, description: 'User deleted' })
   @ApiResponse({ status: 404, description: 'User not found' })
   deleteUser(@RequestData('user') user: IUser) {
-    return this.usersService.deleteUser(user);
+    return this.userService.deleteUser(user);
   }
 
   @Post('/login')
@@ -71,6 +71,6 @@ export class UsersController {
   @ApiResponse({ status: 404, description: 'Non existent email' })
   @ApiResponse({ status: 401, description: 'Password mismatch' })
   loginUser(@Body() loginUserDto: LoginUserDto) {
-    return this.usersService.loginUser(loginUserDto);
+    return this.userService.loginUser(loginUserDto);
   }
 }

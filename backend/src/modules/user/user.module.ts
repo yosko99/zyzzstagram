@@ -8,17 +8,17 @@ import { CheckExistingUserByIdMiddleware } from '../../middleware/user/checkExis
 import { CheckIfUploadsFolderExistsMiddleware } from '../../middleware/utils/checkIfUploadsFolderExists.middleware';
 
 import { PrismaService } from '../../prisma/prisma.service';
-import { UsersService } from './users.service';
+import { UserService } from './user.service';
 
-import { UsersController } from './users.controller';
+import { UserController } from './user.controller';
 
 @Module({
   imports: [],
-  controllers: [UsersController],
-  providers: [UsersService, PrismaService],
-  exports: [UsersService],
+  controllers: [UserController],
+  providers: [UserService, PrismaService],
+  exports: [UserService],
 })
-export class UsersModule implements NestModule {
+export class UserModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(CheckIfUploadsFolderExistsMiddleware).forRoutes({
       path: '/users',

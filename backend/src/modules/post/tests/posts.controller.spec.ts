@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { PostsService } from '../posts.service';
+import { PostService } from '../post.service';
 import { PrismaService } from '../../../prisma/prisma.service';
-import { UsersService } from '../../../modules/users/users.service';
+import { UserService } from '../../../modules/user/user.service';
 
 import {
   createUserDto,
@@ -13,8 +13,8 @@ import IToken from '../../../interfaces/IToken';
 
 describe('Test posts API', () => {
   const prisma = new PrismaService();
-  const postService = new PostsService(prisma);
-  const userService = new UsersService(prisma);
+  const postService = new PostService(prisma);
+  const userService = new UserService(prisma);
 
   const filename = 'testimage.jpg';
 

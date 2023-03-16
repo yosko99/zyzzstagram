@@ -8,16 +8,16 @@ import { VerifyJWTMiddleware } from 'src/middleware/utils/verifyJWT.middleware';
 
 import { PrismaService } from '../../prisma/prisma.service';
 
-import { PostsController } from './posts.controller';
-import { PostsService } from './posts.service';
+import { PostController } from './post.controller';
+import { PostService } from './post.service';
 
 @Module({
   imports: [],
-  controllers: [PostsController],
-  providers: [PostsService, PrismaService],
-  exports: [PostsService],
+  controllers: [PostController],
+  providers: [PostService, PrismaService],
+  exports: [PostService],
 })
-export class PostsModule implements NestModule {
+export class PostModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(VerifyJWTMiddleware).forRoutes({
       path: '/posts',
