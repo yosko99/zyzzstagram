@@ -2,9 +2,7 @@ import {
   Body,
   Controller,
   FileTypeValidator,
-  Get,
   Delete,
-  Param,
   ParseFilePipe,
   Post,
   UploadedFile,
@@ -14,7 +12,12 @@ import {
 } from '@nestjs/common';
 import { HttpCode } from '@nestjs/common/decorators';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiConsumes, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiConsumes,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { CreateUserDto } from '../../dto/CreateUser.dto';
 import { LoginUserDto } from 'src/dto/LogiUser.dto';
@@ -28,6 +31,7 @@ import { RequestData } from '../../decorators/requestData.decorator';
 import IUser from '../../interfaces/IUser';
 
 @Controller('/users')
+@ApiTags('Users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

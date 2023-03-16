@@ -5,8 +5,8 @@ interface IPost {
   imageURL: string | null;
   description: string | null;
   published: boolean;
-  author: IUser;
-  authorId: string;
+  author?: IUser;
+  authorId?: string;
   likedBy?: IUser[];
   comments?: Comment[];
   savedBy?: IUser[];

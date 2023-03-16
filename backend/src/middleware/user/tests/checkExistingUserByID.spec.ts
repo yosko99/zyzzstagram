@@ -100,7 +100,6 @@ describe('test CheckExistingUserById middleware', () => {
       expect(mockResponse.status).toHaveBeenCalledWith(404);
       expect(mockResponse.send).toHaveBeenCalledWith({
         message: 'Could not find user with provided ID',
-        statusCode: 404,
       });
     });
   });

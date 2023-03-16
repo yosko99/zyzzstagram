@@ -1,0 +1,85 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { PostsService } from '../posts.service';
+import { PrismaService } from '../../../prisma/prisma.service';
+import { UsersService } from '../../../modules/users/users.service';
+
+import {
+  createUserDto,
+  createUserForPostDto,
+} from '../../../dto/mock/user.mock';
+import { createPostDto } from '../../../dto/mock/post.mock';
+
+import IToken from '../../../interfaces/IToken';
+
+describe('Test posts API', () => {
+  const prisma = new PrismaService();
+  const postService = new PostsService(prisma);
+  const userService = new UsersService(prisma);
+
+  const filename = 'testimage.jpg';
+
+  describe('test createPost service', () => {
+    it('should create a post successfully', async () => {
+      const createdUser = await userService.createUser(
+        createUserForPostDto,
+        filename,
+      );
+
+      const tokenData: IToken = {
+        email: createUserDto.email,
+        password: createUserDto.password,
+      };
+
+      const createdPost = await postService.createPost(
+        createPostDto,
+        filename,
+        tokenData,
+      );
+
+      expect(createdPost.message).toEqual('Post created successfully');
+      expect(createdPost.post).toBeTruthy();
+
+      await userService.deleteUser(createdUser.user);
+    });
+
+    it('should return an error if input is invalid', async () => {
+      await expect(
+        // @ts-ignore
+        postService.createPost(),
+      ).rejects.toThrow(TypeError);
+    });
+
+    it('should return an error when not provided token data', async () => {
+      await expect(
+        // @ts-ignore
+        postService.createPost({ description: '' }),
+      ).rejects.toThrow(TypeError);
+    });
+  });
+
+  describe('test deletePost service', () => {
+    it('should delete a post successfully', async () => {
+      const createdUser = await userService.createUser(
+        createUserForPostDto,
+        filename,
+      );
+
+      const tokenData: IToken = {
+        email: createUserForPostDto.email,
+        password: createUserForPostDto.password,
+      };
+
+      const createdPost = await postService.createPost(
+        createPostDto,
+        filename,
+        tokenData,
+      );
+
+      const deletedPost = await postService.deletePost(createdPost.post);
+
+      expect(deletedPost.message).toEqual('Post deleted successfully');
+
+      await userService.deleteUser(createdUser.user);
+    });
+  });
+});

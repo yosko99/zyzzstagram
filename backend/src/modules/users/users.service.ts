@@ -42,7 +42,12 @@ export class UsersService {
   }
 
   async deleteUser(user: IUser) {
+    await this.prisma.notification.deleteMany({ where: { userId: user.id } });
+    await this.prisma.story.deleteMany({ where: { userId: user.id } });
+    await this.prisma.comment.deleteMany({ where: { authorId: user.id } });
+    await this.prisma.post.deleteMany({ where: { authorId: user.id } });
     await this.prisma.user.delete({ where: { id: user.id } });
+
     deleteImage(user.imageURL);
 
     return {
