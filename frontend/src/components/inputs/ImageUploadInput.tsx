@@ -8,10 +8,10 @@ import CustomAlert from '../utils/CustomAlert';
 import ImageCropper from '../utils/ImageCropper';
 
 interface Props {
-  imageRef: React.MutableRefObject<File | undefined>;
+  setImageFile: React.Dispatch<React.SetStateAction<File | undefined>>;
 }
 
-const ImageUploadInput = ({ imageRef }: Props) => {
+const ImageUploadInput = ({ setImageFile }: Props) => {
   const [imageURL, setImageURL] = useState<string | ArrayBuffer | null>('');
   const [alert, setAlert] = useState<React.ReactNode>(null);
   const { getRootProps, getInputProps } = useDropzone({
@@ -46,13 +46,13 @@ const ImageUploadInput = ({ imageRef }: Props) => {
   return (
     <div>
       {imageURL !== '' && (
-        <ImageCropper imageRef={imageRef} imageURL={imageURL} />
+        <ImageCropper setImageFile={setImageFile} imageURL={imageURL} />
       )}
 
       <section className="container" id="drag-me-container">
         <div role={'button'} {...getRootProps({ className: 'dropzone py-3' })}>
           <input {...getInputProps()} />
-          <p role={'button'}>
+          <p role={'button'} className="text-center">
             Click me or drag and drop an image here.{' '}
             <BsCardImage className="fs-4 ms-1" />
           </p>

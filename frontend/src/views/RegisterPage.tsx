@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import axios from 'axios';
 import { Button, Form } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import EmailInput from '../components/inputs/EmailInput';
 import ImageUploadInput from '../components/inputs/ImageUploadInput';
@@ -16,30 +17,38 @@ import ExtendedAxiosError from '../types/ExtendedAxiosError';
 const RegisterPage = () => {
   useAuth('/register');
   const [alert, setAlert] = useState<React.ReactNode>();
-  const imageRef = useRef<File>();
+  const [imageFile, setImageFile] = useState<File>();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formData = new FormData(e.target as HTMLFormElement);
-    formData.set('image', imageRef.current!);
+    if (imageFile === undefined) {
+      setAlert(
+        <CustomAlert variant="warning" text={'Please select a image'} />
+      );
+    } else {
+      const formData = new FormData(e.target as HTMLFormElement);
+      formData.set('image', imageFile);
 
-    axios
-      .post(USERS_ROUTE, formData)
-      .then((response) => {
-        setAlert(
-          <CustomAlert variant="success" text={response.data.message} />
-        );
-        setTimeout(() => {
-          localStorage.setItem('token', response.data.token);
-          window.location.href = '/';
-        }, 1000);
-      })
-      .catch((err) => {
-        const { response } = err as ExtendedAxiosError;
+      axios
+        .post(USERS_ROUTE, formData)
+        .then((response) => {
+          setAlert(
+            <CustomAlert variant="success" text={response.data.message} />
+          );
+          setTimeout(() => {
+            localStorage.setItem('token', response.data.token);
+            window.location.href = '/';
+          }, 1000);
+        })
+        .catch((err) => {
+          const { response } = err as ExtendedAxiosError;
 
-        setAlert(<CustomAlert variant="danger" text={response.data.message} />);
-      });
+          setAlert(
+            <CustomAlert variant="danger" text={response.data.message} />
+          );
+        });
+    }
   };
 
   return (
@@ -54,12 +63,20 @@ const RegisterPage = () => {
         <EmailInput />
         <UsernameInput />
         <PasswordInput />
-        <ImageUploadInput imageRef={imageRef} />
+        <ImageUploadInput setImageFile={setImageFile} />
 
         <Button variant="primary" className="w-100" type="submit">
           Register
         </Button>
         {alert}
+        <p className="text-muted mt-3">
+          Already have an account?{' '}
+          <Link style={{ textDecoration: 'none' }} to="/login">
+            <span role={'button'} className="text-info">
+              Login here!
+            </span>
+          </Link>
+        </p>
       </Form>
     </CenteredItems>
   );

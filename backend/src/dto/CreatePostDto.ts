@@ -1,10 +1,11 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePostDto {
   @IsNotEmpty()
   @IsString()
-  @ApiProperty()
+  @MaxLength(250)
+  @ApiProperty({ maxLength: 250 })
   description: string;
 
   @ApiProperty()

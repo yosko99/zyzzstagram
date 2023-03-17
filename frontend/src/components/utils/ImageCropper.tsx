@@ -7,7 +7,7 @@ import toggleThumbnail from '../../functions/toggleThumbnail';
 
 interface Props {
   imageURL: string | ArrayBuffer | null;
-  imageRef: React.MutableRefObject<File | undefined>;
+  setImageFile: React.Dispatch<React.SetStateAction<File | undefined>>;
 }
 
 interface ICroppedArea {
@@ -17,7 +17,7 @@ interface ICroppedArea {
   height: number;
 }
 
-const ImageCropper = ({ imageURL, imageRef }: Props) => {
+const ImageCropper = ({ imageURL, setImageFile }: Props) => {
   const [modalShow, setModalShow] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -69,7 +69,7 @@ const ImageCropper = ({ imageURL, imageRef }: Props) => {
       .then((blob) => {
         const file = new File([blob], 'File name.jpg', { type: 'image/jpeg' });
 
-        imageRef.current = file;
+        setImageFile(file);
       });
   };
 
