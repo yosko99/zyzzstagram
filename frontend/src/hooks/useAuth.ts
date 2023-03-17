@@ -15,6 +15,8 @@ const useAuth = (redirectToURL: RedirectOptions) => {
       navigate(redirectToURL);
     }
   }, []);
+
+  return { token };
 };
 
 export default useAuth;

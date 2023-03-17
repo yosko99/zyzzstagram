@@ -1,48 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
-import axios from 'axios';
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
 
 import { POSTS_ROUTE } from '../../constants/apiRoutes';
-import ExtendedAxiosError from '../../types/ExtendedAxiosError';
+import useUploadForm from '../../hooks/useUploadImage';
 import ImageUploadInput from '../inputs/ImageUploadInput';
-import CustomAlert from '../utils/CustomAlert';
+import LoadingSpinner from '../utils/LoadingSpinner';
 
 const UploadPostForm = () => {
-  const [alert, setAlert] = useState<React.ReactNode>();
-  const [imageFile, setImageFile] = useState<File>();
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (imageFile === undefined) {
-      setAlert(
-        <CustomAlert variant="warning" text={'Please select a image'} />
-      );
-    } else {
-      const formData = new FormData(e.target as HTMLFormElement);
-      formData.set('image', imageFile);
-
-      const config = {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      };
-
-      axios
-        .post(POSTS_ROUTE, formData, config)
-        .then((response) => {
-          setAlert(
-            <CustomAlert variant="success" text={response.data.message} />
-          );
-        })
-        .catch((err) => {
-          const { response } = err as ExtendedAxiosError;
-
-          setAlert(
-            <CustomAlert variant="danger" text={response.data.message} />
-          );
-        });
-    }
-  };
+  const { setAlert, setImageFile, isLoading, imageFile, handleSubmit, alert } =
+    useUploadForm(POSTS_ROUTE);
 
   useEffect(() => {
     setAlert(null);
@@ -67,6 +34,7 @@ const UploadPostForm = () => {
       <ImageUploadInput setImageFile={setImageFile} />
 
       {alert}
+      {isLoading && <LoadingSpinner />}
 
       <Button type="submit" className="w-100 mt-4 mb-2" variant="success">
         Submit your post

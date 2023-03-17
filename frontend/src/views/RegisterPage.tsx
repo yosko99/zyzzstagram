@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 
-import axios from 'axios';
 import { Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
@@ -8,48 +7,21 @@ import EmailInput from '../components/inputs/EmailInput';
 import ImageUploadInput from '../components/inputs/ImageUploadInput';
 import PasswordInput from '../components/inputs/PasswordInput';
 import UsernameInput from '../components/inputs/UsernameInput';
-import CustomAlert from '../components/utils/CustomAlert';
+import LoadingSpinner from '../components/utils/LoadingSpinner';
 import { USERS_ROUTE } from '../constants/apiRoutes';
 import useAuth from '../hooks/useAuth';
+import useUploadForm from '../hooks/useUploadImage';
 import CenteredItems from '../styles/CenteredItems';
-import ExtendedAxiosError from '../types/ExtendedAxiosError';
 
 const RegisterPage = () => {
   useAuth('/register');
-  const [alert, setAlert] = useState<React.ReactNode>();
-  const [imageFile, setImageFile] = useState<File>();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const { setAlert, setImageFile, isLoading, imageFile, handleSubmit, alert } =
+    useUploadForm(USERS_ROUTE, '/');
 
-    if (imageFile === undefined) {
-      setAlert(
-        <CustomAlert variant="warning" text={'Please select a image'} />
-      );
-    } else {
-      const formData = new FormData(e.target as HTMLFormElement);
-      formData.set('image', imageFile);
-
-      axios
-        .post(USERS_ROUTE, formData)
-        .then((response) => {
-          setAlert(
-            <CustomAlert variant="success" text={response.data.message} />
-          );
-          setTimeout(() => {
-            localStorage.setItem('token', response.data.token);
-            window.location.href = '/';
-          }, 1000);
-        })
-        .catch((err) => {
-          const { response } = err as ExtendedAxiosError;
-
-          setAlert(
-            <CustomAlert variant="danger" text={response.data.message} />
-          );
-        });
-    }
-  };
+  useEffect(() => {
+    setAlert(null);
+  }, [imageFile]);
 
   return (
     <CenteredItems>
@@ -65,10 +37,13 @@ const RegisterPage = () => {
         <PasswordInput />
         <ImageUploadInput setImageFile={setImageFile} />
 
-        <Button variant="primary" className="w-100" type="submit">
+        {alert}
+        {isLoading && <LoadingSpinner />}
+
+        <Button variant="primary" className="w-100 mt-3" type="submit">
           Register
         </Button>
-        {alert}
+
         <p className="text-muted mt-3">
           Already have an account?{' '}
           <Link style={{ textDecoration: 'none' }} to="/login">
