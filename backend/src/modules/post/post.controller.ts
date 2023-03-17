@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   FileTypeValidator,
+  Get,
   ParseFilePipe,
   Post,
   UploadedFile,
@@ -15,6 +16,7 @@ import {
   ApiConsumes,
   ApiHeader,
   ApiOperation,
+  ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -59,10 +61,18 @@ export class PostController {
   }
 
   @Delete('/:id')
+  @ApiParam({ name: 'id', type: 'string' })
   @ApiOperation({ summary: 'Delete post by id' })
   @ApiResponse({ status: 204, description: 'Post deleted' })
   @ApiResponse({ status: 404, description: 'Post not found' })
   deleteUser(@RequestData('post') post: IPost) {
     return this.postService.deletePost(post);
+  }
+
+  @Get('/')
+  @ApiOperation({ summary: 'Get all posts' })
+  @ApiResponse({ status: 200, description: 'Receive posts' })
+  getAllPosts() {
+    return this.postService.getAllPosts();
   }
 }

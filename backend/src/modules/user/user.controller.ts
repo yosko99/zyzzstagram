@@ -15,6 +15,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiConsumes,
   ApiOperation,
+  ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -58,6 +59,7 @@ export class UserController {
 
   @Delete('/:id')
   @ApiOperation({ summary: 'Delete user by id' })
+  @ApiParam({ name: 'id', type: 'string' })
   @ApiResponse({ status: 204, description: 'User deleted' })
   @ApiResponse({ status: 404, description: 'User not found' })
   deleteUser(@RequestData('user') user: IUser) {

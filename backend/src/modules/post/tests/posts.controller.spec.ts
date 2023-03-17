@@ -79,4 +79,12 @@ describe('Test posts API', () => {
       await userService.deleteUser(createdUser.user);
     });
   });
+
+  describe('test getAllPosts service', () => {
+    it('should get posts', async () => {
+      const response = await postService.getAllPosts();
+
+      expect(response).toEqual(expect.any(Array));
+    });
+  });
 });

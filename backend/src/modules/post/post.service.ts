@@ -43,4 +43,15 @@ export class PostService {
       message: 'Post deleted successfully',
     };
   }
+
+  async getAllPosts() {
+    return await this.prisma.post.findMany({
+      include: {
+        author: { select: { username: true, imageURL: true } },
+        _count: true,
+        comments: true,
+        likedBy: true,
+      },
+    });
+  }
 }
