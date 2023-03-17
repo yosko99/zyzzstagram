@@ -5,11 +5,15 @@ import dotenv = require('dotenv');
 dotenv.config();
 
 import { AppModule } from './app.module';
+import { join } from 'path';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 const PORT = process.env.PORT === undefined ? 3000 : process.env.PORT;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  app.useStaticAssets(join(__dirname, '..', 'uploads'), { prefix: '/public' });
 
   app.enableCors();
 

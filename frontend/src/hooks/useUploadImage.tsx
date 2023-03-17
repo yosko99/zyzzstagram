@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import axios from 'axios';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 
 import CustomAlert from '../components/utils/CustomAlert';
 import ExtendedAxiosError from '../types/ExtendedAxiosError';
@@ -15,16 +15,13 @@ const usePostMutationWithToken = (routeURL: string) => {
     return response.data;
   };
 
-  return useMutation(uploadPost, {
-    onError: (err: ExtendedAxiosError) => {
-      throw new Error(err.response.data.message);
-    }
-  });
+  return useMutation(uploadPost);
 };
 
 const useUploadForm = (routeURL: string, redirectOnSuccessURL?: string) => {
   const [alert, setAlert] = useState<React.ReactNode>();
   const [imageFile, setImageFile] = useState<File>();
+  const queryClient = useQueryClient();
 
   const { mutate, isLoading } = usePostMutationWithToken(routeURL);
 
@@ -42,12 +39,22 @@ const useUploadForm = (routeURL: string, redirectOnSuccessURL?: string) => {
       mutate(formData, {
         onSuccess: (data) => {
           setAlert(<CustomAlert variant="success" text={data.message} />);
+          queryClient.refetchQueries();
           if (redirectOnSuccessURL !== undefined) {
             setTimeout(() => {
               localStorage.setItem('token', data.token);
               window.location.href = redirectOnSuccessURL;
             }, 1000);
           }
+        },
+        onError: (err: unknown) => {
+          const {
+            response: {
+              data: { message }
+            }
+          } = err as ExtendedAxiosError;
+
+          setAlert(<CustomAlert variant="danger" text={message} />);
         }
       });
     }

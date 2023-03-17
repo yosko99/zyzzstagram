@@ -52,6 +52,7 @@ export class PostService {
         comments: true,
         likedBy: true,
       },
+      orderBy: { createdAt: 'desc' },
     });
   }
 }

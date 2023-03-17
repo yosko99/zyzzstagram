@@ -12,6 +12,11 @@ interface IPost {
   savedBy?: IUser[];
   createdAt: Date;
   updatedAt: Date;
+  _count: {
+    likedBy: number;
+    comments: number;
+    savedBy: number;
+  };
 }
 
 export default IPost;

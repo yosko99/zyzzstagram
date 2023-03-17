@@ -14,7 +14,7 @@ import useUploadForm from '../hooks/useUploadImage';
 import CenteredItems from '../styles/CenteredItems';
 
 const RegisterPage = () => {
-  useAuth('/register');
+  // useAuth('/register');
 
   const { setAlert, setImageFile, isLoading, imageFile, handleSubmit, alert } =
     useUploadForm(USERS_ROUTE, '/');
