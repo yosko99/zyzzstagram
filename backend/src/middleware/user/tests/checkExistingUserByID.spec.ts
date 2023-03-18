@@ -7,7 +7,7 @@ import { CheckExistingUserByIdMiddleware } from '../checkExistingUserByID.middle
 
 import IUser from '../../../interfaces/IUser';
 
-describe('test CheckExistingUserById middleware', () => {
+describe('test checkExistingUserById middleware', () => {
   let middleware: CheckExistingUserByIdMiddleware;
   let mockPrismaService: PrismaService;
 
@@ -55,7 +55,7 @@ describe('test CheckExistingUserById middleware', () => {
   });
 
   describe('when the user exists', () => {
-    const mockUser = {} as IUser;
+    const mockUser = {} as any;
 
     beforeEach(async () => {
       jest

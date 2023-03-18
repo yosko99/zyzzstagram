@@ -30,7 +30,7 @@ const Post = ({ user, post }: Props) => {
               <div className="user">
                 <div className="profile-pic">
                   <img
-                    style={{ objectFit: 'fill' }}
+                    style={{ objectFit: 'cover' }}
                     src={PUBLIC_IMAGES_PREFIX + user.imageURL}
                     alt={user.username}
                   />
@@ -43,7 +43,6 @@ const Post = ({ user, post }: Props) => {
               <FaAngleDoubleDown role={'button'} />
             </div>
             <Image
-              style={{ objectFit: 'contain' }}
               src={PUBLIC_IMAGES_PREFIX + post.imageURL}
               className="post-image"
               alt={`${user.username} post`}

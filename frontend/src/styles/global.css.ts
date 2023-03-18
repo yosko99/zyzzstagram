@@ -150,7 +150,6 @@ const GlobalCSS = createGlobalStyle`
 	
 	.post-image{
 		width: 100%;
-		height: 500px;
 		object-fit: cover;
 	}
 	

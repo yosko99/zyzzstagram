@@ -11,6 +11,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { UserService } from './user.service';
 
 import { UserController } from './user.controller';
+import { CheckExistingUserByUsernameMiddleware } from 'src/middleware/user/checkExistingUserByUsername.middleware';
 
 @Module({
   imports: [],
@@ -28,6 +29,11 @@ export class UserModule implements NestModule {
     consumer.apply(CheckExistingUserByIdMiddleware).forRoutes({
       path: '/users/:id',
       method: RequestMethod.DELETE,
+    });
+
+    consumer.apply(CheckExistingUserByUsernameMiddleware).forRoutes({
+      path: '/users/:username',
+      method: RequestMethod.GET,
     });
   }
 }

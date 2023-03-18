@@ -10,7 +10,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { HttpCode } from '@nestjs/common/decorators';
+import { Get, HttpCode } from '@nestjs/common/decorators';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiConsumes,
@@ -74,5 +74,14 @@ export class UserController {
   @ApiResponse({ status: 401, description: 'Password mismatch' })
   loginUser(@Body() loginUserDto: LoginUserDto) {
     return this.userService.loginUser(loginUserDto);
+  }
+
+  @Get('/:username')
+  @ApiParam({ name: 'username', type: 'string' })
+  @ApiOperation({ summary: 'Get user data by username' })
+  @ApiResponse({ status: 200, description: 'Receive user data' })
+  @ApiResponse({ status: 404, description: 'Non existent username' })
+  getUserByUsername(@RequestData('user') user: IUser) {
+    return user;
   }
 }

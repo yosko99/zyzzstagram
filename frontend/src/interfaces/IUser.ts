@@ -20,6 +20,17 @@ interface IUser {
   createdAt: Date;
   updatedAt: Date;
   notifications?: INotification[];
+  _count?: {
+    followers: number;
+    following: number;
+    posts: number;
+    comments: number;
+    likedComments: number;
+    likedPosts: number;
+    notifications: number;
+    savedPosts: number;
+    stories: number;
+  };
 }
 
 export default IUser;
