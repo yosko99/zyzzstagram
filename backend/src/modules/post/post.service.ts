@@ -24,7 +24,7 @@ export class PostService {
         imageURL: filename,
         description,
         published: true,
-        author: { connect: { email: tokenData.email } },
+        author: { connect: { username: tokenData.username } },
       },
     });
 

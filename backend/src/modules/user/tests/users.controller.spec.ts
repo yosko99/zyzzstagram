@@ -62,7 +62,7 @@ describe('Test users API', () => {
       );
 
       const loginResult = await userService.loginUser({
-        email: createUserResult.user.email,
+        username: createUserResult.user.username,
         password: createUserDto.password,
       });
 
@@ -72,17 +72,17 @@ describe('Test users API', () => {
       await userService.deleteUser(createUserResult.user);
     });
 
-    test('should throw error of non existent email', async () => {
+    test('should throw error of non existent username', async () => {
       try {
         await userService.loginUser({
-          email: 'invalid@gmail.com',
+          username: 'invalid',
           password: 'a',
         });
       } catch (err) {
         const error = err as unknown as HttpException;
 
         expect(error.message).toEqual(
-          'User with provided email does not exist',
+          'User with provided username does not exist',
         );
       }
     });
@@ -95,7 +95,7 @@ describe('Test users API', () => {
 
       try {
         await userService.loginUser({
-          email: createUserDto.email,
+          username: createUserDto.username,
           password: 'invalid',
         });
       } catch (err) {

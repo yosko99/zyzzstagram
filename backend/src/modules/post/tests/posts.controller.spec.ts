@@ -23,7 +23,7 @@ describe('Test posts API', () => {
       );
 
       const tokenData: IToken = {
-        email: createUserForPostDto.email,
+        username: createUserForPostDto.username,
         password: createUserForPostDto.password,
       };
 
@@ -62,7 +62,7 @@ describe('Test posts API', () => {
       );
 
       const tokenData: IToken = {
-        email: createUserForPostDto.email,
+        username: createUserForPostDto.username,
         password: createUserForPostDto.password,
       };
 

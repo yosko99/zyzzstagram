@@ -70,7 +70,7 @@ export class UserController {
   @HttpCode(200)
   @ApiOperation({ summary: 'Login a user' })
   @ApiResponse({ status: 200, description: 'Logged in successfully' })
-  @ApiResponse({ status: 404, description: 'Non existent email' })
+  @ApiResponse({ status: 404, description: 'Non existent username' })
   @ApiResponse({ status: 401, description: 'Password mismatch' })
   loginUser(@Body() loginUserDto: LoginUserDto) {
     return this.userService.loginUser(loginUserDto);

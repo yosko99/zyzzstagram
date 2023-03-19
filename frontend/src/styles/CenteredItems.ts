@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 
-const CenteredItems = styled.div`
-  height: 100vh;
-  background-color: #f7f7f7;
+interface Props {
+  flexColumn?: boolean;
+}
+
+const CenteredItems = styled.div<Props>`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: ${({ flexColumn }) => (flexColumn ? 'column' : 'row')};
 `;
 
 export default CenteredItems;

@@ -1,27 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import axios from 'axios';
 import { Button, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-import EmailInput from '../components/inputs/EmailInput';
 import PasswordInput from '../components/inputs/PasswordInput';
+import UsernameInput from '../components/inputs/UsernameInput';
 import CustomAlert from '../components/utils/CustomAlert';
 import { LOGIN_ROUTE } from '../constants/apiRoutes';
+import { CurrentUsernameContext } from '../context/CurrentUsernameContext';
 import useAuth from '../hooks/useAuth';
 import CenteredItems from '../styles/CenteredItems';
 import ExtendedAxiosError from '../types/ExtendedAxiosError';
 
 interface LoginDataType {
-  email: string;
+  username: string;
   password: string;
 }
 
 const LoginPage = () => {
-  useAuth('/login');
+  const { setCurrentUsername } = useContext(CurrentUsernameContext);
+  const navigate = useNavigate();
+  // useAuth('/login');
 
   const [loginData, setLoginData] = useState<LoginDataType>({
-    email: '',
+    username: '',
     password: ''
   });
   const [alert, setAlert] = useState<React.ReactNode>();
@@ -31,12 +34,14 @@ const LoginPage = () => {
     axios
       .post(LOGIN_ROUTE, { ...loginData })
       .then((response) => {
+        setCurrentUsername(loginData.username);
+
         setAlert(
           <CustomAlert variant="success" text={response.data.message} />
         );
         setTimeout(() => {
           localStorage.setItem('token', response.data.token);
-          window.location.href = '/';
+          navigate('/');
         }, 1000);
       })
       .catch((err) => {
@@ -65,7 +70,7 @@ const LoginPage = () => {
         onChange={(e) => handleChange(e)}
       >
         <p className="fs-1">Login to Zysstagram</p>
-        <EmailInput />
+        <UsernameInput />
         <PasswordInput />
 
         <div className="d-flex justify-content-between">

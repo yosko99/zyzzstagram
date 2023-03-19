@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useContext } from 'react';
 
 import { Nav, Navbar } from 'react-bootstrap';
 import {
@@ -14,6 +14,7 @@ import {
 import { IconType } from 'react-icons/lib';
 import { useNavigate } from 'react-router-dom';
 
+import { CurrentUsernameContext } from '../../context/CurrentUsernameContext';
 import UploadPostForm from '../forms/UploadPostForm';
 import CustomModal from '../utils/CustomModal';
 
@@ -24,15 +25,16 @@ interface Tab {
 }
 
 const Navigation = () => {
+  const { currentUsername } = useContext(CurrentUsernameContext);
   const navigate = useNavigate();
 
   const tabs: Tab[] = [
-    { icon: <FaHome />, label: 'Home', href: 'home' },
-    { icon: <FaSearch />, label: 'Search', href: 'search' },
-    { icon: <FaCompass />, label: 'Explore', href: 'explore' },
-    { icon: <FaPlay />, label: 'Reels', href: 'reels' },
-    { icon: <FaEnvelope />, label: 'Messages', href: 'messages' },
-    { icon: <FaBell />, label: 'Notifications', href: 'notifications' },
+    { icon: <FaHome />, label: 'Home', href: '/' },
+    { icon: <FaSearch />, label: 'Search', href: '/search' },
+    { icon: <FaCompass />, label: 'Explore', href: '/explore' },
+    { icon: <FaPlay />, label: 'Reels', href: '/reels' },
+    { icon: <FaEnvelope />, label: 'Messages', href: '/messages' },
+    { icon: <FaBell />, label: 'Notifications', href: '/notifications' },
     {
       icon: (
         <CustomModal
@@ -50,12 +52,12 @@ const Navigation = () => {
         />
       )
     },
-    { icon: <FaUser />, label: 'Profile', href: 'profile' }
+    { icon: <FaUser />, label: 'Profile', href: '/profile' }
   ];
 
   const handleRedirect = (href: string | undefined) => {
     if (href !== undefined) {
-      navigate(href);
+      navigate(href, { state: { username: currentUsername } });
     }
   };
 

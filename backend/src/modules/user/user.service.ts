@@ -37,7 +37,7 @@ export class UserService {
     return {
       message: 'User created successfully',
       user: newUser,
-      token: this.generateToken(newUser.email, newUser.password),
+      token: this.generateToken(newUser.username, newUser.password),
     };
   }
 
@@ -55,11 +55,14 @@ export class UserService {
     };
   }
 
-  async loginUser({ email, password }: LoginUserDto) {
-    const user = await this.prisma.user.findUnique({ where: { email } });
+  async loginUser({ username, password }: LoginUserDto) {
+    const user = await this.prisma.user.findUnique({ where: { username } });
 
     if (user === null) {
-      throw new HttpException('User with provided email does not exist', 404);
+      throw new HttpException(
+        'User with provided username does not exist',
+        404,
+      );
     }
 
     const doesPasswordMatch = await bcrypt.compare(password, user.password);
@@ -68,7 +71,7 @@ export class UserService {
       throw new HttpException('Provided invalid password', 401);
     }
 
-    const token = this.generateToken(email, password);
+    const token = this.generateToken(username, password);
 
     return {
       message: 'Logged in successfully',
@@ -76,8 +79,11 @@ export class UserService {
     };
   }
 
-  private generateToken(email: string, password: string) {
-    const token = jwt.sign({ email, password }, process.env.JSONWEBTOKEN_KEY);
+  private generateToken(username: string, password: string) {
+    const token = jwt.sign(
+      { username, password },
+      process.env.JSONWEBTOKEN_KEY,
+    );
 
     return token;
   }
