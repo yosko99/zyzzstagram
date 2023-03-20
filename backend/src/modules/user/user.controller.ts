@@ -14,6 +14,7 @@ import { Get, HttpCode } from '@nestjs/common/decorators';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiConsumes,
+  ApiHeader,
   ApiOperation,
   ApiParam,
   ApiResponse,
@@ -30,6 +31,7 @@ import { multerFilter } from '../../config/multer';
 import { RequestData } from '../../decorators/requestData.decorator';
 
 import IUser from '../../interfaces/IUser';
+import IToken from '../../interfaces/IToken';
 
 @Controller('/users')
 @ApiTags('Users')
@@ -76,12 +78,21 @@ export class UserController {
     return this.userService.loginUser(loginUserDto);
   }
 
-  @Get('/:username')
+  @Get('/user/:username')
   @ApiParam({ name: 'username', type: 'string' })
   @ApiOperation({ summary: 'Get user data by username' })
   @ApiResponse({ status: 200, description: 'Receive user data' })
   @ApiResponse({ status: 404, description: 'Non existent username' })
   getUserByUsername(@RequestData('user') user: IUser) {
     return user;
+  }
+
+  @Get('/current')
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiOperation({ summary: 'Get current user data by token' })
+  @ApiResponse({ status: 200, description: 'Receive user data' })
+  @ApiResponse({ status: 404, description: 'Non existent user' })
+  getCurrentUser(@RequestData('userDataFromToken') tokenData: IToken) {
+    return this.userService.getCurrentUser(tokenData);
   }
 }

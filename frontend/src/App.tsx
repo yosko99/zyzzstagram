@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Route, Routes } from 'react-router-dom';
 import io from 'socket.io-client';
 
-import { CurrentUsernameContext } from './context/CurrentUsernameContext';
 import { SocketContext } from './context/SocketContext';
+import { TokenContext } from './context/TokenContext';
+import useToken from './hooks/useToken';
 import GlobalCSS from './styles/global.css';
 import LoginPage from './views/LoginPage';
 import MainPage from './views/MainPage';
@@ -15,13 +16,11 @@ import './styles/bootstrap.min.css';
 const socket = io('ws://localhost:5000');
 
 const App = () => {
-  const [currentUsername, setCurrentUsername] = useState<string>('');
+  const { token, setToken } = useToken();
 
   return (
     <SocketContext.Provider value={socket}>
-      <CurrentUsernameContext.Provider
-        value={{ currentUsername, setCurrentUsername }}
-      >
+      <TokenContext.Provider value={{ token, setToken }}>
         <GlobalCSS />
         <Routes>
           <Route path="/" element={<MainPage />} />
@@ -29,7 +28,7 @@ const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
         </Routes>
-      </CurrentUsernameContext.Provider>
+      </TokenContext.Provider>
     </SocketContext.Provider>
   );
 };

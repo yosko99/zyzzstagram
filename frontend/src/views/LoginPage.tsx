@@ -1,14 +1,14 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 
 import axios from 'axios';
 import { Button, Form } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { useQueryClient } from 'react-query';
+import { Link } from 'react-router-dom';
 
 import PasswordInput from '../components/inputs/PasswordInput';
 import UsernameInput from '../components/inputs/UsernameInput';
 import CustomAlert from '../components/utils/CustomAlert';
 import { LOGIN_ROUTE } from '../constants/apiRoutes';
-import { CurrentUsernameContext } from '../context/CurrentUsernameContext';
 import useAuth from '../hooks/useAuth';
 import CenteredItems from '../styles/CenteredItems';
 import ExtendedAxiosError from '../types/ExtendedAxiosError';
@@ -19,8 +19,7 @@ interface LoginDataType {
 }
 
 const LoginPage = () => {
-  const { setCurrentUsername } = useContext(CurrentUsernameContext);
-  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   // useAuth('/login');
 
   const [loginData, setLoginData] = useState<LoginDataType>({
@@ -34,14 +33,14 @@ const LoginPage = () => {
     axios
       .post(LOGIN_ROUTE, { ...loginData })
       .then((response) => {
-        setCurrentUsername(loginData.username);
+        queryClient.invalidateQueries();
 
         setAlert(
           <CustomAlert variant="success" text={response.data.message} />
         );
         setTimeout(() => {
           localStorage.setItem('token', response.data.token);
-          navigate('/');
+          window.location.href = '/';
         }, 1000);
       })
       .catch((err) => {

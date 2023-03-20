@@ -5,10 +5,12 @@ import * as bcrypt from 'bcryptjs';
 import deleteImage from '../../functions/deleteImage';
 
 import { CreateUserDto } from '../../dto/CreateUser.dto';
+import { LoginUserDto } from '../../dto/LogiUser.dto';
 
 import { PrismaService } from '../../prisma/prisma.service';
+
 import IUser from 'src/interfaces/IUser';
-import { LoginUserDto } from 'src/dto/LogiUser.dto';
+import IToken from 'src/interfaces/IToken';
 
 @Injectable()
 export class UserService {
@@ -56,14 +58,7 @@ export class UserService {
   }
 
   async loginUser({ username, password }: LoginUserDto) {
-    const user = await this.prisma.user.findUnique({ where: { username } });
-
-    if (user === null) {
-      throw new HttpException(
-        'User with provided username does not exist',
-        404,
-      );
-    }
+    const user = await this.checkUserExistence({ where: { username } });
 
     const doesPasswordMatch = await bcrypt.compare(password, user.password);
 
@@ -79,6 +74,28 @@ export class UserService {
     };
   }
 
+  async getCurrentUser({ username }: IToken) {
+    const user = await this.checkUserExistence({
+      where: { username },
+      select: {
+        username: true,
+        imageURL: true,
+        description: true,
+        posts: {
+          select: {
+            imageURL: true,
+            id: true,
+            _count: { select: { comments: true, likedBy: true } },
+          },
+          orderBy: { createdAt: 'desc' },
+        },
+        _count: { select: { followers: true, following: true, posts: true } },
+      },
+    });
+
+    return user;
+  }
+
   private generateToken(username: string, password: string) {
     const token = jwt.sign(
       { username, password },
@@ -87,4 +104,14 @@ export class UserService {
 
     return token;
   }
+
+  private checkUserExistence = async (query: any) => {
+    const user = await this.prisma.user.findUnique(query);
+
+    if (user === null) {
+      throw new HttpException('Could not find provided user', 404);
+    }
+
+    return user;
+  };
 }

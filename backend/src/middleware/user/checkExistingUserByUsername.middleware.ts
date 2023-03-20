@@ -24,7 +24,9 @@ export class CheckExistingUserByUsernameMiddleware implements NestMiddleware {
           select: {
             imageURL: true,
             id: true,
+            _count: { select: { comments: true, likedBy: true } },
           },
+          orderBy: { createdAt: 'desc' },
         },
         _count: { select: { followers: true, following: true, posts: true } },
       },

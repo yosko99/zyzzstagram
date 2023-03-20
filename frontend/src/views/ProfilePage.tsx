@@ -1,7 +1,7 @@
 /* eslint-disable multiline-ternary */
-import React from 'react';
+import React, { useContext } from 'react';
 
-import { Container, Row, Col, Image, Card } from 'react-bootstrap';
+import { Container, Row, Col, Image } from 'react-bootstrap';
 import { AiFillTags } from 'react-icons/ai';
 import { BsFillGrid3X3GapFill } from 'react-icons/bs';
 import { FaVoteYea } from 'react-icons/fa';
@@ -10,11 +10,15 @@ import styled from 'styled-components';
 
 import UploadPostForm from '../components/forms/UploadPostForm';
 import Navigation from '../components/layout/Navigation';
+import UserPost from '../components/layout/UserPost';
 import CustomModal from '../components/utils/CustomModal';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
-import { PUBLIC_IMAGES_PREFIX, USERS_ROUTE } from '../constants/apiRoutes';
+import {
+  CURRENT_USER_ROUTE,
+  PUBLIC_IMAGES_PREFIX
+} from '../constants/apiRoutes';
+import { TokenContext } from '../context/TokenContext';
 import useFetch from '../hooks/useFetch';
-import useNavigateChecker from '../hooks/useNavigateChecker';
 import IUser from '../interfaces/IUser';
 import CenteredItems from '../styles/CenteredItems';
 
@@ -27,12 +31,15 @@ const ProfileContainer = styled.div`
 `;
 
 const ProfilePage = () => {
-  const { username } = useNavigateChecker();
+  const token = useContext(TokenContext);
 
   const { data, isLoading, error } = useFetch(
-    `${username} posts`,
-    USERS_ROUTE + username,
-    true
+    'profile posts',
+    CURRENT_USER_ROUTE,
+    true,
+    {
+      headers: { authorization: 'Bearer ' + token!.token }
+    }
   );
 
   const user = data as IUser;
@@ -51,10 +58,9 @@ const ProfilePage = () => {
                 className="d-flex justify-content-center align-items-center"
               >
                 <Image
-                  fluid
                   src={PUBLIC_IMAGES_PREFIX + user.imageURL}
-                  height={'75%'}
-                  width={'75%'}
+                  height={'120px'}
+                  width={'120px'}
                   roundedCircle
                 />
               </Col>
@@ -122,19 +128,11 @@ const ProfilePage = () => {
                   />
                 </CenteredItems>
               ) : (
-                user.posts
-                  ?.slice(0)
-                  .reverse()
-                  .map((post, index: number) => (
-                    <Col xs={4} key={index} className="p-1">
-                      <Card role={'button'}>
-                        <Card.Img
-                          variant="top"
-                          src={PUBLIC_IMAGES_PREFIX + post.imageURL}
-                        />
-                      </Card>
-                    </Col>
-                  ))
+                user.posts?.map((post, index: number) => (
+                  <Col xs={4} key={index} className="p-1">
+                    <UserPost post={post} />
+                  </Col>
+                ))
               )}
             </Row>
           </ProfileContainer>

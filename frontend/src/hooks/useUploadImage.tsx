@@ -1,11 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { useNavigate } from 'react-router-dom';
 
 import CustomAlert from '../components/utils/CustomAlert';
-import { CurrentUsernameContext } from '../context/CurrentUsernameContext';
 import ExtendedAxiosError from '../types/ExtendedAxiosError';
 
 const usePostMutationWithToken = (routeURL: string) => {
@@ -21,12 +19,10 @@ const usePostMutationWithToken = (routeURL: string) => {
 };
 
 const useUploadForm = (routeURL: string, redirectOnSuccessURL?: string) => {
-  const { setCurrentUsername } = useContext(CurrentUsernameContext);
   const [alert, setAlert] = useState<React.ReactNode>();
   const [imageFile, setImageFile] = useState<File>();
 
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   const { mutate, isLoading } = usePostMutationWithToken(routeURL);
 
@@ -44,18 +40,12 @@ const useUploadForm = (routeURL: string, redirectOnSuccessURL?: string) => {
       mutate(formData, {
         onSuccess: (data) => {
           setAlert(<CustomAlert variant="success" text={data.message} />);
-          const formUsername = formData.get('username');
-
-          if (formUsername !== undefined) {
-            setCurrentUsername(formUsername as string);
-          }
-
           queryClient.refetchQueries();
 
           if (redirectOnSuccessURL !== undefined) {
             setTimeout(() => {
               localStorage.setItem('token', data.token);
-              navigate(redirectOnSuccessURL);
+              window.location.href = redirectOnSuccessURL;
             }, 1000);
           }
         },

@@ -12,6 +12,7 @@ import { UserService } from './user.service';
 
 import { UserController } from './user.controller';
 import { CheckExistingUserByUsernameMiddleware } from 'src/middleware/user/checkExistingUserByUsername.middleware';
+import { VerifyJWTMiddleware } from 'src/middleware/utils/verifyJWT.middleware';
 
 @Module({
   imports: [],
@@ -32,7 +33,12 @@ export class UserModule implements NestModule {
     });
 
     consumer.apply(CheckExistingUserByUsernameMiddleware).forRoutes({
-      path: '/users/:username',
+      path: '/users/user/:username',
+      method: RequestMethod.GET,
+    });
+
+    consumer.apply(VerifyJWTMiddleware).forRoutes({
+      path: '/users/current',
       method: RequestMethod.GET,
     });
   }

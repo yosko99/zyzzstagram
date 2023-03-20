@@ -81,9 +81,7 @@ describe('Test users API', () => {
       } catch (err) {
         const error = err as unknown as HttpException;
 
-        expect(error.message).toEqual(
-          'User with provided username does not exist',
-        );
+        expect(error.message).toEqual('Could not find provided user');
       }
     });
 
@@ -105,6 +103,37 @@ describe('Test users API', () => {
       }
 
       await userService.deleteUser(createUserResult.user);
+    });
+  });
+
+  describe('test getCurrentUser service', () => {
+    test('should get user data successfully', async () => {
+      const createdUserResult = await userService.createUser(
+        createUserDto,
+        filename,
+      );
+
+      const currentUserResult = await userService.getCurrentUser({
+        username: createdUserResult.user.username,
+        password: createdUserResult.user.password,
+      });
+
+      expect(currentUserResult.username).toEqual(createUserDto.username);
+
+      await userService.deleteUser(createdUserResult.user);
+    });
+
+    test('should throw error of non existent user', async () => {
+      try {
+        await userService.getCurrentUser({
+          username: 'invalid',
+          password: 'invalidpassword',
+        });
+      } catch (err) {
+        const error = err as unknown as HttpException;
+
+        expect(error.message).toEqual('Could not find provided user');
+      }
     });
   });
 });

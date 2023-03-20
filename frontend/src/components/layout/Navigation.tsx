@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from 'react';
+import React, { ReactElement } from 'react';
 
 import { Nav, Navbar } from 'react-bootstrap';
 import {
@@ -14,7 +14,6 @@ import {
 import { IconType } from 'react-icons/lib';
 import { useNavigate } from 'react-router-dom';
 
-import { CurrentUsernameContext } from '../../context/CurrentUsernameContext';
 import UploadPostForm from '../forms/UploadPostForm';
 import CustomModal from '../utils/CustomModal';
 
@@ -25,7 +24,6 @@ interface Tab {
 }
 
 const Navigation = () => {
-  const { currentUsername } = useContext(CurrentUsernameContext);
   const navigate = useNavigate();
 
   const tabs: Tab[] = [
@@ -57,7 +55,7 @@ const Navigation = () => {
 
   const handleRedirect = (href: string | undefined) => {
     if (href !== undefined) {
-      navigate(href, { state: { username: currentUsername } });
+      navigate(href);
     }
   };
 
