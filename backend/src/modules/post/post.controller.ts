@@ -75,4 +75,19 @@ export class PostController {
   getAllPosts() {
     return this.postService.getAllPosts();
   }
+
+  @Post('/like/:id')
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiOperation({ summary: 'Like a post' })
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiResponse({ status: 200, description: 'Post liked' })
+  @ApiResponse({ status: 404, description: 'Post not found' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  likePost(
+    @RequestData('post') post: IPost,
+    @RequestData('userDataFromToken') tokenData: IToken,
+  ) {
+    return this.postService.likePost(tokenData, post);
+  }
 }

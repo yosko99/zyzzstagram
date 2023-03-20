@@ -26,6 +26,7 @@ export class PostService {
         published: true,
         author: { connect: { username: tokenData.username } },
       },
+      include: { likedBy: true },
     });
 
     return {
@@ -54,5 +55,27 @@ export class PostService {
       },
       orderBy: { createdAt: 'desc' },
     });
+  }
+
+  async likePost({ username }: IToken, post: IPost) {
+    if (post.likedBy.some((user) => user.username === username)) {
+      await this.prisma.post.update({
+        where: { id: post.id },
+        data: { likedBy: { disconnect: { username } } },
+      });
+
+      return {
+        message: 'Removed like',
+      };
+    }
+
+    await this.prisma.post.update({
+      where: { id: post.id },
+      data: { likedBy: { connect: { username } } },
+    });
+
+    return {
+      message: 'Post liked',
+    };
   }
 }

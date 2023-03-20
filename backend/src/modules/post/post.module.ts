@@ -24,9 +24,17 @@ export class PostModule implements NestModule {
       path: '/posts',
       method: RequestMethod.POST,
     });
+
     consumer.apply(CheckExistingPostByIdMiddleware).forRoutes({
       path: '/posts/:id',
       method: RequestMethod.DELETE,
     });
+
+    consumer
+      .apply(CheckExistingPostByIdMiddleware, VerifyJWTMiddleware)
+      .forRoutes({
+        path: '/posts/like/:id',
+        method: RequestMethod.POST,
+      });
   }
 }

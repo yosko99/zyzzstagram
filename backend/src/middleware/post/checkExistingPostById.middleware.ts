@@ -16,7 +16,7 @@ export class CheckExistingPostByIdMiddleware implements NestMiddleware {
 
     const post = await this.prisma.post.findUnique({
       where: { id },
-      include: { author: true },
+      include: { author: true, likedBy: true },
     });
 
     if (post === null) {

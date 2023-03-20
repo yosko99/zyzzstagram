@@ -92,6 +92,8 @@ export class UserController {
   @ApiOperation({ summary: 'Get current user data by token' })
   @ApiResponse({ status: 200, description: 'Receive user data' })
   @ApiResponse({ status: 404, description: 'Non existent user' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
   getCurrentUser(@RequestData('userDataFromToken') tokenData: IToken) {
     return this.userService.getCurrentUser(tokenData);
   }

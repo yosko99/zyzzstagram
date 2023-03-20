@@ -54,7 +54,7 @@ describe('test CheckExistingPostById middleware', () => {
 
       expect(prismaService.post.findUnique).toHaveBeenCalledWith({
         where: { id: '1' },
-        include: { author: true },
+        include: { author: true, likedBy: true },
       });
       expect(req.post).toEqual(post);
       expect(next).toHaveBeenCalled();
@@ -77,7 +77,7 @@ describe('test CheckExistingPostById middleware', () => {
 
       expect(prismaService.post.findUnique).toHaveBeenCalledWith({
         where: { id: '1' },
-        include: { author: true },
+        include: { author: true, likedBy: true },
       });
 
       expect(res.status).toHaveBeenCalledWith(404);

@@ -13,25 +13,31 @@ describe('Test posts API', () => {
   const postService = new PostService(prisma);
   const userService = new UserService(prisma);
 
+  const initMockData = async () => {
+    const createdUser = await userService.createUser(
+      createUserForPostDto,
+      filename,
+    );
+
+    const tokenData: IToken = {
+      username: createUserForPostDto.username,
+      password: createUserForPostDto.password,
+    };
+
+    const createdPost = await postService.createPost(
+      createPostDto,
+      filename,
+      tokenData,
+    );
+
+    return { createdUser, tokenData, createdPost };
+  };
+
   const filename = 'testimage.jpg';
 
   describe('test createPost service', () => {
     it('should create a post successfully', async () => {
-      const createdUser = await userService.createUser(
-        createUserForPostDto,
-        filename,
-      );
-
-      const tokenData: IToken = {
-        username: createUserForPostDto.username,
-        password: createUserForPostDto.password,
-      };
-
-      const createdPost = await postService.createPost(
-        createPostDto,
-        filename,
-        tokenData,
-      );
+      const { createdPost, createdUser } = await initMockData();
 
       expect(createdPost.message).toEqual('Post created successfully');
       expect(createdPost.post).toBeTruthy();
@@ -56,21 +62,7 @@ describe('Test posts API', () => {
 
   describe('test deletePost service', () => {
     it('should delete a post successfully', async () => {
-      const createdUser = await userService.createUser(
-        createUserForPostDto,
-        filename,
-      );
-
-      const tokenData: IToken = {
-        username: createUserForPostDto.username,
-        password: createUserForPostDto.password,
-      };
-
-      const createdPost = await postService.createPost(
-        createPostDto,
-        filename,
-        tokenData,
-      );
+      const { createdPost, createdUser } = await initMockData();
 
       const deletedPost = await postService.deletePost(createdPost.post);
 
@@ -85,6 +77,18 @@ describe('Test posts API', () => {
       const response = await postService.getAllPosts();
 
       expect(response).toEqual(expect.any(Array));
+    });
+  });
+
+  describe('test likePost service', () => {
+    it('should successfully like a post', async () => {
+      const { createdPost, createdUser, tokenData } = await initMockData();
+
+      const result = await postService.likePost(tokenData, createdPost.post);
+
+      expect(result.message).toBe('Post liked');
+
+      await userService.deleteUser(createdUser.user);
     });
   });
 });
