@@ -74,7 +74,10 @@ describe('Test posts API', () => {
 
   describe('test getAllPosts service', () => {
     it('should get posts', async () => {
-      const response = await postService.getAllPosts();
+      const response = await postService.getAllPosts({
+        username: 'username',
+        password: 'password',
+      });
 
       expect(response).toEqual(expect.any(Array));
     });

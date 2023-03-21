@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
 
 import { POSTS_ROUTE } from '../../constants/apiRoutes';
-import useUploadForm from '../../hooks/useUploadImage';
+import { useUploadForm } from '../../hooks/useUploadImage';
 import ImageUploadInput from '../inputs/ImageUploadInput';
 import LoadingSpinner from '../utils/LoadingSpinner';
 

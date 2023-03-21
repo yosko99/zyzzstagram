@@ -1,17 +1,14 @@
 import React from 'react';
 
-import { Image } from 'react-bootstrap';
-import {
-  AiOutlineComment,
-  AiOutlineHeart,
-  AiOutlineSend
-} from 'react-icons/ai';
+import { AiOutlineComment, AiOutlineSend } from 'react-icons/ai';
 import { FaAngleDoubleDown, FaVoteYea } from 'react-icons/fa';
 
 import { PUBLIC_IMAGES_PREFIX } from '../../constants/apiRoutes';
 import dateFormatter from '../../functions/dateFormatter';
 import IPost from '../../interfaces/IPost';
 import IUser from '../../interfaces/IUser';
+import LikeButton from '../buttons/LikeButton';
+import PostImage from '../post/PostImage';
 
 interface Props {
   user: IUser;
@@ -42,15 +39,11 @@ const Post = ({ user, post }: Props) => {
               </div>
               <FaAngleDoubleDown role={'button'} />
             </div>
-            <Image
-              src={PUBLIC_IMAGES_PREFIX + post.imageURL}
-              className="post-image"
-              alt={`${user.username} post`}
-            />
+            <PostImage username={user.username} post={post} />
             <div className="post-content">
               <div className="reaction-wrapper d-flex fs-2 justify-content-between">
                 <div>
-                  <AiOutlineHeart role={'button'} className="me-1" />
+                  <LikeButton post={post} />
                   <AiOutlineComment role={'button'} className="mx-1" />
                   <AiOutlineSend role={'button'} className="ms-1" />
                 </div>

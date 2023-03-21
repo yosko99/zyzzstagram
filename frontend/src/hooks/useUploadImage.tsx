@@ -1,24 +1,33 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 
 import CustomAlert from '../components/utils/CustomAlert';
+import { TokenContext } from '../context/TokenContext';
 import ExtendedAxiosError from '../types/ExtendedAxiosError';
 
-const usePostMutationWithToken = (routeURL: string) => {
-  const uploadPost = async (formData: FormData) => {
+export const usePostMutationWithToken = (
+  routeURL: string,
+  onMutate?: () => any
+) => {
+  const token = useContext(TokenContext);
+
+  const uploadPost = async (data: any) => {
     const config = {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      headers: { Authorization: `Bearer ${token?.token}` }
     };
-    const response = await axios.post(routeURL, formData, config);
+    const response = await axios.post(routeURL, data, config);
     return response.data;
   };
 
-  return useMutation(uploadPost);
+  return useMutation(uploadPost, { onMutate: onMutate && onMutate });
 };
 
-const useUploadForm = (routeURL: string, redirectOnSuccessURL?: string) => {
+export const useUploadForm = (
+  routeURL: string,
+  redirectOnSuccessURL?: string
+) => {
   const [alert, setAlert] = useState<React.ReactNode>();
   const [imageFile, setImageFile] = useState<File>();
 
@@ -64,5 +73,3 @@ const useUploadForm = (routeURL: string, redirectOnSuccessURL?: string) => {
 
   return { alert, setAlert, imageFile, setImageFile, handleSubmit, isLoading };
 };
-
-export default useUploadForm;

@@ -45,16 +45,28 @@ export class PostService {
     };
   }
 
-  async getAllPosts() {
-    return await this.prisma.post.findMany({
+  async getAllPosts({ username }: IToken) {
+    const posts = await this.prisma.post.findMany({
       include: {
         author: { select: { username: true, imageURL: true } },
-        _count: true,
+        _count: { select: { comments: true, likedBy: true } },
         comments: true,
-        likedBy: true,
+        likedBy: {
+          where: {
+            username,
+          },
+          select: {
+            id: true,
+          },
+        },
       },
       orderBy: { createdAt: 'desc' },
     });
+
+    return posts.map((post) => ({
+      ...post,
+      likedByUser: post.likedBy.length > 0,
+    }));
   }
 
   async likePost({ username }: IToken, post: IPost) {

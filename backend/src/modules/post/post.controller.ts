@@ -72,8 +72,10 @@ export class PostController {
   @Get('/')
   @ApiOperation({ summary: 'Get all posts' })
   @ApiResponse({ status: 200, description: 'Receive posts' })
-  getAllPosts() {
-    return this.postService.getAllPosts();
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  getAllPosts(@RequestData('userDataFromToken') tokenData: IToken) {
+    return this.postService.getAllPosts(tokenData);
   }
 
   @Post('/like/:id')

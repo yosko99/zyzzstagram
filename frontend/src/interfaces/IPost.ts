@@ -17,6 +17,7 @@ interface IPost {
     comments: number;
     savedBy: number;
   };
+  likedByUser?: boolean;
 }
 
 export default IPost;

@@ -20,10 +20,16 @@ import { PostService } from './post.service';
 })
 export class PostModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(VerifyJWTMiddleware).forRoutes({
-      path: '/posts',
-      method: RequestMethod.POST,
-    });
+    consumer.apply(VerifyJWTMiddleware).forRoutes(
+      {
+        path: '/posts',
+        method: RequestMethod.POST,
+      },
+      {
+        path: '/posts',
+        method: RequestMethod.GET,
+      },
+    );
 
     consumer.apply(CheckExistingPostByIdMiddleware).forRoutes({
       path: '/posts/:id',

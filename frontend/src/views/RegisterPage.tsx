@@ -10,7 +10,7 @@ import UsernameInput from '../components/inputs/UsernameInput';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
 import { USERS_ROUTE } from '../constants/apiRoutes';
 import useAuth from '../hooks/useAuth';
-import useUploadForm from '../hooks/useUploadImage';
+import { useUploadForm } from '../hooks/useUploadImage';
 import CenteredItems from '../styles/CenteredItems';
 
 const RegisterPage = () => {
