@@ -5,7 +5,7 @@ interface INotification {
   message: string;
   read: boolean;
   createdAt: Date;
-  user: IUser;
+  user?: IUser;
   userId: string;
 }
 

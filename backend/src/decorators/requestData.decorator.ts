@@ -1,6 +1,10 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
-type IPassedRequestData = 'user' | 'userDataFromToken' | 'post';
+type IPassedRequestData =
+  | 'user'
+  | 'userDataFromToken'
+  | 'post'
+  | 'notification';
 
 export const RequestData = createParamDecorator(
   (data: IPassedRequestData, ctx: ExecutionContext) => {

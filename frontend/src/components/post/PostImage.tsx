@@ -31,7 +31,10 @@ const PostImage = ({ post, username }: Props) => {
           onDoubleClick={handleDoubleClick}
           src={PUBLIC_IMAGES_PREFIX + post.imageURL}
           className="post-image"
-          style={{ filter: showHeart ? 'brightness(0.8)' : 'brightness(1)' }}
+          style={{
+            filter: showHeart ? 'brightness(0.8)' : 'brightness(1)',
+            transition: 'all 1s'
+          }}
           alt={`${username} post`}
         />
         {showHeart && (

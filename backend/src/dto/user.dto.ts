@@ -22,3 +22,16 @@ export class CreateUserDto {
   @ApiProperty()
   image?: Express.Multer.File;
 }
+
+export class LoginUserDto {
+  @IsNotEmpty()
+  @MinLength(8)
+  @IsString()
+  @ApiProperty({ minLength: 8 })
+  password: string;
+
+  @IsNotEmpty()
+  @IsEmail()
+  @ApiProperty()
+  username: string;
+}

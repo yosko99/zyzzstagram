@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { PostService } from '../post.service';
 import { PrismaService } from '../../../prisma/prisma.service';
-import { UserService } from '../../../modules/user/user.service';
+import { UserService } from '../../user/user.service';
 
 import { createUserForPostDto } from '../../../dto/mock/user.mock';
 import { createPostDto } from '../../../dto/mock/post.mock';

@@ -11,3 +11,9 @@ export const createUserForPostDto = {
   password,
   username: 'testPost',
 };
+
+export const createUserForNotificationDto = {
+  email: 'testNotification@example.com',
+  password,
+  username: 'testNotification',
+};

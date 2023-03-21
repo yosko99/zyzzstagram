@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { CreatePostDto } from '../../dto/CreatePostDto';
+import { CreatePostDto } from '../../dto/post.dto';
 
 import IToken from '../../interfaces/IToken';
 

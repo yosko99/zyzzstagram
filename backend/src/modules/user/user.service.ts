@@ -4,8 +4,7 @@ import * as bcrypt from 'bcryptjs';
 
 import deleteImage from '../../functions/deleteImage';
 
-import { CreateUserDto } from '../../dto/CreateUser.dto';
-import { LoginUserDto } from '../../dto/LogiUser.dto';
+import { CreateUserDto, LoginUserDto } from '../../dto/user.dto';
 
 import { PrismaService } from '../../prisma/prisma.service';
 

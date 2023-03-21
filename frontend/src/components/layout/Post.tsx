@@ -59,7 +59,9 @@ const Post = ({ user, post }: Props) => {
               <p className="text-muted" role={'button'}>
                 {post._count.comments === 0
                   ? 'Be the first one to comment!'
-                  : `View all ${post._count.comments} comments`}
+                  : `View ${post._count.comments} ${
+                      post._count.comments === 1 ? 'comment' : 'comments'
+                    }`}
               </p>
             </div>
             <div className="comment-wrapper">
