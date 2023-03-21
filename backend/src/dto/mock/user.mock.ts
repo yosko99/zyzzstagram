@@ -12,8 +12,14 @@ export const createUserForPostDto = {
   username: 'testPost',
 };
 
-export const createUserForNotificationDto = {
-  email: 'testNotification@example.com',
+export const createFirstUserForNotificationDto = {
+  email: 'testNotification1@example.com',
   password,
-  username: 'testNotification',
+  username: 'testNotification1',
+};
+
+export const createSecondUserForNotificationDto = {
+  email: 'testNotification2@example.com',
+  password,
+  username: 'testNotification2',
 };

@@ -20,7 +20,7 @@ const PostImage = ({ post, username }: Props) => {
 
   const handleDoubleClick = () => {
     handleLike();
-    setTimeout(() => setShowHeart(true), 100);
+    setTimeout(() => setShowHeart(true), 50);
     setTimeout(() => setShowHeart(false), 1000);
   };
 

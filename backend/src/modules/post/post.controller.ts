@@ -40,6 +40,7 @@ export class PostController {
 
   @Get('/')
   @ApiOperation({ summary: 'Get all posts' })
+  @ApiHeader({ name: 'Authorization', required: true })
   @ApiResponse({ status: 200, description: 'Receive posts' })
   @ApiResponse({ status: 401, description: 'Token not provided' })
   @ApiResponse({ status: 498, description: 'Provided invalid token' })

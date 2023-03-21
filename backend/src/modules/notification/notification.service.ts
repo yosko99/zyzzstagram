@@ -21,6 +21,17 @@ export class NotificationService {
     const author = await this.prisma.user.findUnique({ where: { username } });
     let message = '';
 
+    const postCreatorUsername = await this.getPostCreatorUsername(
+      postId,
+      author.username,
+    );
+
+    if (postCreatorUsername === null) {
+      return {
+        message: 'No action needed (same user)',
+      };
+    }
+
     if (likedByUser) {
       message = `${author.username} liked your post.`;
     } else {
@@ -29,7 +40,9 @@ export class NotificationService {
 
     const createdNotification = await this.prisma.notification.create({
       data: {
-        user: { connect: { username } },
+        user: {
+          connect: { username: postCreatorUsername },
+        },
         message,
         post: { connect: { id: postId } },
       },
@@ -48,9 +61,22 @@ export class NotificationService {
     const author = await this.prisma.user.findUnique({ where: { username } });
     const message = `${author.username} commented on your post.`;
 
+    const postCreatorUsername = await this.getPostCreatorUsername(
+      postId,
+      author.username,
+    );
+
+    if (postCreatorUsername === null) {
+      return {
+        message: 'No action needed (same user)',
+      };
+    }
+
     const createdNotification = await this.prisma.notification.create({
       data: {
-        user: { connect: { username } },
+        user: {
+          connect: { username: postCreatorUsername },
+        },
         post: { connect: { id: postId } },
         message,
         comment: {
@@ -69,11 +95,35 @@ export class NotificationService {
     };
   }
 
+  async getCurrentUserNotifications({ username }: IToken) {
+    const notifications = await this.prisma.notification.findMany({
+      where: { user: { username } },
+    });
+
+    return notifications;
+  }
+
   async deleteNotification({ id }: INotification) {
     await this.prisma.notification.delete({ where: { id } });
 
     return {
       message: 'Notification deleted',
     };
+  }
+
+  private async getPostCreatorUsername(
+    postId: string,
+    authorUsername: string,
+  ): Promise<string | null> {
+    const post = await this.prisma.post.findUnique({
+      where: { id: postId },
+      include: { author: { select: { username: true } } },
+    });
+
+    if (post.author.username === authorUsername) {
+      return null;
+    }
+
+    return post.author.username;
   }
 }

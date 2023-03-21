@@ -30,6 +30,10 @@ export class NotificationModule implements NestModule {
         path: '/notifications/comment',
         method: RequestMethod.POST,
       },
+      {
+        path: '/notifications',
+        method: RequestMethod.GET,
+      },
     );
 
     consumer.apply(CheckExistingNotificationByIdMiddleware).forRoutes({

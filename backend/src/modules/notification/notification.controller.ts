@@ -2,7 +2,7 @@ import {
   Body,
   Controller,
   Delete,
-  HttpCode,
+  Get,
   Post,
   UsePipes,
   ValidationPipe,
@@ -31,6 +31,16 @@ import {
 @ApiTags('Notifications')
 export class NotificationController {
   constructor(private readonly notificationService: NotificationService) {}
+
+  @Get()
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiOperation({ summary: 'Get current user notifications' })
+  @ApiResponse({ status: 200, description: 'Receive notifications' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  getAllPosts(@RequestData('userDataFromToken') tokenData: IToken) {
+    return this.notificationService.getCurrentUserNotifications(tokenData);
+  }
 
   @Post('/like')
   @UsePipes(ValidationPipe)
