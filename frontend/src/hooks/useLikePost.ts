@@ -1,24 +1,32 @@
 import { useQueryClient } from 'react-query';
 
-import { LIKE_POST_ROUTE } from '../constants/apiRoutes';
+import {
+  LIKE_POST_ROUTE,
+  NOTIFICATIONS_LIKE_ROUTE
+} from '../constants/apiRoutes';
 import IPost from '../interfaces/IPost';
 import { usePostMutationWithToken } from './useUploadImage';
 
 const useLikePost = (post: IPost) => {
-  const { mutate } = usePostMutationWithToken(LIKE_POST_ROUTE + post.id, () => {
-    post.likedByUser = !post.likedByUser;
-  });
+  const { mutate: likeMutation } = usePostMutationWithToken(
+    LIKE_POST_ROUTE + post.id,
+    () => {
+      post.likedByUser = !post.likedByUser;
+    }
+  );
+  const { mutate: notificationMutation } = usePostMutationWithToken(
+    NOTIFICATIONS_LIKE_ROUTE
+  );
+
   const queryClient = useQueryClient();
 
-  const handleClick = () => {
-    mutate(
+  const handleClick = async () => {
+    notificationMutation({ likedByUser: post.likedByUser, postId: post.id });
+    likeMutation(
       {},
       {
         onSuccess: () => {
           queryClient.invalidateQueries();
-        },
-        onError: (err) => {
-          console.log(err);
         }
       }
     );

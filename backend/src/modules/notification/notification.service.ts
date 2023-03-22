@@ -40,9 +40,10 @@ export class NotificationService {
 
     const createdNotification = await this.prisma.notification.create({
       data: {
-        user: {
+        receiver: {
           connect: { username: postCreatorUsername },
         },
+        sender: { connect: { username } },
         message,
         post: { connect: { id: postId } },
       },
@@ -74,9 +75,10 @@ export class NotificationService {
 
     const createdNotification = await this.prisma.notification.create({
       data: {
-        user: {
+        receiver: {
           connect: { username: postCreatorUsername },
         },
+        sender: { connect: { username } },
         post: { connect: { id: postId } },
         message,
         comment: {
@@ -97,7 +99,8 @@ export class NotificationService {
 
   async getCurrentUserNotifications({ username }: IToken) {
     const notifications = await this.prisma.notification.findMany({
-      where: { user: { username } },
+      where: { receiver: { username } },
+      include: { sender: { select: { imageURL: true, id: true } } },
     });
 
     return notifications;

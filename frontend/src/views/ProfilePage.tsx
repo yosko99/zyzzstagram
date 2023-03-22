@@ -37,9 +37,7 @@ const ProfilePage = () => {
     'profile posts',
     CURRENT_USER_ROUTE,
     true,
-    {
-      headers: { authorization: 'Bearer ' + token!.token }
-    }
+    true
   );
 
   const user = data as IUser;

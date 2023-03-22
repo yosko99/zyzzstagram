@@ -19,7 +19,8 @@ interface IUser {
   stories?: IStory[];
   createdAt?: Date;
   updatedAt?: Date;
-  notifications?: INotification[];
+  sentNotifications?: INotification[];
+  receivedNotifications?: INotification[];
   _count?: {
     followers?: number;
     following?: number;

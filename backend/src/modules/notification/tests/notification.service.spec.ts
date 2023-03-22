@@ -160,8 +160,8 @@ describe('Test notifications API', () => {
       );
       expect(createdNotification.notification).toBeTruthy();
 
-      await userService.deleteUser(createdSecondUser.user);
       await userService.deleteUser(createdFirstUser.user);
+      await userService.deleteUser(createdSecondUser.user);
     });
 
     it('should receive "no action needed"', async () => {

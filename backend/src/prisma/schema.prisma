@@ -8,23 +8,24 @@ datasource db {
 }
 
 model User {
-    id            String         @id @default(uuid())
-    username      String         @unique
-    email         String         @unique
-    imageURL      String
-    description   String?
-    password      String
-    posts         Post[]
-    comments      Comment[]
-    likedPosts    Post[]         @relation("PostLikes")
-    savedPosts    Post[]         @relation("SavedPosts")
-    likedComments Comment[]      @relation("CommentLikes")
-    followers     User[]         @relation("UserFollowers")
-    following     User[]         @relation("UserFollowers")
-    stories       Story[]
-    createdAt     DateTime       @default(now())
-    updatedAt     DateTime       @default(now()) @updatedAt
-    notifications Notification[]
+    id                    String         @id @default(uuid())
+    username              String         @unique
+    email                 String         @unique
+    imageURL              String
+    description           String?
+    password              String
+    posts                 Post[]
+    comments              Comment[]
+    likedPosts            Post[]         @relation("PostLikes")
+    savedPosts            Post[]         @relation("SavedPosts")
+    likedComments         Comment[]      @relation("CommentLikes")
+    followers             User[]         @relation("UserFollowers")
+    following             User[]         @relation("UserFollowers")
+    stories               Story[]
+    createdAt             DateTime       @default(now())
+    updatedAt             DateTime       @default(now()) @updatedAt
+    sentNotifications     Notification[] @relation("NotificationSenders")
+    receivedNotifications Notification[] @relation("NotificationRecievers")
 }
 
 model Post {
@@ -32,7 +33,7 @@ model Post {
     imageURL     String
     description  String?
     published    Boolean        @default(false)
-    author       User           @relation(fields: [authorId], references: [id])
+    author       User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
     authorId     String
     likedBy      User[]         @relation("PostLikes")
     comments     Comment[]
@@ -45,9 +46,9 @@ model Post {
 model Comment {
     id           String         @id @default(uuid())
     content      String
-    author       User           @relation(fields: [authorId], references: [id])
+    author       User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
     authorId     String
-    post         Post           @relation(fields: [postId], references: [id])
+    post         Post           @relation(fields: [postId], references: [id], onDelete: Cascade)
     postId       String
     likedBy      User[]         @relation("CommentLikes")
     createdAt    DateTime       @default(now())
@@ -58,19 +59,21 @@ model Story {
     id        String   @id @default(uuid())
     imageURL  String
     createdAt DateTime @default(now())
-    user      User     @relation(fields: [userId], references: [id])
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId    String
 }
 
 model Notification {
-    id        String   @id @default(uuid())
-    message   String
-    read      Boolean  @default(false)
-    createdAt DateTime @default(now())
-    user      User?    @relation(fields: [userId], references: [id])
-    userId    String?
-    post      Post?    @relation(fields: [postId], references: [id])
-    postId    String?
-    comment   Comment? @relation(fields: [commentId], references: [id])
-    commentId String?
+    id         String   @id @default(uuid())
+    message    String
+    read       Boolean  @default(false)
+    createdAt  DateTime @default(now())
+    sender     User     @relation("NotificationSenders", fields: [senderId], references: [id], onDelete: Cascade)
+    senderId   String
+    receiver   User     @relation("NotificationRecievers", fields: [receiverId], references: [id], onDelete: Cascade)
+    receiverId String
+    post       Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+    postId     String?
+    comment    Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+    commentId  String?
 }

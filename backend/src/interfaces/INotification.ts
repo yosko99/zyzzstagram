@@ -5,8 +5,10 @@ interface INotification {
   message: string;
   read: boolean;
   createdAt: Date;
-  user?: IUser;
-  userId: string;
+  sender?: IUser;
+  senderId: string;
+  receiver?: IUser;
+  receiverId: string;
 }
 
 export default INotification;
