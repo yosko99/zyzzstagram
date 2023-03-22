@@ -21,7 +21,7 @@ const useLikePost = (post: IPost) => {
   const queryClient = useQueryClient();
 
   const handleClick = async () => {
-    notificationMutation({ likedByUser: post.likedByUser, postId: post.id });
+    notificationMutation({ likedByUser: !post.likedByUser, postId: post.id });
     likeMutation(
       {},
       {

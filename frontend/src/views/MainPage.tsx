@@ -11,6 +11,8 @@ const MainPage = () => {
 
   const { data } = useFetch('notifications', NOTIFICATIONS_ROUTE, true, true);
 
+  console.log(data);
+
   return (
     <div className="d-flex flex-lg-row flex-column">
       <Navigation />

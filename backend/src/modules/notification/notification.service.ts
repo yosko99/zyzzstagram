@@ -32,26 +32,41 @@ export class NotificationService {
       };
     }
 
-    if (likedByUser) {
-      message = `${author.username} liked your post.`;
-    } else {
-      message = `${author.username} unliked your post.`;
-    }
+    let notification = await this.getLinkedNotification(username, postId);
 
-    const createdNotification = await this.prisma.notification.create({
-      data: {
-        receiver: {
-          connect: { username: postCreatorUsername },
+    if (notification !== null) {
+      if (notification.message === `${author.username} liked your post.`) {
+        message = `${author.username} unliked your post.`;
+      } else {
+        message = `${author.username} liked your post.`;
+      }
+
+      notification = await this.prisma.notification.update({
+        where: { id: notification.id },
+        data: { message },
+      });
+    } else {
+      if (likedByUser) {
+        message = `${author.username} liked your post.`;
+      } else {
+        message = `${author.username} unliked your post.`;
+      }
+
+      notification = await this.prisma.notification.create({
+        data: {
+          receiver: {
+            connect: { username: postCreatorUsername },
+          },
+          sender: { connect: { username } },
+          message,
+          post: { connect: { id: postId } },
         },
-        sender: { connect: { username } },
-        message,
-        post: { connect: { id: postId } },
-      },
-    });
+      });
+    }
 
     return {
       message: 'Like notification created',
-      notification: createdNotification,
+      notification,
     };
   }
 
@@ -128,5 +143,25 @@ export class NotificationService {
     }
 
     return post.author.username;
+  }
+
+  private async getLinkedNotification(
+    senderUsername: string,
+    postId: string,
+  ): Promise<INotification | null> {
+    const linkedNotification = await this.prisma.notification.findFirst({
+      where: {
+        AND: [
+          {
+            sender: {
+              username: senderUsername,
+            },
+          },
+          { postId },
+        ],
+      },
+    });
+
+    return linkedNotification;
   }
 }
