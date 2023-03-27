@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Post,
+  Put,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -76,6 +77,16 @@ export class NotificationController {
       createCommentNotificationDto,
       tokenData,
     );
+  }
+
+  @Put('/read')
+  @ApiOperation({ summary: 'Mark user notifications as read' })
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiResponse({ status: 200, description: 'Notifications marked as read' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  markNotificationsAsRead(@RequestData('userDataFromToken') tokenData: IToken) {
+    return this.notificationService.markNotificationsAsRead(tokenData);
   }
 
   @Delete('/:id')

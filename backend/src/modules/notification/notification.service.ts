@@ -132,6 +132,19 @@ export class NotificationService {
     };
   }
 
+  async markNotificationsAsRead({ username }: IToken) {
+    await this.prisma.notification.updateMany({
+      where: { receiver: { username } },
+      data: {
+        read: true,
+      },
+    });
+
+    return {
+      message: 'Notifications marked as read',
+    };
+  }
+
   private async getPostCreatorUsername(
     postId: string,
     authorUsername: string,

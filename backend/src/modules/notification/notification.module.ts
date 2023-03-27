@@ -34,6 +34,10 @@ export class NotificationModule implements NestModule {
         path: '/notifications',
         method: RequestMethod.GET,
       },
+      {
+        path: '/notifications/read',
+        method: RequestMethod.PUT,
+      },
     );
 
     consumer.apply(CheckExistingNotificationByIdMiddleware).forRoutes({

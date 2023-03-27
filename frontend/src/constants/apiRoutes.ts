@@ -13,3 +13,4 @@ export const LIKE_POST_ROUTE = POSTS_ROUTE + 'like/';
 // NOTIFICATIONS
 export const NOTIFICATIONS_ROUTE = API_PREFIX + 'notifications/';
 export const NOTIFICATIONS_LIKE_ROUTE = NOTIFICATIONS_ROUTE + 'like';
+export const NOTIFICATIONS_READ_ROUTE = NOTIFICATIONS_ROUTE + 'read';

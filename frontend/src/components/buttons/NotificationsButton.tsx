@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
 import { FaBell } from 'react-icons/fa';
+import { useQueryClient } from 'react-query';
 
-import { NOTIFICATIONS_ROUTE } from '../../constants/apiRoutes';
+import {
+  NOTIFICATIONS_READ_ROUTE,
+  NOTIFICATIONS_ROUTE
+} from '../../constants/apiRoutes';
 import useFetch from '../../hooks/useFetch';
+import { useMutationWithToken } from '../../hooks/useUploadImage';
 import INotification from '../../interfaces/INotification';
 import NotificationNumberStyle from '../../styles/NotificationNumberStyle';
 
@@ -20,7 +25,22 @@ const NotificationsButton = ({ setNotifications }: Props) => {
     true
   );
 
+  const { mutate } = useMutationWithToken(NOTIFICATIONS_READ_ROUTE, true);
+  const queryClient = useQueryClient();
+
   const notifications = data as INotification[];
+
+  const markAsRead = () => {
+    mutate(
+      {},
+      {
+        onSuccess: () => {
+          setNumberOfUnread(0);
+          queryClient.resetQueries({ queryKey: 'notifications' });
+        }
+      }
+    );
+  };
 
   useEffect(() => {
     if (!isLoading) {
@@ -33,7 +53,7 @@ const NotificationsButton = ({ setNotifications }: Props) => {
   }, [isLoading]);
 
   return (
-    <span style={{ position: 'relative' }}>
+    <span style={{ position: 'relative' }} onClick={() => markAsRead()}>
       <span className="d-none d-lg-block">Notifications</span>
       <span className="d-block d-lg-none">
         <FaBell />

@@ -5,17 +5,19 @@ import {
   NOTIFICATIONS_LIKE_ROUTE
 } from '../constants/apiRoutes';
 import IPost from '../interfaces/IPost';
-import { usePostMutationWithToken } from './useUploadImage';
+import { useMutationWithToken } from './useUploadImage';
 
 const useLikePost = (post: IPost) => {
-  const { mutate: likeMutation } = usePostMutationWithToken(
+  const { mutate: likeMutation } = useMutationWithToken(
     LIKE_POST_ROUTE + post.id,
+    false,
     () => {
       post.likedByUser = !post.likedByUser;
     }
   );
-  const { mutate: notificationMutation } = usePostMutationWithToken(
-    NOTIFICATIONS_LIKE_ROUTE
+  const { mutate: notificationMutation } = useMutationWithToken(
+    NOTIFICATIONS_LIKE_ROUTE,
+    false
   );
 
   const queryClient = useQueryClient();

@@ -1,14 +1,15 @@
 import React, { useContext, useState } from 'react';
 
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 
 import CustomAlert from '../components/utils/CustomAlert';
 import { TokenContext } from '../context/TokenContext';
 import ExtendedAxiosError from '../types/ExtendedAxiosError';
 
-export const usePostMutationWithToken = (
+export const useMutationWithToken = (
   routeURL: string,
+  updateRequest: boolean,
   onMutate?: () => any
 ) => {
   const token = useContext(TokenContext);
@@ -17,7 +18,12 @@ export const usePostMutationWithToken = (
     const config = {
       headers: { Authorization: `Bearer ${token?.token}` }
     };
-    const response = await axios.post(routeURL, data, config);
+    let response: AxiosResponse<any, any>;
+    if (!updateRequest) {
+      response = await axios.post(routeURL, data, config);
+    } else {
+      response = await axios.put(routeURL, data, config);
+    }
     return response.data;
   };
 
@@ -33,7 +39,7 @@ export const useUploadForm = (
 
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = usePostMutationWithToken(routeURL);
+  const { mutate, isLoading } = useMutationWithToken(routeURL, false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

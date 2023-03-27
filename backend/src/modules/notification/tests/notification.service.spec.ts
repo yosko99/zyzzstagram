@@ -229,4 +229,15 @@ describe('Test notifications API', () => {
       expect(response).toEqual(expect.any(Array));
     });
   });
+
+  describe('test markNotificationsAsRead service', () => {
+    it('should receive marked as read', async () => {
+      const response = await notificationService.markNotificationsAsRead({
+        username: 'username',
+        password: 'password',
+      });
+
+      expect(response.message).toEqual('Notifications marked as read');
+    });
+  });
 });
