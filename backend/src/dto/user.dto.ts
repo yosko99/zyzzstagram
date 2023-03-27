@@ -31,7 +31,6 @@ export class LoginUserDto {
   password: string;
 
   @IsNotEmpty()
-  @IsEmail()
-  @ApiProperty()
+  @ApiProperty({ minLength: 3 })
   username: string;
 }

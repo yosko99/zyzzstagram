@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 
 import { Nav, Navbar } from 'react-bootstrap';
 import {
@@ -7,14 +7,16 @@ import {
   FaCompass,
   FaPlay,
   FaEnvelope,
-  FaBell,
   FaUser,
   FaPlusSquare
 } from 'react-icons/fa';
 import { IconType } from 'react-icons/lib';
 import { useNavigate } from 'react-router-dom';
 
+import INotification from '../../interfaces/INotification';
+import NotificationsButton from '../buttons/NotificationsButton';
 import UploadPostForm from '../forms/UploadPostForm';
+import Notifications from '../notifications/Notifications';
 import CustomModal from '../utils/CustomModal';
 
 interface Tab {
@@ -24,6 +26,7 @@ interface Tab {
 }
 
 const Navigation = () => {
+  const [notifications, setNotifications] = useState<INotification[]>([]);
   const navigate = useNavigate();
 
   const tabs: Tab[] = [
@@ -32,7 +35,27 @@ const Navigation = () => {
     { icon: <FaCompass />, label: 'Explore', href: '/explore' },
     { icon: <FaPlay />, label: 'Reels', href: '/reels' },
     { icon: <FaEnvelope />, label: 'Messages', href: '/messages' },
-    { icon: <FaBell />, label: 'Notifications', href: '/notifications' },
+    {
+      icon: (
+        <CustomModal
+          activateButtonElement={
+            <NotificationsButton setNotifications={setNotifications} />
+          }
+          modalHeader={<p className="m-0">Notifications</p>}
+          modalBody={<Notifications notifications={notifications} />}
+        />
+      ),
+      label: (
+        <CustomModal
+          activateButtonClassName="m-0"
+          activateButtonElement={
+            <NotificationsButton setNotifications={setNotifications} />
+          }
+          modalHeader={<p className="m-0">Notifications</p>}
+          modalBody={<Notifications notifications={notifications} />}
+        />
+      )
+    },
     {
       icon: (
         <CustomModal

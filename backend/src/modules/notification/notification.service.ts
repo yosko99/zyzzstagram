@@ -115,7 +115,10 @@ export class NotificationService {
   async getCurrentUserNotifications({ username }: IToken) {
     const notifications = await this.prisma.notification.findMany({
       where: { receiver: { username } },
-      include: { sender: { select: { imageURL: true, id: true } } },
+      include: {
+        sender: { select: { imageURL: true, username: true } },
+        post: { select: { imageURL: true, id: true } },
+      },
     });
 
     return notifications;
