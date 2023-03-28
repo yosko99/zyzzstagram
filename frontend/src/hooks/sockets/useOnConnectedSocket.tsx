@@ -1,10 +1,8 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 
-import { SocketContext } from '../../context/SocketContext';
+import { Socket } from 'socket.io-client';
 
-const useOnConnectedSocket = () => {
-  const socket = useContext(SocketContext);
-
+const useOnConnectedSocket = (socket: Socket) => {
   useEffect(() => {
     socket.on('connect', () => {
       socket.emit('connected', localStorage.getItem('token'));

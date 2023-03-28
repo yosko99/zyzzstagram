@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Route, Routes } from 'react-router-dom';
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 
 import { SocketContext } from './context/SocketContext';
 import { TokenContext } from './context/TokenContext';
