@@ -1,6 +1,6 @@
-# Chat app
+# Zyzzstagram
 
-Purpose of this project is to practice with Socket.IO and NestJS TypeORM (SQL).
+Purpose of this project is to practice with Socket.IO, NestJS, Prisma (postgresql).
 
 ## Technologies used:
 
@@ -8,7 +8,7 @@ Purpose of this project is to practice with Socket.IO and NestJS TypeORM (SQL).
 - NestJS
 - React (Typescript)
 - React Bootstrap
-- MySQL
+- Postgresql
 
 ## Instructions
 
@@ -34,7 +34,7 @@ This command will concurrently install the necessary npm packages for both backe
 
 First you need to create `.env` file in `backend` directory and populate it by following `.env.example` file. </br>
 
-Make sure you have your SQL database running.
+Make sure you have your database running, or use the dockerized one in the main directory using `docker-compose up`.
 
 After everything is set, next time if you want to start the project all you need to do is run this command `npm run dev`
 from the main directory which will start server side and back side concurrently.
