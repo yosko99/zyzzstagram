@@ -3,6 +3,7 @@ export const PUBLIC_IMAGES_PREFIX = '/public/';
 
 // USERS
 export const USERS_ROUTE = API_PREFIX + 'users/';
+export const USER_ROUTE = USERS_ROUTE + 'user/';
 export const LOGIN_ROUTE = USERS_ROUTE + 'login';
 export const CURRENT_USER_ROUTE = USERS_ROUTE + 'current';
 

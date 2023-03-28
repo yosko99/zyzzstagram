@@ -6,20 +6,17 @@ import { AiFillTags } from 'react-icons/ai';
 import { BsFillGrid3X3GapFill } from 'react-icons/bs';
 import { FaVoteYea } from 'react-icons/fa';
 import { MdOutlineCamera } from 'react-icons/md';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import UploadPostForm from '../components/forms/UploadPostForm';
 import Navigation from '../components/layout/Navigation';
 import UserPost from '../components/layout/UserPost';
-import CustomModal from '../components/utils/CustomModal';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
-import {
-  CURRENT_USER_ROUTE,
-  PUBLIC_IMAGES_PREFIX
-} from '../constants/apiRoutes';
+import { PUBLIC_IMAGES_PREFIX, USER_ROUTE } from '../constants/apiRoutes';
 import useFetch from '../hooks/useFetch';
 import IUser from '../interfaces/IUser';
 import CenteredItems from '../styles/CenteredItems';
+import LoadingPage from './LoadingPage';
 
 const ProfileContainer = styled.div`
   width: 100%;
@@ -30,14 +27,23 @@ const ProfileContainer = styled.div`
 `;
 
 const ProfilePage = () => {
+  const params = useParams();
+
   const { data, isLoading, error } = useFetch(
-    'profile posts',
-    CURRENT_USER_ROUTE,
+    `profile-${params.username}`,
+    USER_ROUTE + params.username,
     true,
     true
   );
 
-  const user = data as IUser;
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+
+  const { user, isFollowedByRequester } = data as {
+    user: IUser;
+    isFollowedByRequester: boolean;
+  };
 
   return (
     <div className="d-flex flex-lg-row flex-column">
@@ -63,7 +69,10 @@ const ProfilePage = () => {
                 <div className="d-flex mt-2 flex-wrap">
                   <p className="fs-4 m-0 me-3 text-break">{user.username}</p>
                   <p role="button" className="bg-light m-0 rounded p-1">
-                    Edit profile
+                    {isFollowedByRequester ? 'Following' : 'Follow'}
+                  </p>
+                  <p role="button" className="bg-light m-0 rounded p-1 ms-2">
+                    Message
                   </p>
                 </div>
                 <div className="d-flex w-100 justify-content-around justify-content-lg-start my-3">
@@ -93,9 +102,6 @@ const ProfilePage = () => {
                   <div role={'button'} className="d-block d-lg-none fs-2">
                     <FaVoteYea />
                   </div>
-                  <span role={'button'} className="d-none d-lg-block">
-                    Saved
-                  </span>
                 </div>
                 <div className="ms-3 mt-2">
                   <div role={'button'} className="d-block d-lg-none fs-2">
@@ -111,16 +117,7 @@ const ProfilePage = () => {
               {user.posts?.length === 0 ? (
                 <CenteredItems flexColumn style={{ height: '50vh' }}>
                   <MdOutlineCamera className="display-4" />
-                  <p className="display-5">Share photos</p>
-                  <p>
-                    When you share photos, they will appear on your profile.
-                  </p>
-                  <CustomModal
-                    activateButtonClassName="m-0 text-info"
-                    activateButtonElement="Upload your first photo"
-                    modalHeader={<p className="m-0">Upload your image</p>}
-                    modalBody={<UploadPostForm />}
-                  />
+                  <p className="display-5">No posts yet</p>
                 </CenteredItems>
               ) : (
                 user.posts?.map((post, index: number) => (

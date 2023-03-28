@@ -39,11 +39,17 @@ export class UserController {
 
   @Get('/user/:username')
   @ApiParam({ name: 'username', type: 'string' })
+  @ApiHeader({ name: 'Authorization', required: true })
   @ApiOperation({ summary: 'Get user data by username' })
   @ApiResponse({ status: 200, description: 'Receive user data' })
   @ApiResponse({ status: 404, description: 'Non existent username' })
-  getUserByUsername(@RequestData('user') user: IUser) {
-    return user;
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  getUserByUsername(
+    @RequestData('user') user: IUser,
+    @RequestData('userDataFromToken') tokenData: IToken,
+  ) {
+    return this.userService.getUserByUsername(user, tokenData);
   }
 
   @Get('/current')

@@ -20,6 +20,8 @@ export class CheckExistingUserByUsernameMiddleware implements NestMiddleware {
         username: true,
         imageURL: true,
         description: true,
+        following: true,
+        followers: true,
         posts: {
           select: {
             imageURL: true,

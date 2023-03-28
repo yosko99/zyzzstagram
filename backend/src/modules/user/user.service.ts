@@ -75,6 +75,8 @@ export class UserService {
       select: {
         username: true,
         imageURL: true,
+        following: true,
+        followers: true,
         description: true,
         posts: {
           select: {
@@ -89,6 +91,17 @@ export class UserService {
     });
 
     return user;
+  }
+
+  async getUserByUsername(user: IUser, tokenData: IToken) {
+    const isFollowedByRequester =
+      user.followers.filter((user) => user.username === tokenData.username)
+        .length !== 0;
+
+    return {
+      user,
+      isFollowedByRequester,
+    };
   }
 
   private generateToken(username: string, password: string) {

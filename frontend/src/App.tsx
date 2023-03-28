@@ -12,6 +12,7 @@ import MainPage from './views/MainPage';
 import ProfilePage from './views/ProfilePage';
 import RegisterPage from './views/RegisterPage';
 import './styles/bootstrap.min.css';
+import UserPage from './views/UserPage';
 
 const socket = io('ws://localhost:5000');
 
@@ -25,6 +26,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile/:username" element={<UserPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
         </Routes>
