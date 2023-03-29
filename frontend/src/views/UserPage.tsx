@@ -12,7 +12,10 @@ import styled from 'styled-components';
 import Navigation from '../components/layout/Navigation';
 import UserPost from '../components/layout/UserPost';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
-import { PUBLIC_IMAGES_PREFIX, USER_ROUTE } from '../constants/apiRoutes';
+import {
+  PUBLIC_IMAGES_PREFIX,
+  getUserByUsernameRoute
+} from '../constants/apiRoutes';
 import useFetch from '../hooks/useFetch';
 import IUser from '../interfaces/IUser';
 import CenteredItems from '../styles/CenteredItems';
@@ -31,7 +34,7 @@ const ProfilePage = () => {
 
   const { data, isLoading, error } = useFetch(
     `profile-${params.username}`,
-    USER_ROUTE + params.username,
+    getUserByUsernameRoute(params.username!),
     true,
     true
   );

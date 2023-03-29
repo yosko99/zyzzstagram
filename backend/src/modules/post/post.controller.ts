@@ -72,7 +72,7 @@ export class PostController {
     return this.postService.createPost(createPostDto, file.filename, tokenData);
   }
 
-  @Post('/like/:id')
+  @Post('/:id/likes')
   @ApiParam({ name: 'id', type: 'string' })
   @ApiOperation({ summary: 'Like a post' })
   @ApiHeader({ name: 'Authorization', required: true })

@@ -5,7 +5,7 @@ import Post from '../../components/layout/Post';
 import StoriesHolder from '../../components/layout/StoriesHolder';
 import Story from '../../components/layout/Story';
 import LoadingSpinner from '../../components/utils/LoadingSpinner';
-import { POSTS_ROUTE } from '../../constants/apiRoutes';
+import { getPostsRoute } from '../../constants/apiRoutes';
 import useFetch from '../../hooks/useFetch';
 import IPost from '../../interfaces/IPost';
 import IStory from '../../interfaces/IStory';
@@ -31,7 +31,12 @@ const MainPageTab = () => {
     userId: user.id
   };
 
-  const { data, error, isLoading } = useFetch('posts', POSTS_ROUTE, true, true);
+  const { data, error, isLoading } = useFetch(
+    'posts',
+    getPostsRoute(),
+    true,
+    true
+  );
 
   const posts = data as unknown as IPost[];
 

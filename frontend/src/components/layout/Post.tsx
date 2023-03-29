@@ -2,6 +2,7 @@ import React from 'react';
 
 import { AiOutlineComment, AiOutlineSend } from 'react-icons/ai';
 import { FaAngleDoubleDown, FaVoteYea } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { PUBLIC_IMAGES_PREFIX } from '../../constants/apiRoutes';
 import dateFormatter from '../../functions/dateFormatter';
@@ -17,6 +18,7 @@ interface Props {
 
 const Post = ({ user, post }: Props) => {
   const formattedDate = dateFormatter(new Date(post.createdAt));
+  const navigate = useNavigate();
 
   return (
     <section className="main">
@@ -26,13 +28,19 @@ const Post = ({ user, post }: Props) => {
             <div className="info">
               <div className="user">
                 <div className="profile-pic">
-                  <img
-                    style={{ objectFit: 'cover' }}
-                    src={PUBLIC_IMAGES_PREFIX + user.imageURL}
-                    alt={user.username}
-                  />
+                  <Link to={`/profile/${user.username}`}>
+                    <img
+                      style={{ objectFit: 'cover' }}
+                      src={PUBLIC_IMAGES_PREFIX + user.imageURL}
+                      alt={user.username}
+                    />
+                  </Link>
                 </div>
-                <p className="username">
+                <p
+                  className="username"
+                  role={'button'}
+                  onClick={() => navigate(`/profile/${user.username}`)}
+                >
                   {user.username}{' '}
                   <span className="text-muted">{formattedDate}</span>
                 </p>

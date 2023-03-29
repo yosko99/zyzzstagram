@@ -9,10 +9,14 @@ import { PrismaService } from '../../prisma/prisma.service';
 import IPost from '../../interfaces/IPost';
 
 import deleteImage from '../../functions/deleteImage';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class PostService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly notificationService: NotificationService,
+  ) {}
 
   async createPost(
     { description }: CreatePostDto,
@@ -76,6 +80,8 @@ export class PostService {
         data: { likedBy: { disconnect: { username } } },
       });
 
+      this.notificationService.createLikeNotification(false, post.id, username);
+
       return {
         message: 'Removed like',
       };
@@ -85,6 +91,8 @@ export class PostService {
       where: { id: post.id },
       data: { likedBy: { connect: { username } } },
     });
+
+    this.notificationService.createLikeNotification(true, post.id, username);
 
     return {
       message: 'Post liked',

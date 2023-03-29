@@ -37,7 +37,7 @@ import IToken from '../../interfaces/IToken';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get('/user/:username')
+  @Get('/:username/user')
   @ApiParam({ name: 'username', type: 'string' })
   @ApiHeader({ name: 'Authorization', required: true })
   @ApiOperation({ summary: 'Get user data by username' })

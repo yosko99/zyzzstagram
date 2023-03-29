@@ -23,14 +23,6 @@ export class NotificationModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(VerifyJWTMiddleware).forRoutes(
       {
-        path: '/notifications/like',
-        method: RequestMethod.POST,
-      },
-      {
-        path: '/notifications/comment',
-        method: RequestMethod.POST,
-      },
-      {
         path: '/notifications',
         method: RequestMethod.GET,
       },

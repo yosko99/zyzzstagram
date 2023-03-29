@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import PasswordInput from '../components/inputs/PasswordInput';
 import UsernameInput from '../components/inputs/UsernameInput';
 import CustomAlert from '../components/utils/CustomAlert';
-import { LOGIN_ROUTE } from '../constants/apiRoutes';
+import { getLoginRoute } from '../constants/apiRoutes';
 import useAuth from '../hooks/useAuth';
 import CenteredItems from '../styles/CenteredItems';
 import ExtendedAxiosError from '../types/ExtendedAxiosError';
@@ -31,7 +31,7 @@ const LoginPage = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
-      .post(LOGIN_ROUTE, { ...loginData })
+      .post(getLoginRoute(), { ...loginData })
       .then((response) => {
         queryClient.invalidateQueries();
 

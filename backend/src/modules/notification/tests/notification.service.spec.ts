@@ -16,7 +16,7 @@ import { PostService } from '../../../modules/post/post.service';
 describe('Test notifications API', () => {
   const prisma = new PrismaService();
   const notificationService = new NotificationService(prisma);
-  const postService = new PostService(prisma);
+  const postService = new PostService(prisma, notificationService);
   const userService = new UserService(prisma);
   const filename = 'testimage.jpg';
 
@@ -67,11 +67,9 @@ describe('Test notifications API', () => {
 
       const createdNotification =
         await notificationService.createLikeNotification(
-          {
-            likedByUser: true,
-            postId: createdPost.post.id,
-          },
-          secondUserTokenData,
+          true,
+          createdPost.post.id,
+          secondUserTokenData.username,
         );
 
       expect(createdNotification.message).toEqual('Like notification created');
@@ -94,11 +92,9 @@ describe('Test notifications API', () => {
 
       const createdNotification =
         await notificationService.createLikeNotification(
-          {
-            likedByUser: false,
-            postId: createdPost.post.id,
-          },
-          secondUserTokenData,
+          false,
+          createdPost.post.id,
+          secondUserTokenData.username,
         );
 
       expect(createdNotification.message).toEqual('Like notification created');
@@ -121,11 +117,9 @@ describe('Test notifications API', () => {
 
       const createdNotification =
         await notificationService.createLikeNotification(
-          {
-            likedByUser: false,
-            postId: createdPost.post.id,
-          },
-          firstUserTokenData,
+          false,
+          createdPost.post.id,
+          firstUserTokenData.username,
         );
 
       expect(createdNotification.message).toEqual(
@@ -148,11 +142,9 @@ describe('Test notifications API', () => {
 
       const createdNotification =
         await notificationService.createCommentNotification(
-          {
-            comment: 'test comment',
-            postId: createdPost.post.id,
-          },
-          secondUserTokenData,
+          createdPost.post.id,
+          'test comment',
+          secondUserTokenData.username,
         );
 
       expect(createdNotification.message).toEqual(
@@ -174,11 +166,9 @@ describe('Test notifications API', () => {
 
       const createdNotification =
         await notificationService.createCommentNotification(
-          {
-            comment: 'test comment',
-            postId: createdPost.post.id,
-          },
-          firstUserTokenData,
+          createdPost.post.id,
+          'test comment',
+          firstUserTokenData.username,
         );
 
       expect(createdNotification.message).toEqual(
@@ -201,11 +191,9 @@ describe('Test notifications API', () => {
 
       const createdNotification =
         await notificationService.createCommentNotification(
-          {
-            comment: 'test comment',
-            postId: createdPost.post.id,
-          },
-          secondUserTokenData,
+          createdPost.post.id,
+          'test comment',
+          secondUserTokenData.username,
         );
 
       const result = await notificationService.deleteNotification(

@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Post,
-  Put,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Controller, Delete, Get, Put } from '@nestjs/common';
 import {
   ApiHeader,
   ApiOperation,
@@ -23,11 +14,6 @@ import { RequestData } from '../../decorators/requestData.decorator';
 import INotification from '../../interfaces/INotification';
 import IToken from '../../interfaces/IToken';
 
-import {
-  CreateCommentNotificationDto,
-  CreateLikeNotificationDto,
-} from '../../dto/notification.dto';
-
 @Controller('/notifications')
 @ApiTags('Notifications')
 export class NotificationController {
@@ -41,42 +27,6 @@ export class NotificationController {
   @ApiResponse({ status: 498, description: 'Provided invalid token' })
   getAllPosts(@RequestData('userDataFromToken') tokenData: IToken) {
     return this.notificationService.getCurrentUserNotifications(tokenData);
-  }
-
-  @Post('/like')
-  @UsePipes(ValidationPipe)
-  @ApiOperation({ summary: 'Create like notification' })
-  @ApiHeader({ name: 'Authorization', required: true })
-  @ApiResponse({ status: 201, description: 'Notification created' })
-  @ApiResponse({ status: 400, description: 'Invalid/missing fields' })
-  @ApiResponse({ status: 401, description: 'Token not provided' })
-  @ApiResponse({ status: 498, description: 'Provided invalid token' })
-  createPostNotification(
-    @Body() createLikeNotificationDto: CreateLikeNotificationDto,
-    @RequestData('userDataFromToken') tokenData: IToken,
-  ) {
-    return this.notificationService.createLikeNotification(
-      createLikeNotificationDto,
-      tokenData,
-    );
-  }
-
-  @Post('/comment')
-  @UsePipes(ValidationPipe)
-  @ApiOperation({ summary: 'Create comment notification' })
-  @ApiHeader({ name: 'Authorization', required: true })
-  @ApiResponse({ status: 201, description: 'Notification created' })
-  @ApiResponse({ status: 400, description: 'Invalid/missing fields' })
-  @ApiResponse({ status: 401, description: 'Token not provided' })
-  @ApiResponse({ status: 498, description: 'Provided invalid token' })
-  createCommentNotification(
-    @Body() createCommentNotificationDto: CreateCommentNotificationDto,
-    @RequestData('userDataFromToken') tokenData: IToken,
-  ) {
-    return this.notificationService.createCommentNotification(
-      createCommentNotificationDto,
-      tokenData,
-    );
   }
 
   @Put('/read')

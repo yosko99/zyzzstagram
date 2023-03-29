@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { PostService } from '../post.service';
+import { NotificationService } from '../../../modules/notification/notification.service';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { UserService } from '../../user/user.service';
+import { PostService } from '../post.service';
 
 import { createUserForPostDto } from '../../../dto/mock/user.mock';
 import { createPostDto } from '../../../dto/mock/post.mock';
@@ -10,7 +11,8 @@ import IToken from '../../../interfaces/IToken';
 
 describe('Test posts API', () => {
   const prisma = new PrismaService();
-  const postService = new PostService(prisma);
+  const notificationService = new NotificationService(prisma);
+  const postService = new PostService(prisma, notificationService);
   const userService = new UserService(prisma);
 
   const initMockData = async () => {

@@ -4,8 +4,8 @@ import { FaBell } from 'react-icons/fa';
 import { useQueryClient } from 'react-query';
 
 import {
-  NOTIFICATIONS_READ_ROUTE,
-  NOTIFICATIONS_ROUTE
+  getNotificationsReadRoute,
+  getNotificationsRoute
 } from '../../constants/apiRoutes';
 import useFetch from '../../hooks/useFetch';
 import { useMutationWithToken } from '../../hooks/useUploadImage';
@@ -20,12 +20,12 @@ const NotificationsButton = ({ setNotifications }: Props) => {
   const [numberOfUnread, setNumberOfUnread] = useState(0);
   const { data, isLoading } = useFetch(
     'notifications',
-    NOTIFICATIONS_ROUTE,
+    getNotificationsRoute(),
     true,
     true
   );
 
-  const { mutate } = useMutationWithToken(NOTIFICATIONS_READ_ROUTE, true);
+  const { mutate } = useMutationWithToken(getNotificationsReadRoute(), true);
   const queryClient = useQueryClient();
 
   const notifications = data as INotification[];

@@ -2,16 +2,17 @@ const API_PREFIX = '/api/';
 export const PUBLIC_IMAGES_PREFIX = '/public/';
 
 // USERS
-export const USERS_ROUTE = API_PREFIX + 'users/';
-export const USER_ROUTE = USERS_ROUTE + 'user/';
-export const LOGIN_ROUTE = USERS_ROUTE + 'login';
-export const CURRENT_USER_ROUTE = USERS_ROUTE + 'current';
+export const getUsersRoute = () => API_PREFIX + 'users/';
+export const getUserByUsernameRoute = (username: string) =>
+  `${getUsersRoute()}${username}/user`;
+export const getLoginRoute = () => getUsersRoute() + 'login';
+export const getCurrentUserRoute = () => getUsersRoute() + 'current';
 
 // POSTS
-export const POSTS_ROUTE = API_PREFIX + 'posts/';
-export const LIKE_POST_ROUTE = POSTS_ROUTE + 'like/';
+export const getPostsRoute = () => API_PREFIX + 'posts/';
+export const getLikePostRoute = (id: string) => `${getPostsRoute()}${id}/likes`;
 
 // NOTIFICATIONS
-export const NOTIFICATIONS_ROUTE = API_PREFIX + 'notifications/';
-export const NOTIFICATIONS_LIKE_ROUTE = NOTIFICATIONS_ROUTE + 'like';
-export const NOTIFICATIONS_READ_ROUTE = NOTIFICATIONS_ROUTE + 'read';
+export const getNotificationsRoute = () => API_PREFIX + 'notifications/';
+export const getNotificationsLikeRoute = () => getNotificationsRoute() + 'like';
+export const getNotificationsReadRoute = () => getNotificationsRoute() + 'read';

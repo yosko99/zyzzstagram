@@ -1,10 +1,10 @@
 .loader {
   overflow: hidden;
   position: absolute;
-  left:0;
-  right:0;
-  top:40%;
-  margin-left:auto;
+  left: 0;
+  right: 0;
+  top: 40%;
+  margin-left: auto;
   margin-right: auto;
   font-size: 10px;
   text-indent: -9999em;
@@ -12,11 +12,31 @@
   height: 11em;
   border-radius: 50%;
   background: #ffffff;
-  background: -moz-linear-gradient(left, var(--blue) 10%, rgba(255, 255, 255, 0) 42%);
-  background: -webkit-linear-gradient(left, var(--blue) 10%, rgba(255, 255, 255, 0) 42%);
-  background: -o-linear-gradient(left, var(--blue) 10%, rgba(255, 255, 255, 0) 42%);
-  background: -ms-linear-gradient(left, var(--blue)10%, rgba(255, 255, 255, 0) 42%);
-  background: linear-gradient(to right, var(--blue) 10%, rgba(255, 255, 255, 0) 42%);
+  background: -moz-linear-gradient(
+    left,
+    rgb(255 54 97) 10%,
+    rgba(255, 255, 255, 0) 42%
+  );
+  background: -webkit-linear-gradient(
+    left,
+    rgb(255 54 97) 10%,
+    rgba(255, 255, 255, 0) 42%
+  );
+  background: -o-linear-gradient(
+    left,
+    rgb(255, 4, 4) 10%,
+    rgba(255, 255, 255, 0) 42%
+  );
+  background: -ms-linear-gradient(
+    left,
+    rgb(255 54 97) 10%,
+    rgba(255, 255, 255, 0) 42%
+  );
+  background: linear-gradient(
+    to right,
+    rgb(255 54 97) 10%,
+    rgba(255, 255, 255, 0) 42%
+  );
   -webkit-animation: load3 1.4s infinite linear;
   animation: load3 1.4s infinite linear;
   -webkit-transform: translateZ(0);
@@ -47,15 +67,15 @@
   right: 0;
 }
 
-.holder{
+.holder {
   height: 100vh;
   overflow: hidden;
   background-color: rgb(245, 245, 245);
 }
-.holder p{
+.holder p {
   font-size: 1.5em;
   position: relative;
-  top:60%;
+  top: 60%;
   text-align: center;
   z-index: 10;
 }

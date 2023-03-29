@@ -8,7 +8,7 @@ import ImageUploadInput from '../components/inputs/ImageUploadInput';
 import PasswordInput from '../components/inputs/PasswordInput';
 import UsernameInput from '../components/inputs/UsernameInput';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
-import { USERS_ROUTE } from '../constants/apiRoutes';
+import { getUsersRoute } from '../constants/apiRoutes';
 import useAuth from '../hooks/useAuth';
 import { useUploadForm } from '../hooks/useUploadImage';
 import CenteredItems from '../styles/CenteredItems';
@@ -17,7 +17,7 @@ const RegisterPage = () => {
   // useAuth('/register');
 
   const { setAlert, setImageFile, isLoading, imageFile, handleSubmit, alert } =
-    useUploadForm(USERS_ROUTE, '/');
+    useUploadForm(getUsersRoute(), '/');
 
   useEffect(() => {
     setAlert(null);

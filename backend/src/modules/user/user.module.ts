@@ -33,7 +33,7 @@ export class UserModule implements NestModule {
     });
 
     consumer.apply(CheckExistingUserByUsernameMiddleware).forRoutes({
-      path: '/users/user/:username',
+      path: '/users/:username/user',
       method: RequestMethod.GET,
     });
 

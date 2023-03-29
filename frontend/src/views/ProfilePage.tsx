@@ -14,7 +14,7 @@ import UserPost from '../components/layout/UserPost';
 import CustomModal from '../components/utils/CustomModal';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
 import {
-  CURRENT_USER_ROUTE,
+  getCurrentUserRoute,
   PUBLIC_IMAGES_PREFIX
 } from '../constants/apiRoutes';
 import useFetch from '../hooks/useFetch';
@@ -32,7 +32,7 @@ const ProfileContainer = styled.div`
 const ProfilePage = () => {
   const { data, isLoading, error } = useFetch(
     'profile posts',
-    CURRENT_USER_ROUTE,
+    getCurrentUserRoute(),
     true,
     true
   );

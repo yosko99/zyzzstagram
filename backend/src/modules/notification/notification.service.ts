@@ -5,25 +5,23 @@ import { PrismaService } from '../../prisma/prisma.service';
 import INotification from '../../interfaces/INotification';
 import IToken from '../../interfaces/IToken';
 
-import {
-  CreateCommentNotificationDto,
-  CreateLikeNotificationDto,
-} from '../../dto/notification.dto';
-
 @Injectable()
 export class NotificationService {
   constructor(private prisma: PrismaService) {}
 
-  async createLikeNotification(
-    { likedByUser, postId }: CreateLikeNotificationDto,
-    { username }: IToken,
+  public async createLikeNotification(
+    likedByUser: boolean,
+    postId: string,
+    username: string,
   ) {
-    const author = await this.prisma.user.findUnique({ where: { username } });
+    const notificationAuthor = await this.prisma.user.findUnique({
+      where: { username },
+    });
     let message = '';
 
     const postCreatorUsername = await this.getPostCreatorUsername(
       postId,
-      author.username,
+      notificationAuthor.username,
     );
 
     if (postCreatorUsername === null) {
@@ -34,22 +32,24 @@ export class NotificationService {
 
     let notification = await this.getLinkedNotification(username, postId);
 
+    // Update notification
     if (notification !== null) {
-      if (notification.message === `${author.username} liked your post.`) {
-        message = `${author.username} unliked your post.`;
+      if (!likedByUser) {
+        message = `${notificationAuthor.username} unliked your post.`;
       } else {
-        message = `${author.username} liked your post.`;
+        message = `${notificationAuthor.username} liked your post.`;
       }
 
       notification = await this.prisma.notification.update({
         where: { id: notification.id },
         data: { message },
       });
+      // Create notification
     } else {
       if (likedByUser) {
-        message = `${author.username} liked your post.`;
+        message = `${notificationAuthor.username} liked your post.`;
       } else {
-        message = `${author.username} unliked your post.`;
+        message = `${notificationAuthor.username} unliked your post.`;
       }
 
       notification = await this.prisma.notification.create({
@@ -70,16 +70,19 @@ export class NotificationService {
     };
   }
 
-  async createCommentNotification(
-    { postId, comment }: CreateCommentNotificationDto,
-    { username }: IToken,
+  public async createCommentNotification(
+    postId: string,
+    comment: string,
+    username: string,
   ) {
-    const author = await this.prisma.user.findUnique({ where: { username } });
-    const message = `${author.username} commented on your post.`;
+    const commentAuthor = await this.prisma.user.findUnique({
+      where: { username },
+    });
+    const message = `${commentAuthor.username} commented on your post.`;
 
     const postCreatorUsername = await this.getPostCreatorUsername(
       postId,
-      author.username,
+      commentAuthor.username,
     );
 
     if (postCreatorUsername === null) {

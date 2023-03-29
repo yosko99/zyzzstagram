@@ -8,6 +8,7 @@ import { CheckExistingPostByIdMiddleware } from 'src/middleware/post/checkExisti
 import { VerifyJWTMiddleware } from 'src/middleware/utils/verifyJWT.middleware';
 
 import { PrismaService } from '../../prisma/prisma.service';
+import { NotificationService } from '../notification/notification.service';
 
 import { PostController } from './post.controller';
 import { PostService } from './post.service';
@@ -15,7 +16,7 @@ import { PostService } from './post.service';
 @Module({
   imports: [],
   controllers: [PostController],
-  providers: [PostService, PrismaService],
+  providers: [PostService, PrismaService, NotificationService],
   exports: [PostService],
 })
 export class PostModule implements NestModule {
@@ -39,7 +40,7 @@ export class PostModule implements NestModule {
     consumer
       .apply(CheckExistingPostByIdMiddleware, VerifyJWTMiddleware)
       .forRoutes({
-        path: '/posts/like/:id',
+        path: '/posts/:id/likes',
         method: RequestMethod.POST,
       });
   }
