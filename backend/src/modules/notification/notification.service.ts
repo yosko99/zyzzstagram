@@ -21,7 +21,7 @@ export class NotificationService {
 
     const postCreatorUsername = await this.getPostCreatorUsername(
       postId,
-      notificationAuthor.username,
+      notificationAuthor?.username,
     );
 
     if (postCreatorUsername === null) {
@@ -30,7 +30,11 @@ export class NotificationService {
       };
     }
 
-    let notification = await this.getLinkedNotification(username, postId);
+    let notification = await this.checkAlreadyCreatedNotification(
+      username,
+      postId,
+      '',
+    );
 
     // Update notification
     if (notification !== null) {
@@ -66,6 +70,59 @@ export class NotificationService {
 
     return {
       message: 'Like notification created',
+      notification,
+    };
+  }
+
+  public async createFollowNotification(
+    followedByUser: boolean,
+    receiverUsername: string,
+    username: string,
+  ) {
+    const notificationAuthor = await this.prisma.user.findUnique({
+      where: { username },
+    });
+    let message = '';
+
+    let notification = await this.checkAlreadyCreatedNotification(
+      username,
+      '',
+      receiverUsername,
+    );
+
+    // Update notification
+    if (notification !== null) {
+      if (!followedByUser) {
+        message = `${notificationAuthor.username} unfollowed you.`;
+      } else {
+        message = `${notificationAuthor.username} followed you.`;
+      }
+
+      notification = await this.prisma.notification.update({
+        where: { id: notification.id },
+        data: { message },
+      });
+      // Create notification
+    } else {
+      if (followedByUser) {
+        message = `${notificationAuthor.username} followed you.`;
+      } else {
+        message = `${notificationAuthor.username} unfollowed you.`;
+      }
+
+      notification = await this.prisma.notification.create({
+        data: {
+          receiver: {
+            connect: { username: receiverUsername },
+          },
+          sender: { connect: { username } },
+          message,
+        },
+      });
+    }
+
+    return {
+      message: 'Follow notification created',
       notification,
     };
   }
@@ -157,16 +214,17 @@ export class NotificationService {
       include: { author: { select: { username: true } } },
     });
 
-    if (post.author.username === authorUsername) {
+    if (post?.author.username === authorUsername) {
       return null;
     }
 
     return post.author.username;
   }
 
-  private async getLinkedNotification(
+  private async checkAlreadyCreatedNotification(
     senderUsername: string,
     postId: string,
+    recieverUsername: string,
   ): Promise<INotification | null> {
     const linkedNotification = await this.prisma.notification.findFirst({
       where: {
@@ -176,7 +234,9 @@ export class NotificationService {
               username: senderUsername,
             },
           },
-          { postId },
+          {
+            OR: [{ postId }, { receiver: { username: recieverUsername } }],
+          },
         ],
       },
     });

@@ -47,12 +47,14 @@ const Notifications = ({ notifications }: Props) => {
             xs={2}
             className="d-flex justify-content-center align-items-center"
           >
-            <Image
-              fluid
-              style={{ minWidth: '50px', minHeight: '50px' }}
-              src={PUBLIC_IMAGES_PREFIX + notification.post?.imageURL}
-              alt={notification.receiver?.username + ' post'}
-            />
+            {notification.post && (
+              <Image
+                fluid
+                style={{ minWidth: '50px', minHeight: '50px' }}
+                src={PUBLIC_IMAGES_PREFIX + notification.post?.imageURL}
+                alt={notification.receiver?.username + ' post'}
+              />
+            )}
           </Col>
         </Row>
       ))}

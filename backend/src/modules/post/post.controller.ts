@@ -76,7 +76,7 @@ export class PostController {
   @ApiParam({ name: 'id', type: 'string' })
   @ApiOperation({ summary: 'Like a post' })
   @ApiHeader({ name: 'Authorization', required: true })
-  @ApiResponse({ status: 201, description: 'Post liked' })
+  @ApiResponse({ status: 201, description: 'Post liked/unliked' })
   @ApiResponse({ status: 404, description: 'Post not found' })
   @ApiResponse({ status: 401, description: 'Token not provided' })
   @ApiResponse({ status: 498, description: 'Provided invalid token' })

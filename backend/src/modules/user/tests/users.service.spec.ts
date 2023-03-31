@@ -2,8 +2,9 @@
 import { PrismaClientValidationError } from '@prisma/client/runtime/library';
 import { HttpException } from '@nestjs/common';
 
-import { UserService } from '../user.service';
+import { NotificationService } from '../../../modules/notification/notification.service';
 import { PrismaService } from '../../../prisma/prisma.service';
+import { UserService } from '../user.service';
 
 import {
   createInvalidUserDto,
@@ -12,7 +13,8 @@ import {
 
 describe('Test users API', () => {
   const prisma = new PrismaService();
-  const userService = new UserService(prisma);
+  const notificationService = new NotificationService(prisma);
+  const userService = new UserService(prisma, notificationService);
   const filename = 'testimage.jpg';
 
   describe('test createUser service', () => {
@@ -134,6 +136,24 @@ describe('Test users API', () => {
 
         expect(error.message).toEqual('Could not find provided user');
       }
+    });
+  });
+
+  describe('test followUser service', () => {
+    test('should successfully follow user', async () => {
+      const createdUserResult = await userService.createUser(
+        createUserDto,
+        filename,
+      );
+
+      const followUserResult = await userService.followUser(
+        createdUserResult.user,
+        { username: 'test', password: 'test' },
+      );
+
+      expect(followUserResult.message).toEqual('Followed user');
+
+      await userService.deleteUser(createdUserResult.user);
     });
   });
 });

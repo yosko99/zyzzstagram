@@ -17,7 +17,7 @@ describe('Test notifications API', () => {
   const prisma = new PrismaService();
   const notificationService = new NotificationService(prisma);
   const postService = new PostService(prisma, notificationService);
-  const userService = new UserService(prisma);
+  const userService = new UserService(prisma, notificationService);
   const filename = 'testimage.jpg';
 
   const initMockData = async () => {

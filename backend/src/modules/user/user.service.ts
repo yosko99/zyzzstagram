@@ -10,10 +10,14 @@ import { PrismaService } from '../../prisma/prisma.service';
 
 import IUser from 'src/interfaces/IUser';
 import IToken from 'src/interfaces/IToken';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly notificationService: NotificationService,
+  ) {}
 
   async createUser(
     { email, password, username }: CreateUserDto,
@@ -33,6 +37,7 @@ export class UserService {
 
     const newUser = await this.prisma.user.create({
       data: { email, password: hashedPassword, username, imageURL: filename },
+      include: { followers: true },
     });
 
     return {
@@ -66,6 +71,40 @@ export class UserService {
     return {
       message: 'Logged in successfully',
       token,
+    };
+  }
+
+  async followUser(user: IUser, { username }: IToken) {
+    if (user.followers.some((user) => user.username === username)) {
+      await this.prisma.user.update({
+        where: { id: user.id },
+        data: { followers: { disconnect: { username } } },
+      });
+
+      await this.notificationService.createFollowNotification(
+        false,
+        user.username,
+        username,
+      );
+
+      return {
+        message: 'User unfollowed',
+      };
+    }
+
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: { followers: { connect: { username } } },
+    });
+
+    await this.notificationService.createFollowNotification(
+      true,
+      user.username,
+      username,
+    );
+
+    return {
+      message: 'Followed user',
     };
   }
 

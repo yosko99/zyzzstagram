@@ -85,6 +85,21 @@ export class UserController {
     return this.userService.createUser(createUserDto, file.filename);
   }
 
+  @Post('/:username/followers')
+  @ApiParam({ name: 'username', type: 'string' })
+  @ApiOperation({ summary: 'Follow/unfollow user' })
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiResponse({ status: 201, description: 'User followed/unfollowed' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  likePost(
+    @RequestData('user') user: IUser,
+    @RequestData('userDataFromToken') tokenData: IToken,
+  ) {
+    return this.userService.followUser(user, tokenData);
+  }
+
   @Post('/login')
   @HttpCode(200)
   @UsePipes(ValidationPipe)

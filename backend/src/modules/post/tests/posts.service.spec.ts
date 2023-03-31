@@ -13,7 +13,7 @@ describe('Test posts API', () => {
   const prisma = new PrismaService();
   const notificationService = new NotificationService(prisma);
   const postService = new PostService(prisma, notificationService);
-  const userService = new UserService(prisma);
+  const userService = new UserService(prisma, notificationService);
 
   const initMockData = async () => {
     const createdUser = await userService.createUser(

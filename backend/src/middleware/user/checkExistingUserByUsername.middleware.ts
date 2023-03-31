@@ -17,6 +17,7 @@ export class CheckExistingUserByUsernameMiddleware implements NestMiddleware {
     const user = await this.prisma.user.findUnique({
       where: { username },
       select: {
+        id: true,
         username: true,
         imageURL: true,
         description: true,

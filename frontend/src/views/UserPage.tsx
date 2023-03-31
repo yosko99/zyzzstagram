@@ -9,6 +9,7 @@ import { MdOutlineCamera } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import FollowButton from '../components/buttons/FollowButton';
 import Navigation from '../components/layout/Navigation';
 import UserPost from '../components/layout/UserPost';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
@@ -71,9 +72,10 @@ const ProfilePage = () => {
               <Col xs={8}>
                 <div className="d-flex mt-2 flex-wrap">
                   <p className="fs-4 m-0 me-3 text-break">{user.username}</p>
-                  <p role="button" className="bg-light m-0 rounded p-1">
-                    {isFollowedByRequester ? 'Following' : 'Follow'}
-                  </p>
+                  <FollowButton
+                    isFollowedByRequester={isFollowedByRequester}
+                    username={user.username}
+                  />
                   <p role="button" className="bg-light m-0 rounded p-1 ms-2">
                     Message
                   </p>

@@ -13,11 +13,12 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { CheckExistingUserByUsernameMiddleware } from 'src/middleware/user/checkExistingUserByUsername.middleware';
 import { VerifyJWTMiddleware } from 'src/middleware/utils/verifyJWT.middleware';
+import { NotificationService } from '../notification/notification.service';
 
 @Module({
   imports: [],
   controllers: [UserController],
-  providers: [UserService, PrismaService],
+  providers: [UserService, PrismaService, NotificationService],
   exports: [UserService],
 })
 export class UserModule implements NestModule {
@@ -32,14 +33,22 @@ export class UserModule implements NestModule {
       method: RequestMethod.DELETE,
     });
 
-    consumer.apply(CheckExistingUserByUsernameMiddleware).forRoutes({
-      path: '/users/:username/user',
-      method: RequestMethod.GET,
-    });
-
     consumer.apply(VerifyJWTMiddleware).forRoutes({
       path: '/users/current',
       method: RequestMethod.GET,
     });
+
+    consumer
+      .apply(VerifyJWTMiddleware, CheckExistingUserByUsernameMiddleware)
+      .forRoutes(
+        {
+          path: '/users/:username/followers',
+          method: RequestMethod.POST,
+        },
+        {
+          path: '/users/:username/user',
+          method: RequestMethod.GET,
+        },
+      );
   }
 }
