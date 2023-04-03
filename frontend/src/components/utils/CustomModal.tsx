@@ -8,6 +8,7 @@ interface Props {
   activateButtonOnClick?: () => void;
   modalHeader?: React.ReactNode;
   modalBody: React.ReactNode;
+  onCloseFunction?: () => void;
 }
 
 const CustomModal: FC<Props> = ({
@@ -15,11 +16,15 @@ const CustomModal: FC<Props> = ({
   activateButtonClassName,
   activateButtonOnClick,
   modalHeader,
-  modalBody
+  modalBody,
+  onCloseFunction
 }) => {
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    onCloseFunction && onCloseFunction();
+  };
   const handleShow = () => setShow(true);
 
   const handleButtonClick = () => {

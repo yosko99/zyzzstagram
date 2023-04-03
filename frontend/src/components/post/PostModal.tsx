@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 import React from 'react';
 
 import { getPostRoute } from '../../constants/apiRoutes';
@@ -5,6 +6,7 @@ import useFetch from '../../hooks/useFetch';
 import IPost from '../../interfaces/IPost';
 import Post from '../layout/Post';
 import CustomModal from '../utils/CustomModal';
+import LoadingSpinner from '../utils/LoadingSpinner';
 import UserPost from './UserPost';
 
 interface Props {
@@ -21,11 +23,23 @@ const PostModal = ({ post }: Props) => {
 
   const postData = data as IPost;
 
+  const handleClick = () => {
+    window.history.pushState('', '', `/post/${post.id}`);
+    refetch();
+  };
+
+  const closeModal = () => {
+    window.history.back();
+  };
+
   return (
     <CustomModal
-      activateButtonOnClick={refetch}
+      activateButtonOnClick={handleClick}
+      onCloseFunction={closeModal}
       modalBody={
-        postData !== undefined && (
+        postData === undefined ? (
+          <LoadingSpinner height="25vh" />
+        ) : (
           <Post post={postData!} user={postData?.author} />
         )
       }

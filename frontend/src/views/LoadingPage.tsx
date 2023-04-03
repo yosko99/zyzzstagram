@@ -5,6 +5,7 @@ import styles from '../styles/loading.module.css';
 interface Props {
   loadingText?: string;
 }
+
 const LoadingPage = ({ loadingText }: Props) => {
   return (
     <div className={styles.holder}>

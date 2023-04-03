@@ -9,6 +9,7 @@ import useToken from './hooks/useToken';
 import GlobalCSS from './styles/global.css';
 import LoginPage from './views/LoginPage';
 import MainPage from './views/MainPage';
+import PostPage from './views/PostPage';
 import ProfilePage from './views/ProfilePage';
 import RegisterPage from './views/RegisterPage';
 import './styles/bootstrap.min.css';
@@ -29,6 +30,7 @@ const App = () => {
           <Route path="/profile/:username" element={<UserPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/post/:id" element={<PostPage />} />
         </Routes>
       </TokenContext.Provider>
     </SocketContext.Provider>
