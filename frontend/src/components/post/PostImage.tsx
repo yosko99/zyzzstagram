@@ -28,6 +28,7 @@ const PostImage = ({ post, username }: Props) => {
     <>
       <div style={{ position: 'relative' }}>
         <Image
+          thumbnail
           onDoubleClick={handleDoubleClick}
           src={PUBLIC_IMAGES_PREFIX + post.imageURL}
           className="post-image"

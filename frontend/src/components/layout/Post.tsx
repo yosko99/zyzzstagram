@@ -14,14 +14,15 @@ import PostImage from '../post/PostImage';
 interface Props {
   user: IUser;
   post: IPost;
+  className?: string;
 }
 
-const Post = ({ user, post }: Props) => {
+const Post = ({ user, post, className }: Props) => {
   const formattedDate = dateFormatter(new Date(post.createdAt));
   const navigate = useNavigate();
 
   return (
-    <section className="main">
+    <section className={`main ${className && className}`}>
       <div className="wrapper">
         <div className="left-col">
           <div className="post">

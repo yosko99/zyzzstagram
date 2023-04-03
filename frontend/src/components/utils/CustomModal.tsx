@@ -6,7 +6,7 @@ interface Props {
   activateButtonElement: string | React.ReactNode;
   activateButtonClassName?: string;
   activateButtonOnClick?: () => void;
-  modalHeader: React.ReactNode;
+  modalHeader?: React.ReactNode;
   modalBody: React.ReactNode;
 }
 
@@ -29,21 +29,23 @@ const CustomModal: FC<Props> = ({
 
   return (
     <>
-      <p
+      <div
         role={'button'}
         className={activateButtonClassName}
         onClick={handleButtonClick}
       >
         {activateButtonElement}
-      </p>
+      </div>
 
       <Modal centered animation show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title className="w-100">
-            <>{modalHeader}</>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+        {modalHeader && (
+          <Modal.Header closeButton>
+            <Modal.Title className="w-100">
+              <>{modalHeader}</>
+            </Modal.Title>
+          </Modal.Header>
+        )}
+        <Modal.Body className="m-0 p-0">
           <>{modalBody}</>
         </Modal.Body>
       </Modal>

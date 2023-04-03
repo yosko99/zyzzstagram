@@ -107,7 +107,6 @@ const GlobalCSS = createGlobalStyle`
 		height: auto;
 		background: #fff;
 		border: 1px solid #dfdfdf;
-		margin-top: 40px;
 	}
 	
 	.info{

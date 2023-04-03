@@ -38,10 +38,16 @@ export class PostModule implements NestModule {
     });
 
     consumer
-      .apply(CheckExistingPostByIdMiddleware, VerifyJWTMiddleware)
-      .forRoutes({
-        path: '/posts/:id/likes',
-        method: RequestMethod.POST,
-      });
+      .apply(VerifyJWTMiddleware, CheckExistingPostByIdMiddleware)
+      .forRoutes(
+        {
+          path: '/posts/:id/likes',
+          method: RequestMethod.POST,
+        },
+        {
+          path: '/posts/:id',
+          method: RequestMethod.GET,
+        },
+      );
   }
 }

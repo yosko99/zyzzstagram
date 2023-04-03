@@ -48,6 +48,18 @@ export class PostController {
     return this.postService.getAllPosts(tokenData);
   }
 
+  @Get('/:id')
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiOperation({ summary: 'Get post by ID' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiResponse({ status: 200, description: 'Receive post' })
+  @ApiResponse({ status: 404, description: 'Post not found' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  getPostById(@RequestData('post') post: IPost) {
+    return post;
+  }
+
   @Post()
   @ApiOperation({ summary: 'Create post' })
   @ApiConsumes('multipart/form-data')

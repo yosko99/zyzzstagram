@@ -1,3 +1,4 @@
+import IComment from './IComment';
 import INotification from './INotification';
 import IPost from './IPost';
 import IStory from './IStory';
@@ -10,10 +11,10 @@ interface IUser {
   description?: string | null;
   password: string;
   posts?: IPost[];
-  comments?: Comment[];
+  comments?: IComment[];
   likedPosts?: IPost[];
   savedPosts?: IPost[];
-  likedComments?: Comment[];
+  likedComments?: IComment[];
   followers?: IUser[];
   following?: IUser[];
   stories?: IStory[];

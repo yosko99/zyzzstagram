@@ -26,6 +26,7 @@ const useLikePost = (post: IPost) => {
       {
         onSuccess: () => {
           queryClient.invalidateQueries();
+          queryClient.refetchQueries(`post-${post.id}`);
           socket.emit('notification', post.author.username);
         }
       }

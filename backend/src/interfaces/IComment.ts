@@ -4,9 +4,9 @@ import IUser from './IUser';
 interface IComment {
   id: string;
   content: string;
-  author: IUser;
+  author?: IUser;
   authorId: string;
-  post: IPost;
+  post?: IPost;
   postId: string;
   likedBy?: IUser[];
   createdAt: Date;

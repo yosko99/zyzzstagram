@@ -12,6 +12,7 @@ export const getUserFollowersRoute = (username: string) =>
 
 // POSTS
 export const getPostsRoute = () => API_PREFIX + 'posts/';
+export const getPostRoute = (id: string) => `${getPostsRoute()}${id}`;
 export const getLikePostRoute = (id: string) => `${getPostsRoute()}${id}/likes`;
 
 // NOTIFICATIONS

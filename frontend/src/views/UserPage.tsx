@@ -11,7 +11,7 @@ import styled from 'styled-components';
 
 import FollowButton from '../components/buttons/FollowButton';
 import Navigation from '../components/layout/Navigation';
-import UserPost from '../components/layout/UserPost';
+import PostModal from '../components/post/PostModal';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
 import {
   PUBLIC_IMAGES_PREFIX,
@@ -127,7 +127,7 @@ const ProfilePage = () => {
               ) : (
                 user.posts?.map((post, index: number) => (
                   <Col xs={4} key={index} className="p-1">
-                    <UserPost post={post} />
+                    <PostModal post={post} />
                   </Col>
                 ))
               )}

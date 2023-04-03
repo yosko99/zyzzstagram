@@ -1,3 +1,4 @@
+import IComment from './IComment';
 import IUser from './IUser';
 
 interface IPost {
@@ -8,7 +9,7 @@ interface IPost {
   author: IUser;
   authorId: string;
   likedBy?: IUser[];
-  comments?: Comment[];
+  comments?: IComment[];
   savedBy?: IUser[];
   createdAt: Date;
   updatedAt: Date;
