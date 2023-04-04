@@ -10,6 +10,9 @@ interface IComment {
   postId: string;
   likedBy?: IUser[];
   createdAt: Date;
+  _count: {
+    likedBy: number;
+  };
 }
 
 export default IComment;

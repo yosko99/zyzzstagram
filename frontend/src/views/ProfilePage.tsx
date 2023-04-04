@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import UploadPostForm from '../components/forms/UploadPostForm';
 import Navigation from '../components/layout/Navigation';
 import PostModal from '../components/post/PostModal';
+import UserPost from '../components/post/UserPost';
 import CustomModal from '../components/utils/CustomModal';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
 import {
@@ -125,7 +126,10 @@ const ProfilePage = () => {
               ) : (
                 user.posts?.map((post, index: number) => (
                   <Col xs={4} key={index} className="p-1">
-                    <PostModal post={post} />
+                    <PostModal
+                      post={post}
+                      activateButtonElement={<UserPost post={post} />}
+                    />
                   </Col>
                 ))
               )}

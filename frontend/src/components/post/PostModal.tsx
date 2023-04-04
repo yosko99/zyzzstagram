@@ -7,13 +7,13 @@ import IPost from '../../interfaces/IPost';
 import Post from '../layout/Post';
 import CustomModal from '../utils/CustomModal';
 import LoadingSpinner from '../utils/LoadingSpinner';
-import UserPost from './UserPost';
 
 interface Props {
   post: IPost;
+  activateButtonElement: React.ReactNode;
 }
 
-const PostModal = ({ post }: Props) => {
+const PostModal = ({ post, activateButtonElement }: Props) => {
   const { data, isLoading, refetch } = useFetch(
     `post-${post.id}`,
     getPostRoute(post.id),
@@ -40,10 +40,10 @@ const PostModal = ({ post }: Props) => {
         postData === undefined ? (
           <LoadingSpinner height="25vh" />
         ) : (
-          <Post post={postData!} user={postData?.author} />
+          <Post post={postData!} user={postData?.author} showComments />
         )
       }
-      activateButtonElement={<UserPost post={post} />}
+      activateButtonElement={activateButtonElement}
     />
   );
 };

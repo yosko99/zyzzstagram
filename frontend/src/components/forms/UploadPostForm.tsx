@@ -9,7 +9,7 @@ import LoadingSpinner from '../utils/LoadingSpinner';
 
 const UploadPostForm = () => {
   const { setAlert, setImageFile, isLoading, imageFile, handleSubmit, alert } =
-    useUploadForm(getPostsRoute());
+    useUploadForm(getPostsRoute(), '/profile', false);
 
   useEffect(() => {
     setAlert(null);

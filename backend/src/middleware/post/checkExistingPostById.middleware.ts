@@ -36,7 +36,13 @@ export class CheckExistingPostByIdMiddleware implements NestMiddleware {
             username: true,
           },
         },
-        comments: true,
+        comments: {
+          include: {
+            author: true,
+            likedBy: true,
+            _count: { select: { likedBy: true } },
+          },
+        },
         _count: { select: { comments: true, likedBy: true } },
       },
     });

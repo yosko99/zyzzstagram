@@ -32,7 +32,8 @@ export const useMutationWithToken = (
 
 export const useUploadForm = (
   routeURL: string,
-  redirectOnSuccessURL?: string
+  redirectOnSuccessURL: string = '',
+  setToken: boolean
 ) => {
   const [alert, setAlert] = useState<React.ReactNode>();
   const [imageFile, setImageFile] = useState<File>();
@@ -57,11 +58,14 @@ export const useUploadForm = (
           setAlert(<CustomAlert variant="success" text={data.message} />);
           queryClient.refetchQueries();
 
-          if (redirectOnSuccessURL !== undefined) {
+          if (redirectOnSuccessURL !== '') {
             setTimeout(() => {
-              localStorage.setItem('token', data.token);
               window.location.href = redirectOnSuccessURL;
             }, 1000);
+          }
+
+          if (setToken) {
+            localStorage.setItem('token', data.token);
           }
         },
         onError: (err: unknown) => {

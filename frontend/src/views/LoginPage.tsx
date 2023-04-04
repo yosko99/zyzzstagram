@@ -33,7 +33,7 @@ const LoginPage = () => {
     axios
       .post(getLoginRoute(), { ...loginData })
       .then((response) => {
-        queryClient.invalidateQueries();
+        queryClient.resetQueries();
 
         setAlert(
           <CustomAlert variant="success" text={response.data.message} />

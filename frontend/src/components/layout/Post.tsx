@@ -9,15 +9,17 @@ import dateFormatter from '../../functions/dateFormatter';
 import IPost from '../../interfaces/IPost';
 import IUser from '../../interfaces/IUser';
 import LikeButton from '../buttons/LikeButton';
+import PostComments from '../post/PostComments';
 import PostImage from '../post/PostImage';
 
 interface Props {
   user: IUser;
   post: IPost;
   className?: string;
+  showComments: boolean;
 }
 
-const Post = ({ user, post, className }: Props) => {
+const Post = ({ user, post, className, showComments }: Props) => {
   const formattedDate = dateFormatter(new Date(post.createdAt));
   const navigate = useNavigate();
 
@@ -65,13 +67,7 @@ const Post = ({ user, post, className }: Props) => {
                 <span>{user.username} </span> {post.description}
               </p>
 
-              <p className="text-muted" role={'button'}>
-                {post._count.comments === 0
-                  ? 'Be the first one to comment!'
-                  : `View ${post._count.comments} ${
-                      post._count.comments === 1 ? 'comment' : 'comments'
-                    }`}
-              </p>
+              <PostComments post={post} showComments={showComments} />
             </div>
             <div className="comment-wrapper">
               <input

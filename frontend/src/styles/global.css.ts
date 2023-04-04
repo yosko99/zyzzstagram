@@ -143,10 +143,6 @@ const GlobalCSS = createGlobalStyle`
 		background: none;
 	}
 	
-	.info .profile-pic img{
-		border: none;
-	}
-	
 	.post-image{
 		width: 100%;
 		object-fit: cover;

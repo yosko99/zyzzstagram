@@ -17,7 +17,7 @@ const RegisterPage = () => {
   // useAuth('/register');
 
   const { setAlert, setImageFile, isLoading, imageFile, handleSubmit, alert } =
-    useUploadForm(getUsersRoute(), '/');
+    useUploadForm(getUsersRoute(), '/', true);
 
   useEffect(() => {
     setAlert(null);

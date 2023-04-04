@@ -56,7 +56,13 @@ const MainPageTab = () => {
       ) : (
         <div className="d-flex flex-column">
           {posts.map((post, index: number) => (
-            <Post className="mt-5" user={post.author} post={post} key={index} />
+            <Post
+              className="mt-5"
+              user={post.author}
+              post={post}
+              key={index}
+              showComments={false}
+            />
           ))}
         </div>
       )}
