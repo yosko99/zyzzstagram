@@ -45,6 +45,10 @@ export class PostModule implements NestModule {
           method: RequestMethod.POST,
         },
         {
+          path: '/posts/:id/comments',
+          method: RequestMethod.POST,
+        },
+        {
           path: '/posts/:id',
           method: RequestMethod.GET,
         },

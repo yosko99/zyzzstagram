@@ -73,7 +73,7 @@ export class PostService {
     }));
   }
 
-  async likePost({ username }: IToken, post: IPost) {
+  async likePost(post: IPost, { username }: IToken) {
     if (post.likedBy.some((user) => user.username === username)) {
       await this.prisma.post.update({
         where: { id: post.id },
@@ -96,6 +96,19 @@ export class PostService {
 
     return {
       message: 'Post liked',
+    };
+  }
+
+  async commentPost(post: IPost, content: string, { username }: IToken) {
+    await this.prisma.post.update({
+      where: { id: post.id },
+      data: {
+        comments: { create: { content, author: { connect: { username } } } },
+      },
+    });
+
+    return {
+      message: 'Comment created',
     };
   }
 }

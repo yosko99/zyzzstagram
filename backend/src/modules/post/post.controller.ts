@@ -28,6 +28,7 @@ import { RequestData } from '../../decorators/requestData.decorator';
 
 import { PostService } from './post.service';
 
+import { CreateCommentDto } from '../../dto/comment.dto';
 import { CreatePostDto } from '../../dto/post.dto';
 
 import IToken from '../../interfaces/IToken';
@@ -96,7 +97,29 @@ export class PostController {
     @RequestData('post') post: IPost,
     @RequestData('userDataFromToken') tokenData: IToken,
   ) {
-    return this.postService.likePost(tokenData, post);
+    return this.postService.likePost(post, tokenData);
+  }
+
+  @Post('/:id/comments')
+  @UsePipes(ValidationPipe)
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiOperation({ summary: 'Creates a comment' })
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiResponse({ status: 201, description: 'Comment created' })
+  @ApiResponse({ status: 404, description: 'Post not found' })
+  @ApiResponse({ status: 400, description: 'Invalid or missing fields' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  commentPost(
+    @RequestData('post') post: IPost,
+    @RequestData('userDataFromToken') tokenData: IToken,
+    @Body() createCommentDto: CreateCommentDto,
+  ) {
+    return this.postService.commentPost(
+      post,
+      createCommentDto.content,
+      tokenData,
+    );
   }
 
   @Delete('/:id')

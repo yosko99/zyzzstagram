@@ -89,9 +89,25 @@ describe('Test posts API', () => {
     it('should successfully like a post', async () => {
       const { createdPost, createdUser, tokenData } = await initMockData();
 
-      const result = await postService.likePost(tokenData, createdPost.post);
+      const result = await postService.likePost(createdPost.post, tokenData);
 
       expect(result.message).toBe('Post liked');
+
+      await userService.deleteUser(createdUser.user);
+    });
+  });
+
+  describe('test commentPost service', () => {
+    it('should successfully create comment', async () => {
+      const { createdPost, createdUser, tokenData } = await initMockData();
+
+      const result = await postService.commentPost(
+        createdPost.post,
+        'test',
+        tokenData,
+      );
+
+      expect(result.message).toEqual('Comment created');
 
       await userService.deleteUser(createdUser.user);
     });

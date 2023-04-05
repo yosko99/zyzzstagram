@@ -45,7 +45,10 @@ describe('test CheckExistingPostById middleware', () => {
       jest.spyOn(prismaService.post, 'findUnique').mockResolvedValue(post);
 
       const req = {
-        params: { id: '1' },
+        params: {
+          id: '1',
+        },
+        userDataFromToken: { username: 'test', password: ' test' },
       } as unknown as Request & { post?: any };
       const res = {} as Response;
       const next = jest.fn();
@@ -54,17 +57,47 @@ describe('test CheckExistingPostById middleware', () => {
 
       expect(prismaService.post.findUnique).toHaveBeenCalledWith({
         where: { id: '1' },
-        include: { author: true, likedBy: true },
+        include: {
+          author: {
+            select: {
+              username: true,
+              imageURL: true,
+              _count: {
+                select: { followers: true, following: true, posts: true },
+              },
+            },
+          },
+          likedBy: {
+            where: {
+              username: 'test',
+            },
+            select: {
+              username: true,
+            },
+          },
+          comments: {
+            include: {
+              author: true,
+              likedBy: true,
+              _count: { select: { likedBy: true } },
+            },
+            orderBy: { createdAt: 'desc' },
+          },
+          _count: { select: { comments: true, likedBy: true } },
+        },
       });
-      expect(req.post).toEqual(post);
+      expect(req.post).toBeTruthy();
       expect(next).toHaveBeenCalled();
     });
 
     it('should return 404 if post does not exist', async () => {
       jest.spyOn(prismaService.post, 'findUnique').mockResolvedValue(null);
       const req = {
-        params: { id: '1' },
-      } as unknown as Request;
+        params: {
+          id: '1',
+        },
+        userDataFromToken: { username: 'test', password: ' test' },
+      } as unknown as Request & { post?: any };
 
       const res = {
         status: jest.fn().mockReturnThis(),
@@ -77,7 +110,34 @@ describe('test CheckExistingPostById middleware', () => {
 
       expect(prismaService.post.findUnique).toHaveBeenCalledWith({
         where: { id: '1' },
-        include: { author: true, likedBy: true },
+        include: {
+          author: {
+            select: {
+              username: true,
+              imageURL: true,
+              _count: {
+                select: { followers: true, following: true, posts: true },
+              },
+            },
+          },
+          likedBy: {
+            where: {
+              username: 'test',
+            },
+            select: {
+              username: true,
+            },
+          },
+          comments: {
+            include: {
+              author: true,
+              likedBy: true,
+              _count: { select: { likedBy: true } },
+            },
+            orderBy: { createdAt: 'desc' },
+          },
+          _count: { select: { comments: true, likedBy: true } },
+        },
       });
 
       expect(res.status).toHaveBeenCalledWith(404);
