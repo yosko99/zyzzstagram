@@ -11,7 +11,7 @@ interface Props {
   post: IPost;
 }
 
-const UserPost = ({ post }: Props) => {
+const UserProfilePost = ({ post }: Props) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseOver = () => {
@@ -60,4 +60,4 @@ const UserPost = ({ post }: Props) => {
   );
 };
 
-export default UserPost;
+export default UserProfilePost;

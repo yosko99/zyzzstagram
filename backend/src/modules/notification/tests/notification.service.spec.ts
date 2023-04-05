@@ -143,7 +143,6 @@ describe('Test notifications API', () => {
       const createdNotification =
         await notificationService.createCommentNotification(
           createdPost.post.id,
-          'test comment',
           secondUserTokenData.username,
         );
 
@@ -167,7 +166,6 @@ describe('Test notifications API', () => {
       const createdNotification =
         await notificationService.createCommentNotification(
           createdPost.post.id,
-          'test comment',
           firstUserTokenData.username,
         );
 
@@ -192,7 +190,6 @@ describe('Test notifications API', () => {
       const createdNotification =
         await notificationService.createCommentNotification(
           createdPost.post.id,
-          'test comment',
           secondUserTokenData.username,
         );
 

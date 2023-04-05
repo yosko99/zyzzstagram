@@ -127,11 +127,7 @@ export class NotificationService {
     };
   }
 
-  public async createCommentNotification(
-    postId: string,
-    comment: string,
-    username: string,
-  ) {
+  public async createCommentNotification(postId: string, username: string) {
     const commentAuthor = await this.prisma.user.findUnique({
       where: { username },
     });
@@ -156,13 +152,6 @@ export class NotificationService {
         sender: { connect: { username } },
         post: { connect: { id: postId } },
         message,
-        comment: {
-          create: {
-            content: comment,
-            author: { connect: { username } },
-            post: { connect: { id: postId } },
-          },
-        },
       },
     });
 
@@ -178,6 +167,9 @@ export class NotificationService {
       include: {
         sender: { select: { imageURL: true, username: true } },
         post: { select: { imageURL: true, id: true } },
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
     });
 

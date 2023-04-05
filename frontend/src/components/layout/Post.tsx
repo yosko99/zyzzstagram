@@ -9,6 +9,7 @@ import dateFormatter from '../../functions/dateFormatter';
 import IPost from '../../interfaces/IPost';
 import IUser from '../../interfaces/IUser';
 import LikeButton from '../buttons/LikeButton';
+import PostCommentInput from '../inputs/PostCommentInput';
 import PostComments from '../post/PostComments';
 import PostImage from '../post/PostImage';
 
@@ -69,15 +70,8 @@ const Post = ({ user, post, className, showComments }: Props) => {
 
               <PostComments post={post} showComments={showComments} />
             </div>
-            <div className="comment-wrapper">
-              <input
-                type="text"
-                className="comment-box ms-3"
-                placeholder="Add a comment..."
-              />
 
-              <button className="comment-btn">post</button>
-            </div>
+            <PostCommentInput post={post} />
           </div>
         </div>
       </div>

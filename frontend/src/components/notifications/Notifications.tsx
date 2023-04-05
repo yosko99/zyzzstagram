@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Col, Row, Image } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { PUBLIC_IMAGES_PREFIX } from '../../constants/apiRoutes';
 import dateFormatter from '../../functions/dateFormatter';
@@ -12,15 +12,17 @@ interface Props {
 }
 
 const Notifications = ({ notifications }: Props) => {
+  const navigate = useNavigate();
+
   return (
-    <div>
+    <div style={{ maxHeight: '50vh', overflow: 'auto' }}>
       {notifications.map((notification, index: number) => (
         <Row
           key={index}
           style={{
             backgroundColor: notification.read ? 'none' : 'whitesmoke'
           }}
-          className={'shadow-sm p-3 my-1'}
+          className={'shadow-sm p-3 my-1 m-0 p-0'}
         >
           <Col
             xs={2}
@@ -53,6 +55,8 @@ const Notifications = ({ notifications }: Props) => {
                 style={{ minWidth: '50px', minHeight: '50px' }}
                 src={PUBLIC_IMAGES_PREFIX + notification.post?.imageURL}
                 alt={notification.receiver?.username + ' post'}
+                role="button"
+                onClick={() => navigate(`/post/${notification.post?.id}`)}
               />
             )}
           </Col>

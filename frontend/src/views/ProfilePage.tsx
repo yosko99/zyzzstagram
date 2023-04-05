@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import UploadPostForm from '../components/forms/UploadPostForm';
 import Navigation from '../components/layout/Navigation';
 import PostModal from '../components/post/PostModal';
-import UserPost from '../components/post/UserPost';
+import UserProfilePost from '../components/post/UserProfilePost';
 import CustomModal from '../components/utils/CustomModal';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
 import {
@@ -128,7 +128,7 @@ const ProfilePage = () => {
                   <Col xs={4} key={index} className="p-1">
                     <PostModal
                       post={post}
-                      activateButtonElement={<UserPost post={post} />}
+                      activateButtonElement={<UserProfilePost post={post} />}
                     />
                   </Col>
                 ))

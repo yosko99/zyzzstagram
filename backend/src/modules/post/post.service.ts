@@ -107,6 +107,8 @@ export class PostService {
       },
     });
 
+    await this.notificationService.createCommentNotification(post.id, username);
+
     return {
       message: 'Comment created',
     };

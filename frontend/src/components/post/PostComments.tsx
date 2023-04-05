@@ -17,8 +17,6 @@ interface Props {
 const PostComments = ({ post, showComments }: Props) => {
   const navigate = useNavigate();
 
-  console.log(post.comments);
-
   return (
     <>
       {showComments ? (
@@ -64,7 +62,7 @@ const PostComments = ({ post, showComments }: Props) => {
           ))}
         </div>
       ) : (
-        <p className="text-muted" role={'button'}>
+        <div className="text-muted" role={'button'}>
           {post._count.comments === 0 ? (
             'Be the first one to comment!'
           ) : (
@@ -75,7 +73,7 @@ const PostComments = ({ post, showComments }: Props) => {
               }`}
             />
           )}
-        </p>
+        </div>
       )}
     </>
   );

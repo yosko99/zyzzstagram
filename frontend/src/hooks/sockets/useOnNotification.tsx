@@ -10,6 +10,7 @@ const useOnNotification = (socket: Socket) => {
     socket.on('connect', () => {
       socket.on(`notification-${socket.id}`, () => {
         queryClient.resetQueries({ queryKey: 'notifications' });
+        queryClient.refetchQueries();
       });
     });
   }, []);
