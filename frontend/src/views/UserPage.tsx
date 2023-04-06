@@ -11,9 +11,8 @@ import styled from 'styled-components';
 
 import FollowButton from '../components/buttons/FollowButton';
 import Navigation from '../components/layout/Navigation';
-import PostModal from '../components/post/PostModal';
+import PostModalWithArrows from '../components/post/PostModalWithArrows';
 import UserProfilePost from '../components/post/UserProfilePost';
-import LoadingSpinner from '../components/utils/LoadingSpinner';
 import {
   PUBLIC_IMAGES_PREFIX,
   getUserByUsernameRoute
@@ -53,92 +52,89 @@ const ProfilePage = () => {
   return (
     <div className="d-flex flex-lg-row flex-column">
       <Navigation />
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-        <Container className="mt-3 d-flex justify-content-center">
-          <ProfileContainer>
-            <Row>
-              <Col
-                xs={4}
-                className="d-flex justify-content-center align-items-center"
-              >
-                <Image
-                  src={PUBLIC_IMAGES_PREFIX + user.imageURL}
-                  height={'120px'}
-                  width={'120px'}
-                  roundedCircle
+      <Container className="mt-3 d-flex justify-content-center">
+        <ProfileContainer>
+          <Row>
+            <Col
+              xs={4}
+              className="d-flex justify-content-center align-items-center"
+            >
+              <Image
+                src={PUBLIC_IMAGES_PREFIX + user.imageURL}
+                height={'120px'}
+                width={'120px'}
+                roundedCircle
+              />
+            </Col>
+            <Col xs={8}>
+              <div className="d-flex mt-2 flex-wrap">
+                <p className="fs-4 m-0 me-3 text-break">{user.username}</p>
+                <FollowButton
+                  isFollowedByRequester={isFollowedByRequester}
+                  username={user.username}
                 />
-              </Col>
-              <Col xs={8}>
-                <div className="d-flex mt-2 flex-wrap">
-                  <p className="fs-4 m-0 me-3 text-break">{user.username}</p>
-                  <FollowButton
-                    isFollowedByRequester={isFollowedByRequester}
-                    username={user.username}
-                  />
-                  <p role="button" className="bg-light m-0 rounded p-1 ms-2">
-                    Message
-                  </p>
+                <p role="button" className="bg-light m-0 rounded p-1 ms-2">
+                  Message
+                </p>
+              </div>
+              <div className="d-flex w-100 justify-content-around justify-content-lg-start my-3">
+                <p className="me-lg-3 m-0">{user._count?.posts} posts</p>
+                <p className="mx-lg-3 m-0">
+                  {user._count?.followers} followers
+                </p>
+                <p className="ms-lg-3 m-0">
+                  {user._count?.following} following
+                </p>
+              </div>
+              <p>Bio</p>
+            </Col>
+          </Row>
+          <Row className="mt-3">
+            <hr className="m-0 mx-2" />
+            <div className="text-uppercase d-flex justify-content-around justify-content-lg-center">
+              <div className="me-3 mt-2">
+                <div role={'button'} className="d-block d-lg-none fs-2">
+                  <BsFillGrid3X3GapFill />
                 </div>
-                <div className="d-flex w-100 justify-content-around justify-content-lg-start my-3">
-                  <p className="me-lg-3 m-0">{user._count?.posts} posts</p>
-                  <p className="mx-lg-3 m-0">
-                    {user._count?.followers} followers
-                  </p>
-                  <p className="ms-lg-3 m-0">
-                    {user._count?.following} following
-                  </p>
-                </div>
-                <p>Bio</p>
-              </Col>
-            </Row>
-            <Row className="mt-3">
-              <hr className="m-0 mx-2" />
-              <div className="text-uppercase d-flex justify-content-around justify-content-lg-center">
-                <div className="me-3 mt-2">
-                  <div role={'button'} className="d-block d-lg-none fs-2">
-                    <BsFillGrid3X3GapFill />
-                  </div>
-                  <span role={'button'} className="d-none d-lg-block">
-                    Posts
-                  </span>
-                </div>
-                <div className="mx-3 mt-2">
-                  <div role={'button'} className="d-block d-lg-none fs-2">
-                    <FaVoteYea />
-                  </div>
-                </div>
-                <div className="ms-3 mt-2">
-                  <div role={'button'} className="d-block d-lg-none fs-2">
-                    <AiFillTags />
-                  </div>
-                  <span role={'button'} className="d-none d-lg-block">
-                    Tagged
-                  </span>
+                <span role={'button'} className="d-none d-lg-block">
+                  Posts
+                </span>
+              </div>
+              <div className="mx-3 mt-2">
+                <div role={'button'} className="d-block d-lg-none fs-2">
+                  <FaVoteYea />
                 </div>
               </div>
-            </Row>
-            <Row className="mt-3">
-              {user.posts?.length === 0 ? (
-                <CenteredItems flexColumn style={{ height: '50vh' }}>
-                  <MdOutlineCamera className="display-4" />
-                  <p className="display-5">No posts yet</p>
-                </CenteredItems>
-              ) : (
-                user.posts?.map((post, index: number) => (
-                  <Col xs={4} key={index} className="p-1">
-                    <PostModal
-                      post={post}
-                      activateButtonElement={<UserProfilePost post={post} />}
-                    />
-                  </Col>
-                ))
-              )}
-            </Row>
-          </ProfileContainer>
-        </Container>
-      )}
+              <div className="ms-3 mt-2">
+                <div role={'button'} className="d-block d-lg-none fs-2">
+                  <AiFillTags />
+                </div>
+                <span role={'button'} className="d-none d-lg-block">
+                  Tagged
+                </span>
+              </div>
+            </div>
+          </Row>
+          <Row className="mt-3">
+            {user.posts?.length === 0 ? (
+              <CenteredItems flexColumn style={{ height: '50vh' }}>
+                <MdOutlineCamera className="display-4" />
+                <p className="display-5">No posts yet</p>
+              </CenteredItems>
+            ) : (
+              user.posts?.map((post, index: number) => (
+                <Col xs={4} key={index} className="p-1">
+                  <PostModalWithArrows
+                    currentPost={post}
+                    posts={user.posts!}
+                    activateButtonElement={<UserProfilePost post={post} />}
+                  />
+                </Col>
+              ))
+            )}
+          </Row>
+        </ProfileContainer>
+      </Container>
     </div>
   );
 };

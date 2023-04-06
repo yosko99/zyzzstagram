@@ -36,7 +36,7 @@ const CustomModal: FC<Props> = ({
     <>
       <div
         role={'button'}
-        className={activateButtonClassName}
+        className={activateButtonClassName && activateButtonClassName}
         onClick={handleButtonClick}
       >
         {activateButtonElement}

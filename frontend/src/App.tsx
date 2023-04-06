@@ -15,7 +15,11 @@ import RegisterPage from './views/RegisterPage';
 import './styles/bootstrap.min.css';
 import UserPage from './views/UserPage';
 
-const socket = io('ws://localhost:5000');
+const socket = io('ws://localhost:5000', {
+  reconnection: true,
+  reconnectionDelay: 1000,
+  reconnectionAttempts: Infinity
+});
 
 const App = () => {
   const { token, setToken } = useToken();

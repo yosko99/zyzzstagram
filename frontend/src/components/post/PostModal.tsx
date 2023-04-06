@@ -1,5 +1,5 @@
 /* eslint-disable multiline-ternary */
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { getPostRoute } from '../../constants/apiRoutes';
 import useFetch from '../../hooks/useFetch';
