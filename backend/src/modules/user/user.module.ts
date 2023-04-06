@@ -49,6 +49,14 @@ export class UserModule implements NestModule {
           path: '/users/:username/user',
           method: RequestMethod.GET,
         },
+        {
+          path: '/users/:username/followers',
+          method: RequestMethod.GET,
+        },
+        {
+          path: '/users/:username/following',
+          method: RequestMethod.GET,
+        },
       );
   }
 }

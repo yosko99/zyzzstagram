@@ -14,6 +14,7 @@ import IUser from '../../interfaces/IUser';
 const MainPageTab = () => {
   const user: IUser = {
     username: 'yosko99',
+    isFollowedByRequester: false,
     email: 'azis@asdsa.com',
     password: 'a',
     createdAt: new Date(),

@@ -63,6 +63,36 @@ export class UserController {
     return this.userService.getCurrentUser(tokenData);
   }
 
+  @Get('/:username/followers')
+  @ApiParam({ name: 'username', type: 'string' })
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiOperation({ summary: 'Get user followers' })
+  @ApiResponse({ status: 200, description: 'Receive followers' })
+  @ApiResponse({ status: 404, description: 'Non existent user' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  getUserFollowers(
+    @RequestData('user') user: IUser,
+    @RequestData('userDataFromToken') tokenData: IToken,
+  ) {
+    return this.userService.getUserFollowers(user, tokenData);
+  }
+
+  @Get('/:username/following')
+  @ApiParam({ name: 'username', type: 'string' })
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiOperation({ summary: 'Get user following' })
+  @ApiResponse({ status: 200, description: 'Receive following users' })
+  @ApiResponse({ status: 404, description: 'Non existent user' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  getUserFollowing(
+    @RequestData('user') user: IUser,
+    @RequestData('userDataFromToken') tokenData: IToken,
+  ) {
+    return this.userService.getUserFollowing(user, tokenData);
+  }
+
   @Post()
   @ApiOperation({ summary: 'Create user' })
   @ApiConsumes('multipart/form-data')

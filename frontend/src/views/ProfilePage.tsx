@@ -8,6 +8,8 @@ import { FaVoteYea } from 'react-icons/fa';
 import { MdOutlineCamera } from 'react-icons/md';
 import styled from 'styled-components';
 
+import FollowersButton from '../components/buttons/FollowersButton';
+import FollowingButton from '../components/buttons/FollowingButton';
 import UploadPostForm from '../components/forms/UploadPostForm';
 import Navigation from '../components/layout/Navigation';
 import PostModalWithArrows from '../components/post/PostModalWithArrows';
@@ -70,12 +72,8 @@ const ProfilePage = () => {
               </div>
               <div className="d-flex w-100 justify-content-around justify-content-lg-start my-3">
                 <p className="me-lg-3 m-0">{user._count?.posts} posts</p>
-                <p className="mx-lg-3 m-0">
-                  {user._count?.followers} followers
-                </p>
-                <p className="ms-lg-3 m-0">
-                  {user._count?.following} following
-                </p>
+                <FollowersButton user={user} />
+                <FollowingButton user={user} />
               </div>
               <p>Bio</p>
             </Col>

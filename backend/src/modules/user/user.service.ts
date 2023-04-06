@@ -37,7 +37,7 @@ export class UserService {
 
     const newUser = await this.prisma.user.create({
       data: { email, password: hashedPassword, username, imageURL: filename },
-      include: { followers: true },
+      include: { followers: true, following: true },
     });
 
     return {
@@ -138,7 +138,7 @@ export class UserService {
         .length !== 0;
 
     return {
-      user,
+      ...user,
       isFollowedByRequester,
     };
   }
@@ -160,5 +160,23 @@ export class UserService {
     }
 
     return user;
+  };
+
+  getUserFollowers = (user: IUser, tokenData: IToken) => {
+    return user.followers;
+  };
+
+  getUserFollowing = (user: IUser, tokenData: IToken) => {
+    return user.following.map((following) => {
+      if (
+        following.following.filter(
+          (user) => user.username === tokenData.username,
+        ).length !== 0
+      ) {
+        return { ...following, isFollowedByRequester: true };
+      } else {
+        return { ...following, isFollowedByRequester: false };
+      }
+    });
   };
 }

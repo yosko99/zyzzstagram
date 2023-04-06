@@ -32,6 +32,7 @@ interface IUser {
     savedPosts: number;
     stories: number;
   };
+  isFollowedByRequester: boolean;
 }
 
 export default IUser;

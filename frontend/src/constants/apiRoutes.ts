@@ -9,6 +9,8 @@ export const getLoginRoute = () => getUsersRoute() + 'login';
 export const getCurrentUserRoute = () => getUsersRoute() + 'current';
 export const getUserFollowersRoute = (username: string) =>
   `${getUsersRoute()}${username}/followers`;
+export const getUserFollowingRoute = (username: string) =>
+  `${getUsersRoute()}${username}/following`;
 
 // POSTS
 export const getPostsRoute = () => API_PREFIX + 'posts/';

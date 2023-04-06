@@ -2,9 +2,8 @@ import React from 'react';
 
 import { AiOutlineComment, AiOutlineSend } from 'react-icons/ai';
 import { FaAngleDoubleDown, FaVoteYea } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import { PUBLIC_IMAGES_PREFIX } from '../../constants/apiRoutes';
 import dateFormatter from '../../functions/dateFormatter';
 import IPost from '../../interfaces/IPost';
 import IUser from '../../interfaces/IUser';
@@ -12,6 +11,7 @@ import LikeButton from '../buttons/LikeButton';
 import PostCommentInput from '../inputs/PostCommentInput';
 import PostComments from '../post/PostComments';
 import PostImage from '../post/PostImage';
+import UserThumbnail from '../user/UserThumbnail';
 
 interface Props {
   user: IUser;
@@ -29,28 +29,13 @@ const Post = ({ user, post, className, showComments }: Props) => {
       <div className="wrapper">
         <div className="left-col">
           <div className="post">
-            <div className="info">
-              <div className="user">
-                <div className="profile-pic">
-                  <Link to={`/profile/${user.username}`}>
-                    <img
-                      style={{ objectFit: 'cover' }}
-                      src={PUBLIC_IMAGES_PREFIX + user.imageURL}
-                      alt={user.username}
-                    />
-                  </Link>
-                </div>
-                <p
-                  className="username"
-                  role={'button'}
-                  onClick={() => navigate(`/profile/${user.username}`)}
-                >
-                  {user.username}{' '}
-                  <span className="text-muted">{formattedDate}</span>
-                </p>
-              </div>
-              <FaAngleDoubleDown role={'button'} />
-            </div>
+            <UserThumbnail
+              user={user}
+              additionalElement={
+                <span className="text-muted">{formattedDate}</span>
+              }
+              sideElement={<FaAngleDoubleDown role={'button'} />}
+            />
             <PostImage username={user.username} post={post} />
             <div className="post-content">
               <div className="reaction-wrapper d-flex fs-2 justify-content-between">

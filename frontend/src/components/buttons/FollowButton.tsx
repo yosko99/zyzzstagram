@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+/* eslint-disable multiline-ternary */
+import React, { useContext, useEffect, useState } from 'react';
 
 import { useQueryClient } from 'react-query';
 
@@ -14,8 +15,11 @@ interface Props {
 const FollowButton = ({ isFollowedByRequester, username }: Props) => {
   const socket = useContext(SocketContext);
   const queryClient = useQueryClient();
+  const [status, setStatus] = useState(
+    isFollowedByRequester ? 'Following' : 'Follow'
+  );
 
-  const { mutate: follow } = useMutationWithToken(
+  const { mutate: follow, isLoading } = useMutationWithToken(
     getUserFollowersRoute(username),
     false
   );
@@ -25,19 +29,26 @@ const FollowButton = ({ isFollowedByRequester, username }: Props) => {
       {
         onSuccess: () => {
           queryClient.invalidateQueries();
+          queryClient.refetchQueries();
           socket.emit('notification', username);
         }
       }
     );
   };
 
+  useEffect(() => {
+    setStatus(isFollowedByRequester ? 'Following' : 'Follow');
+  }, [isFollowedByRequester]);
+
   return (
     <p
       role="button"
-      className="bg-light m-0 rounded p-1"
+      className={`m-0 rounded p-1 btn ${
+        isFollowedByRequester ? 'btn-outline-primary' : 'btn-info'
+      }`}
       onClick={() => handleFollow()}
     >
-      {isFollowedByRequester ? 'Following' : 'Follow'}
+      {status}
     </p>
   );
 };

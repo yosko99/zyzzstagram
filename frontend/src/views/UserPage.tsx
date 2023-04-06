@@ -10,6 +10,8 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import FollowButton from '../components/buttons/FollowButton';
+import FollowersButton from '../components/buttons/FollowersButton';
+import FollowingButton from '../components/buttons/FollowingButton';
 import Navigation from '../components/layout/Navigation';
 import PostModalWithArrows from '../components/post/PostModalWithArrows';
 import UserProfilePost from '../components/post/UserProfilePost';
@@ -44,10 +46,7 @@ const ProfilePage = () => {
     return <LoadingPage />;
   }
 
-  const { user, isFollowedByRequester } = data as {
-    user: IUser;
-    isFollowedByRequester: boolean;
-  };
+  const user = data as IUser;
 
   return (
     <div className="d-flex flex-lg-row flex-column">
@@ -70,7 +69,7 @@ const ProfilePage = () => {
               <div className="d-flex mt-2 flex-wrap">
                 <p className="fs-4 m-0 me-3 text-break">{user.username}</p>
                 <FollowButton
-                  isFollowedByRequester={isFollowedByRequester}
+                  isFollowedByRequester={user.isFollowedByRequester}
                   username={user.username}
                 />
                 <p role="button" className="bg-light m-0 rounded p-1 ms-2">
@@ -79,12 +78,8 @@ const ProfilePage = () => {
               </div>
               <div className="d-flex w-100 justify-content-around justify-content-lg-start my-3">
                 <p className="me-lg-3 m-0">{user._count?.posts} posts</p>
-                <p className="mx-lg-3 m-0">
-                  {user._count?.followers} followers
-                </p>
-                <p className="ms-lg-3 m-0">
-                  {user._count?.following} following
-                </p>
+                <FollowersButton user={user} />
+                <FollowingButton user={user} />
               </div>
               <p>Bio</p>
             </Col>
