@@ -163,20 +163,35 @@ export class UserService {
   };
 
   getUserFollowers = (user: IUser, tokenData: IToken) => {
-    return user.followers;
+    return this.appendIsFollowedByRequester(
+      user,
+      tokenData.username,
+      'followers',
+    );
   };
 
   getUserFollowing = (user: IUser, tokenData: IToken) => {
-    return user.following.map((following) => {
+    return this.appendIsFollowedByRequester(
+      user,
+      tokenData.username,
+      'following',
+    );
+  };
+
+  private appendIsFollowedByRequester(
+    user: IUser,
+    requesterUsername: string,
+    key: 'following' | 'followers',
+  ) {
+    return user[key].map((follower) => {
       if (
-        following.following.filter(
-          (user) => user.username === tokenData.username,
-        ).length !== 0
+        follower[key].filter((user) => user.username === requesterUsername)
+          .length !== 0
       ) {
-        return { ...following, isFollowedByRequester: true };
+        return { ...follower, isFollowedByRequester: true };
       } else {
-        return { ...following, isFollowedByRequester: false };
+        return { ...follower, isFollowedByRequester: false };
       }
     });
-  };
+  }
 }

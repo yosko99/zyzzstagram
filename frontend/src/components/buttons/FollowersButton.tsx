@@ -1,17 +1,15 @@
+/* eslint-disable multiline-ternary */
 import React from 'react';
 
 import IUser from '../../interfaces/IUser';
+import FollowingButtonTemplate from '../../templates/FollowingButtonTemplate';
 
 interface Props {
   user: IUser;
 }
 
 const FollowersButton = ({ user }: Props) => {
-  return (
-    <p className="mx-lg-3 m-0" role="button">
-      {user._count?.followers} followers
-    </p>
-  );
+  return <FollowingButtonTemplate user={user} typeOfUsers="followers" />;
 };
 
 export default FollowersButton;

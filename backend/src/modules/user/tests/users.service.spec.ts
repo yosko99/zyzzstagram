@@ -173,4 +173,21 @@ describe('Test users API', () => {
       await userService.deleteUser(createdUserResult.user);
     });
   });
+
+  describe('test getUserFollowers service', () => {
+    test('should get followers users', async () => {
+      const createdUserResult = await userService.createUser(
+        createUserDto,
+        filename,
+      );
+      const response = await userService.getUserFollowers(
+        createdUserResult.user,
+        createdUserResult.token,
+      );
+
+      expect(response).toEqual(expect.any(Array));
+
+      await userService.deleteUser(createdUserResult.user);
+    });
+  });
 });

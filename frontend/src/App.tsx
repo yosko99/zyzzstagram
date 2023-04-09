@@ -5,6 +5,8 @@ import { io } from 'socket.io-client';
 
 import { SocketContext } from './context/SocketContext';
 import { TokenContext } from './context/TokenContext';
+import useOnConnectedSocket from './hooks/sockets/useOnConnectedSocket';
+import useOnNotification from './hooks/sockets/useOnNotification';
 import useToken from './hooks/useToken';
 import GlobalCSS from './styles/global.css';
 import LoginPage from './views/LoginPage';
@@ -23,6 +25,9 @@ const socket = io('ws://localhost:5000', {
 
 const App = () => {
   const { token, setToken } = useToken();
+
+  useOnConnectedSocket(socket);
+  useOnNotification(socket);
 
   return (
     <SocketContext.Provider value={socket}>
