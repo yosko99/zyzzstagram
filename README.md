@@ -26,15 +26,26 @@ npm run installPackages
 
 This command will concurrently install the necessary npm packages for both backend and frontend.
 
+### Migrating the database
+
+Make sure you have your database running, or use the dockerized one in the main directory using `docker-compose up`.
+You need to create `.env` file in `backend` directory and populate it by following `.env.example` file. </br>
+
+Next run the following command
+
+```
+npm run migrateDB
+```
+
+This command will migrate the prisma schema to the database.
+
 #
 
 ## Running the project
 
 ### Running in development
 
-First you need to create `.env` file in `backend` directory and populate it by following `.env.example` file. </br>
-
-Make sure you have your database running, or use the dockerized one in the main directory using `docker-compose up`.
+Make sure you have your database running.
 
 After everything is set, next time if you want to start the project all you need to do is run this command `npm run dev`
 from the main directory which will start server side and back side concurrently.
