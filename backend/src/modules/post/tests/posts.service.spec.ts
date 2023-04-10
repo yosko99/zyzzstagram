@@ -112,4 +112,37 @@ describe('Test posts API', () => {
       await userService.deleteUser(createdUser.user);
     });
   });
+
+  describe('test savePost service', () => {
+    test('should save post', async () => {
+      const { createdPost, createdUser, tokenData } = await initMockData();
+
+      const savePostResponse = await postService.savePost(
+        createdPost.post,
+        tokenData,
+      );
+
+      expect(savePostResponse.message).toEqual('Post saved');
+
+      await userService.deleteUser(createdUser.user);
+    });
+
+    test('should remove post from saved', async () => {
+      const { createdPost, createdUser, tokenData } = await initMockData();
+
+      createdPost.post = {
+        ...createdPost.post,
+        savedBy: [{ ...createUserForPostDto }],
+      };
+
+      const savePostResponse = await postService.savePost(
+        createdPost.post,
+        tokenData,
+      );
+
+      expect(savePostResponse.message).toEqual('Post unsaved');
+
+      await userService.deleteUser(createdUser.user);
+    });
+  });
 });

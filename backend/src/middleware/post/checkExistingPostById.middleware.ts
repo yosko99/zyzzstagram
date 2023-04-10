@@ -28,6 +28,9 @@ export class CheckExistingPostByIdMiddleware implements NestMiddleware {
             },
           },
         },
+        savedBy: {
+          select: { username: true },
+        },
         likedBy: {
           where: {
             username,

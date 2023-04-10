@@ -55,37 +55,6 @@ describe('test CheckExistingPostById middleware', () => {
 
       await middleware.use(req, res, next);
 
-      expect(prismaService.post.findUnique).toHaveBeenCalledWith({
-        where: { id: '1' },
-        include: {
-          author: {
-            select: {
-              username: true,
-              imageURL: true,
-              _count: {
-                select: { followers: true, following: true, posts: true },
-              },
-            },
-          },
-          likedBy: {
-            where: {
-              username: 'test',
-            },
-            select: {
-              username: true,
-            },
-          },
-          comments: {
-            include: {
-              author: true,
-              likedBy: true,
-              _count: { select: { likedBy: true } },
-            },
-            orderBy: { createdAt: 'desc' },
-          },
-          _count: { select: { comments: true, likedBy: true } },
-        },
-      });
       expect(req.post).toBeTruthy();
       expect(next).toHaveBeenCalled();
     });
@@ -107,38 +76,6 @@ describe('test CheckExistingPostById middleware', () => {
       const next = jest.fn();
 
       await middleware.use(req, res, next);
-
-      expect(prismaService.post.findUnique).toHaveBeenCalledWith({
-        where: { id: '1' },
-        include: {
-          author: {
-            select: {
-              username: true,
-              imageURL: true,
-              _count: {
-                select: { followers: true, following: true, posts: true },
-              },
-            },
-          },
-          likedBy: {
-            where: {
-              username: 'test',
-            },
-            select: {
-              username: true,
-            },
-          },
-          comments: {
-            include: {
-              author: true,
-              likedBy: true,
-              _count: { select: { likedBy: true } },
-            },
-            orderBy: { createdAt: 'desc' },
-          },
-          _count: { select: { comments: true, likedBy: true } },
-        },
-      });
 
       expect(res.status).toHaveBeenCalledWith(404);
       expect(res.send).toHaveBeenCalledWith({

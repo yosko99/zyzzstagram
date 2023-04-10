@@ -30,13 +30,17 @@ export class PostService {
         published: true,
         author: { connect: { username: tokenData.username } },
       },
-      include: { likedBy: true },
+      include: { likedBy: true, savedBy: true },
     });
 
     return {
       message: 'Post created successfully',
       post: newPost,
     };
+  }
+
+  getPostById(post: IPost) {
+    return post;
   }
 
   async deletePost(post: IPost) {
@@ -112,5 +116,23 @@ export class PostService {
     return {
       message: 'Comment created',
     };
+  }
+
+  async savePost(post: IPost, tokenData: IToken) {
+    if (post.savedBy.some((user) => user.username === tokenData.username)) {
+      await this.prisma.user.update({
+        where: { username: tokenData.username },
+        data: { savedPosts: { disconnect: { id: post.id } } },
+      });
+
+      return { message: 'Post unsaved' };
+    }
+
+    await this.prisma.user.update({
+      where: { username: tokenData.username },
+      data: { savedPosts: { connect: { id: post.id } } },
+    });
+
+    return { message: 'Post saved' };
   }
 }

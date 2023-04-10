@@ -58,7 +58,22 @@ export class PostController {
   @ApiResponse({ status: 401, description: 'Token not provided' })
   @ApiResponse({ status: 498, description: 'Provided invalid token' })
   getPostById(@RequestData('post') post: IPost) {
-    return post;
+    return this.postService.getPostById(post);
+  }
+
+  @Post('/:id/saved-by')
+  @ApiParam({ name: 'id', type: 'string', description: 'Post ID' })
+  @ApiOperation({ summary: 'Save/unsave a post' })
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiResponse({ status: 201, description: 'Post saved/unsaved' })
+  @ApiResponse({ status: 404, description: 'Post not found' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  savePost(
+    @RequestData('post') post: IPost,
+    @RequestData('userDataFromToken') tokenData: IToken,
+  ) {
+    return this.postService.savePost(post, tokenData);
   }
 
   @Post()
@@ -87,7 +102,7 @@ export class PostController {
 
   @Post('/:id/likes')
   @ApiParam({ name: 'id', type: 'string' })
-  @ApiOperation({ summary: 'Like a post' })
+  @ApiOperation({ summary: 'Like a post or remove like' })
   @ApiHeader({ name: 'Authorization', required: true })
   @ApiResponse({ status: 201, description: 'Post liked/unliked' })
   @ApiResponse({ status: 404, description: 'Post not found' })

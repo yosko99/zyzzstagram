@@ -52,6 +52,10 @@ export class PostModule implements NestModule {
           path: '/posts/:id',
           method: RequestMethod.GET,
         },
+        {
+          path: '/posts/:id/saved-by',
+          method: RequestMethod.POST,
+        },
       );
   }
 }
