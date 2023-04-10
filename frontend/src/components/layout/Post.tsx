@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { AiOutlineComment, AiOutlineSend } from 'react-icons/ai';
-import { FaAngleDoubleDown, FaVoteYea } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { FaAngleDoubleDown } from 'react-icons/fa';
 
 import dateFormatter from '../../functions/dateFormatter';
 import IPost from '../../interfaces/IPost';
 import IUser from '../../interfaces/IUser';
+import BookmarkButton from '../buttons/BookmarkButton';
 import LikeButton from '../buttons/LikeButton';
 import PostCommentInput from '../inputs/PostCommentInput';
 import PostComments from '../post/PostComments';
@@ -22,7 +22,6 @@ interface Props {
 
 const Post = ({ user, post, className, showComments }: Props) => {
   const formattedDate = dateFormatter(new Date(post.createdAt));
-  const navigate = useNavigate();
 
   return (
     <section className={`main ${className && className}`}>
@@ -45,7 +44,10 @@ const Post = ({ user, post, className, showComments }: Props) => {
                   <AiOutlineSend role={'button'} className="ms-1" />
                 </div>
                 <div>
-                  <FaVoteYea role={'button'} />
+                  <BookmarkButton
+                    postId={post.id}
+                    savedByUser={post.savedByUser!}
+                  />
                 </div>
               </div>
               <p className="likes">{post._count.likedBy} likes</p>

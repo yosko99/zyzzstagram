@@ -25,7 +25,7 @@ interface Tab {
   href?: string;
 }
 
-const Navigation = () => {
+const MainNavigation = () => {
   const [notifications, setNotifications] = useState<INotification[]>([]);
   const navigate = useNavigate();
 
@@ -104,4 +104,4 @@ const Navigation = () => {
   );
 };
 
-export default Navigation;
+export default MainNavigation;

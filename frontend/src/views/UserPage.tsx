@@ -2,9 +2,6 @@
 import React from 'react';
 
 import { Container, Row, Col, Image } from 'react-bootstrap';
-import { AiFillTags } from 'react-icons/ai';
-import { BsFillGrid3X3GapFill } from 'react-icons/bs';
-import { FaVoteYea } from 'react-icons/fa';
 import { MdOutlineCamera } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -12,7 +9,8 @@ import styled from 'styled-components';
 import FollowButton from '../components/buttons/FollowButton';
 import FollowersButton from '../components/buttons/FollowersButton';
 import FollowingButton from '../components/buttons/FollowingButton';
-import Navigation from '../components/layout/Navigation';
+import MainNavigation from '../components/navigation/MainNavigation';
+import ProfileNavigation from '../components/navigation/ProfileNavigation';
 import PostModalWithArrows from '../components/post/PostModalWithArrows';
 import UserProfilePost from '../components/post/UserProfilePost';
 import {
@@ -50,7 +48,7 @@ const ProfilePage = () => {
 
   return (
     <div className="d-flex flex-lg-row flex-column">
-      <Navigation />
+      <MainNavigation />
       <Container className="mt-3 d-flex justify-content-center">
         <ProfileContainer>
           <Row>
@@ -86,29 +84,7 @@ const ProfilePage = () => {
           </Row>
           <Row className="mt-3">
             <hr className="m-0 mx-2" />
-            <div className="text-uppercase d-flex justify-content-around justify-content-lg-center">
-              <div className="me-3 mt-2">
-                <div role={'button'} className="d-block d-lg-none fs-2">
-                  <BsFillGrid3X3GapFill />
-                </div>
-                <span role={'button'} className="d-none d-lg-block">
-                  Posts
-                </span>
-              </div>
-              <div className="mx-3 mt-2">
-                <div role={'button'} className="d-block d-lg-none fs-2">
-                  <FaVoteYea />
-                </div>
-              </div>
-              <div className="ms-3 mt-2">
-                <div role={'button'} className="d-block d-lg-none fs-2">
-                  <AiFillTags />
-                </div>
-                <span role={'button'} className="d-none d-lg-block">
-                  Tagged
-                </span>
-              </div>
-            </div>
+            <ProfileNavigation />
           </Row>
           <Row className="mt-3">
             {user.posts?.length === 0 ? (

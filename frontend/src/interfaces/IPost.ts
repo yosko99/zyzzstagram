@@ -19,6 +19,7 @@ interface IPost {
     savedBy: number;
   };
   likedByUser?: boolean;
+  savedByUser?: boolean;
 }
 
 export default IPost;

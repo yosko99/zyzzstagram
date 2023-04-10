@@ -2,8 +2,8 @@ import React from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import Navigation from '../components/layout/Navigation';
 import Post from '../components/layout/Post';
+import MainNavigation from '../components/navigation/MainNavigation';
 import { getPostRoute } from '../constants/apiRoutes';
 import useFetch from '../hooks/useFetch';
 import IPost from '../interfaces/IPost';
@@ -26,7 +26,7 @@ const PostPage = () => {
 
   return (
     <div className="d-flex flex-lg-row flex-column">
-      <Navigation />
+      <MainNavigation />
       <Post post={post} user={post.author} className="mt-4" showComments />
     </div>
   );

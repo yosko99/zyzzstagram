@@ -67,6 +67,10 @@ export class PostService {
             id: true,
           },
         },
+        savedBy: {
+          where: { username },
+          select: { username: true },
+        },
       },
       orderBy: { createdAt: 'desc' },
     });
@@ -74,6 +78,7 @@ export class PostService {
     return posts.map((post) => ({
       ...post,
       likedByUser: post.likedBy.length > 0,
+      savedByUser: post.savedBy.length > 0,
     }));
   }
 

@@ -29,6 +29,9 @@ export class CheckExistingPostByIdMiddleware implements NestMiddleware {
           },
         },
         savedBy: {
+          where: {
+            username,
+          },
           select: { username: true },
         },
         likedBy: {
@@ -57,7 +60,11 @@ export class CheckExistingPostByIdMiddleware implements NestMiddleware {
       });
     }
 
-    req.post = { ...post, likedByUser: post.likedBy?.length > 0 };
+    req.post = {
+      ...post,
+      likedByUser: post.likedBy?.length > 0,
+      savedByUser: post.likedBy?.length > 0,
+    };
     next();
   }
 }

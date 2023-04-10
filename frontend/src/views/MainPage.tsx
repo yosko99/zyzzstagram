@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Navigation from '../components/layout/Navigation';
+import MainNavigation from '../components/navigation/MainNavigation';
 import useAuth from '../hooks/useAuth';
 import MainPageTab from './tabs/MainPageTab';
 
@@ -9,7 +9,7 @@ const MainPage = () => {
 
   return (
     <div className="d-flex flex-lg-row flex-column">
-      <Navigation />
+      <MainNavigation />
       <MainPageTab />
     </div>
   );

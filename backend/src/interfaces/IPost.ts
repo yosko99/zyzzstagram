@@ -14,6 +14,7 @@ interface IPost {
   createdAt?: Date;
   updatedAt?: Date;
   likedByUser?: boolean;
+  savedByUser?: boolean;
 }
 
 export default IPost;

@@ -18,6 +18,8 @@ export const getPostRoute = (id: string) => `${getPostsRoute()}${id}`;
 export const getLikePostRoute = (id: string) => `${getPostsRoute()}${id}/likes`;
 export const getCommentPostRoute = (id: string) =>
   `${getPostsRoute()}${id}/comments`;
+export const getPostSavedByRoute = (id: string) =>
+  `${getPostsRoute()}${id}/saved-by`;
 
 // NOTIFICATIONS
 export const getNotificationsRoute = () => API_PREFIX + 'notifications/';
