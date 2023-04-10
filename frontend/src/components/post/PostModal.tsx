@@ -28,14 +28,9 @@ const PostModal = ({ post, activateButtonElement }: Props) => {
     refetch();
   };
 
-  const closeModal = () => {
-    window.history.back();
-  };
-
   return (
     <CustomModal
       activateButtonOnClick={handleClick}
-      onCloseFunction={closeModal}
       modalBody={
         postData === undefined ? (
           <LoadingSpinner height="25vh" />

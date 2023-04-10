@@ -1,26 +1,23 @@
 /* eslint-disable multiline-ternary */
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Container, Row, Col, Image } from 'react-bootstrap';
-import { MdOutlineCamera } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import FollowButton from '../components/buttons/FollowButton';
 import FollowersButton from '../components/buttons/FollowersButton';
 import FollowingButton from '../components/buttons/FollowingButton';
 import MainNavigation from '../components/navigation/MainNavigation';
 import ProfileNavigation from '../components/navigation/ProfileNavigation';
-import PostModalWithArrows from '../components/post/PostModalWithArrows';
-import UserProfilePost from '../components/post/UserProfilePost';
+import UserButtons from '../components/user/UserButtons';
 import {
   PUBLIC_IMAGES_PREFIX,
   getUserByUsernameRoute
 } from '../constants/apiRoutes';
 import useFetch from '../hooks/useFetch';
 import IUser from '../interfaces/IUser';
-import CenteredItems from '../styles/CenteredItems';
 import LoadingPage from './LoadingPage';
+import ProfilePagePostTab from './tabs/profilePage/ProfilePagePostTab';
 
 const ProfileContainer = styled.div`
   width: 100%;
@@ -39,6 +36,7 @@ const ProfilePage = () => {
     true,
     true
   );
+  const [currentTab, setCurrentTab] = useState<React.ReactNode>(null);
 
   if (isLoading) {
     return <LoadingPage />;
@@ -66,13 +64,7 @@ const ProfilePage = () => {
             <Col xs={8}>
               <div className="d-flex mt-2 flex-wrap">
                 <p className="fs-4 m-0 me-3 text-break">{user.username}</p>
-                <FollowButton
-                  isFollowedByRequester={user.isFollowedByRequester}
-                  username={user.username}
-                />
-                <p role="button" className="bg-light m-0 rounded p-1 ms-2">
-                  Message
-                </p>
+                <UserButtons user={user} />
               </div>
               <div className="d-flex w-100 justify-content-around justify-content-lg-start my-3">
                 <p className="me-lg-3 m-0">{user._count?.posts} posts</p>
@@ -84,24 +76,16 @@ const ProfilePage = () => {
           </Row>
           <Row className="mt-3">
             <hr className="m-0 mx-2" />
-            <ProfileNavigation />
+            <ProfileNavigation user={user} setCurrentTab={setCurrentTab} />
           </Row>
           <Row className="mt-3">
-            {user.posts?.length === 0 ? (
-              <CenteredItems flexColumn style={{ height: '50vh' }}>
-                <MdOutlineCamera className="display-4" />
-                <p className="display-5">No posts yet</p>
-              </CenteredItems>
+            {currentTab === null ? (
+              <ProfilePagePostTab
+                isSameAsRequester={user.isSameAsRequester}
+                posts={user.posts!}
+              />
             ) : (
-              user.posts?.map((post, index: number) => (
-                <Col xs={4} key={index} className="p-1">
-                  <PostModalWithArrows
-                    currentPost={post}
-                    posts={user.posts!}
-                    activateButtonElement={<UserProfilePost post={post} />}
-                  />
-                </Col>
-              ))
+              currentTab
             )}
           </Row>
         </ProfileContainer>

@@ -20,6 +20,7 @@ const MainPageTab = () => {
     createdAt: new Date(),
     updatedAt: new Date(),
     id: 'asdaads',
+    isSameAsRequester: false,
     imageURL:
       'https://cdn.marica.bg/images/marica.bg/967/1200_azis-shashna-s-priznania-za-jivota-i-karierata-si-video-1.jpg'
   };

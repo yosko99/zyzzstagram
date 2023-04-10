@@ -33,6 +33,7 @@ interface IUser {
     stories: number;
   };
   isFollowedByRequester: boolean;
+  isSameAsRequester: boolean;
 }
 
 export default IUser;

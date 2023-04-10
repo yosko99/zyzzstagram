@@ -44,10 +44,6 @@ const PostModalWithArrows = ({
     refetch();
   };
 
-  const closeModal = () => {
-    window.history.back();
-  };
-
   const handlePrevClick = () => {
     if (postIndex > 0) {
       setPostIndex(postIndex - 1);
@@ -67,7 +63,6 @@ const PostModalWithArrows = ({
   return (
     <CustomModal
       activateButtonOnClick={handleClick}
-      onCloseFunction={closeModal}
       modalBody={
         postData === undefined ? (
           <LoadingSpinner height="25vh" />

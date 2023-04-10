@@ -129,7 +129,10 @@ export class UserService {
       },
     });
 
-    return user;
+    return {
+      ...user,
+      isSameAsRequester: true,
+    };
   }
 
   async getUserByUsername(user: IUser, tokenData: IToken) {
@@ -140,6 +143,7 @@ export class UserService {
     return {
       ...user,
       isFollowedByRequester,
+      isSameAsRequester: user.username === tokenData.username,
     };
   }
 
