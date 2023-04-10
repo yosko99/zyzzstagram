@@ -33,10 +33,16 @@ export class UserModule implements NestModule {
       method: RequestMethod.DELETE,
     });
 
-    consumer.apply(VerifyJWTMiddleware).forRoutes({
-      path: '/users/current',
-      method: RequestMethod.GET,
-    });
+    consumer.apply(VerifyJWTMiddleware).forRoutes(
+      {
+        path: '/users/current',
+        method: RequestMethod.GET,
+      },
+      {
+        path: '/users/current/saved-posts',
+        method: RequestMethod.GET,
+      },
+    );
 
     consumer
       .apply(VerifyJWTMiddleware, CheckExistingUserByUsernameMiddleware)

@@ -190,4 +190,22 @@ describe('Test users API', () => {
       await userService.deleteUser(createdUserResult.user);
     });
   });
+
+  describe('test getCurrentUserSavedPosts service', () => {
+    test('should get current user saved posts', async () => {
+      const createdUserResult = await userService.createUser(
+        createUserDto,
+        filename,
+      );
+
+      const response = await userService.getCurrentUserSavedPosts({
+        username: createUserDto.username,
+        password: createUserDto.password,
+      });
+
+      expect(response).toEqual(expect.any(Array));
+
+      await userService.deleteUser(createdUserResult.user);
+    });
+  });
 });

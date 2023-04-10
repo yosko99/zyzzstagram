@@ -114,8 +114,6 @@ export class UserService {
       select: {
         username: true,
         imageURL: true,
-        following: true,
-        followers: true,
         description: true,
         posts: {
           select: {
@@ -133,6 +131,23 @@ export class UserService {
       ...user,
       isSameAsRequester: true,
     };
+  }
+
+  async getCurrentUserSavedPosts({ username }: IToken) {
+    const { savedPosts } = await this.prisma.user.findUnique({
+      where: { username },
+      select: {
+        savedPosts: {
+          select: {
+            imageURL: true,
+            id: true,
+            _count: { select: { comments: true, likedBy: true } },
+          },
+        },
+      },
+    });
+
+    return savedPosts;
   }
 
   async getUserByUsername(user: IUser, tokenData: IToken) {

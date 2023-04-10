@@ -63,6 +63,19 @@ export class UserController {
     return this.userService.getCurrentUser(tokenData);
   }
 
+  @Get('/current/saved-posts')
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiOperation({ summary: 'Get current user saved posts' })
+  @ApiResponse({ status: 200, description: 'Receive saved posts' })
+  @ApiResponse({ status: 404, description: 'Non existent user' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  getCurrentUserSavedPosts(
+    @RequestData('userDataFromToken') tokenData: IToken,
+  ) {
+    return this.userService.getCurrentUserSavedPosts(tokenData);
+  }
+
   @Get('/:username/followers')
   @ApiParam({ name: 'username', type: 'string' })
   @ApiHeader({ name: 'Authorization', required: true })
