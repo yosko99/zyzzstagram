@@ -22,7 +22,9 @@ const BookmarkButton = ({ savedByUser, postId }: Props) => {
       {
         onSuccess: () => {
           savedByUser = !savedByUser;
-          queryClient.invalidateQueries();
+          queryClient.refetchQueries({ queryKey: `post-${postId}` });
+          queryClient.invalidateQueries({ queryKey: 'posts' });
+          queryClient.invalidateQueries({ queryKey: 'saved-posts' });
         }
       }
     );

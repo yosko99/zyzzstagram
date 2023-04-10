@@ -43,9 +43,9 @@ export class CheckExistingPostByIdMiddleware implements NestMiddleware {
           },
         },
         comments: {
-          include: {
-            author: true,
-            likedBy: true,
+          select: {
+            createdAt: true,
+            author: { select: { username: true, imageURL: true } },
             _count: { select: { likedBy: true } },
           },
           orderBy: { createdAt: 'desc' },
@@ -63,7 +63,7 @@ export class CheckExistingPostByIdMiddleware implements NestMiddleware {
     req.post = {
       ...post,
       likedByUser: post.likedBy?.length > 0,
-      savedByUser: post.likedBy?.length > 0,
+      savedByUser: post.savedBy?.length > 0,
     };
     next();
   }
