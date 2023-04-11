@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 
 import { Container, Row, Col, Image } from 'react-bootstrap';
-import styled from 'styled-components';
 
 import FollowersButton from '../components/buttons/FollowersButton';
 import FollowingButton from '../components/buttons/FollowingButton';
@@ -15,16 +14,9 @@ import {
 } from '../constants/apiRoutes';
 import useFetch from '../hooks/useFetch';
 import IUser from '../interfaces/IUser';
+import ProfileContainer from '../styles/ProfileContainerStyle';
 import LoadingPage from './LoadingPage';
 import ProfilePagePostTab from './tabs/profilePage/ProfilePagePostTab';
-
-const ProfileContainer = styled.div`
-  width: 100%;
-
-  @media (min-width: 1000px) {
-    width: 60%;
-  }
-`;
 
 const ProfilePage = () => {
   const { data, isLoading, error } = useFetch(

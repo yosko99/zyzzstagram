@@ -41,7 +41,6 @@ const PostModalWithArrows = ({
 
   const handleClick = () => {
     window.history.pushState('', '', `/post/${post.id}`);
-    refetch();
   };
 
   const handlePrevClick = () => {

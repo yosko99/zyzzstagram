@@ -53,12 +53,19 @@ export class PostService {
     };
   }
 
-  async getAllPosts({ username }: IToken) {
+  async getPosts({ username }: IToken, explore?: 'true' | 'false') {
+    if (explore !== undefined && explore === 'true') {
+      return this.getExplorePosts();
+    }
+
+    return this.getAllPosts(username);
+  }
+
+  private async getAllPosts(username: string) {
     const posts = await this.prisma.post.findMany({
       include: {
         author: { select: { username: true, imageURL: true } },
         _count: { select: { comments: true, likedBy: true } },
-        comments: true,
         likedBy: {
           where: {
             username,
@@ -139,5 +146,37 @@ export class PostService {
     });
 
     return { message: 'Post saved' };
+  }
+
+  private async getExplorePosts() {
+    const usersWithFirstPosts = await this.prisma.user.findMany({
+      include: {
+        posts: {
+          orderBy: { createdAt: 'asc' },
+          take: 1,
+          select: {
+            imageURL: true,
+            id: true,
+            _count: { select: { comments: true, likedBy: true } },
+          },
+        },
+      },
+    });
+
+    const reels = [];
+
+    for (let i = 0; i < usersWithFirstPosts.length; i++) {
+      const post = usersWithFirstPosts[i].posts[0];
+
+      if (post !== undefined) {
+        reels.push({
+          id: post.id,
+          imageURL: post.imageURL,
+          _count: post._count,
+        });
+      }
+    }
+
+    return reels;
   }
 }

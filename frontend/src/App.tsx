@@ -9,6 +9,7 @@ import useOnConnectedSocket from './hooks/sockets/useOnConnectedSocket';
 import useOnNotification from './hooks/sockets/useOnNotification';
 import useToken from './hooks/useToken';
 import GlobalCSS from './styles/global.css';
+import ExplorePage from './views/ExplorePage';
 import LoginPage from './views/LoginPage';
 import MainPage from './views/MainPage';
 import PostPage from './views/PostPage';
@@ -40,6 +41,7 @@ const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/post/:id" element={<PostPage />} />
+          <Route path="/explore" element={<ExplorePage />} />
         </Routes>
       </TokenContext.Provider>
     </SocketContext.Provider>

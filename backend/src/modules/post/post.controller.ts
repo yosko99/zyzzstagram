@@ -7,6 +7,7 @@ import {
   HttpCode,
   ParseFilePipe,
   Post,
+  Query,
   UploadedFile,
   UseInterceptors,
   UsePipes,
@@ -18,6 +19,7 @@ import {
   ApiHeader,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -41,12 +43,21 @@ export class PostController {
 
   @Get('/')
   @ApiOperation({ summary: 'Get all posts' })
+  @ApiQuery({
+    name: 'explore',
+    type: 'boolean',
+    required: false,
+    description: 'Flag if route should get explore posts',
+  })
   @ApiHeader({ name: 'Authorization', required: true })
   @ApiResponse({ status: 200, description: 'Receive posts' })
   @ApiResponse({ status: 401, description: 'Token not provided' })
   @ApiResponse({ status: 498, description: 'Provided invalid token' })
-  getAllPosts(@RequestData('userDataFromToken') tokenData: IToken) {
-    return this.postService.getAllPosts(tokenData);
+  getPosts(
+    @RequestData('userDataFromToken') tokenData: IToken,
+    @Query('explore') explore: 'true' | 'false',
+  ) {
+    return this.postService.getPosts(tokenData, explore);
   }
 
   @Get('/:id')
