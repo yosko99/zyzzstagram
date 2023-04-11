@@ -1,15 +1,13 @@
 /* eslint-disable multiline-ternary */
 import React from 'react';
 
-import { Col } from 'react-bootstrap';
 import { MdOutlineCamera } from 'react-icons/md';
 
 import IPost from '../../interfaces/IPost';
 import CenteredItems from '../../styles/CenteredItems';
 import UploadPostForm from '../forms/UploadPostForm';
 import CustomModal from '../utils/CustomModal';
-import PostModalWithArrows from './PostModalWithArrows';
-import UserProfilePost from './UserProfilePost';
+import PostsWithArrows from './PostsWithArrows';
 
 interface Props {
   posts: IPost[];
@@ -26,15 +24,7 @@ const PostsThumbnailGrid = ({ posts, isSameAsRequester }: Props) => {
             <p className="display-5">No posts yet</p>
           </CenteredItems>
         ) : (
-          posts?.map((post, index: number) => (
-            <Col xs={4} key={index} className="p-1">
-              <PostModalWithArrows
-                currentPost={post}
-                posts={posts!}
-                activateButtonElement={<UserProfilePost post={post} />}
-              />
-            </Col>
-          ))
+          <PostsWithArrows posts={posts!} />
         )
       ) : posts?.length === 0 ? (
         <CenteredItems flexColumn style={{ height: '50vh' }}>
@@ -49,15 +39,7 @@ const PostsThumbnailGrid = ({ posts, isSameAsRequester }: Props) => {
           />
         </CenteredItems>
       ) : (
-        posts?.map((post, index: number) => (
-          <Col xs={4} key={index} className="p-1">
-            <PostModalWithArrows
-              currentPost={post}
-              posts={posts!}
-              activateButtonElement={<UserProfilePost post={post} />}
-            />
-          </Col>
-        ))
+        <PostsWithArrows posts={posts!} />
       )}
     </>
   );
