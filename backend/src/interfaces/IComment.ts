@@ -10,6 +10,7 @@ interface IComment {
   postId?: string;
   likedBy?: IUser[];
   createdAt?: Date;
+  likedByUser?: boolean;
 }
 
 export default IComment;

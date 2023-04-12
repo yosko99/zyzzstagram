@@ -3,69 +3,82 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 
 import INotification from '../../interfaces/INotification';
+import IComment from '../../interfaces/IComment';
 import IToken from '../../interfaces/IToken';
+import IPost from '../../interfaces/IPost';
+
+type TypeOfLike = 'post' | 'comment';
 
 @Injectable()
 export class NotificationService {
   constructor(private prisma: PrismaService) {}
 
   public async createLikeNotification(
-    likedByUser: boolean,
-    postId: string,
+    id: string,
     username: string,
+    typeOfLike: TypeOfLike,
   ) {
-    const notificationAuthor = await this.prisma.user.findUnique({
-      where: { username },
-    });
-    let message = '';
+    const { author } = await this.getAuthor(typeOfLike, id);
 
-    const postCreatorUsername = await this.getPostCreatorUsername(
-      postId,
-      notificationAuthor?.username,
-    );
-
-    if (postCreatorUsername === null) {
+    if (author === null || author.username === username) {
       return {
         message: 'No action needed (same user)',
       };
     }
 
-    let notification = await this.checkAlreadyCreatedNotification(
-      username,
-      postId,
-      '',
-    );
+    let notification;
 
-    // Update notification
+    switch (typeOfLike) {
+      case 'post':
+        notification = await this.checkAlreadyCreatedNotification({
+          senderUsername: username,
+          operatorAND: [
+            { postId: id },
+            { receiver: { id: author.id } },
+            { commentId: null },
+          ],
+        });
+
+        break;
+      case 'comment':
+        const post = await this.prisma.post.findFirst({
+          where: {
+            comments: { some: { id } },
+          },
+        });
+        notification = await this.checkAlreadyCreatedNotification({
+          senderUsername: username,
+          operatorAND: [
+            { postId: post.id },
+            { commentId: id },
+            { receiver: { id: author.id } },
+          ],
+        });
+        break;
+    }
+
+    const message = this.getLikeNotificationMessage(typeOfLike, username);
+    // Delete notification
     if (notification !== null) {
-      if (!likedByUser) {
-        message = `${notificationAuthor.username} unliked your post.`;
-      } else {
-        message = `${notificationAuthor.username} liked your post.`;
-      }
-
-      notification = await this.prisma.notification.update({
+      await this.prisma.notification.delete({
         where: { id: notification.id },
-        data: { message },
       });
+      return {
+        message: 'Notification deleted (removed like)',
+      };
       // Create notification
     } else {
-      if (likedByUser) {
-        message = `${notificationAuthor.username} liked your post.`;
-      } else {
-        message = `${notificationAuthor.username} unliked your post.`;
-      }
-
-      notification = await this.prisma.notification.create({
+      const createInput = {
         data: {
           receiver: {
-            connect: { username: postCreatorUsername },
+            connect: { username: author.username },
           },
           sender: { connect: { username } },
           message,
-          post: { connect: { id: postId } },
+          ...this.getConnectionObject(typeOfLike, id),
         },
-      });
+      };
+      notification = await this.prisma.notification.create(createInput);
     }
 
     return {
@@ -74,42 +87,61 @@ export class NotificationService {
     };
   }
 
+  private getConnectionObject(typeOfLike: TypeOfLike, id: string) {
+    switch (typeOfLike) {
+      case 'post':
+        return { post: { connect: { id } } };
+      case 'comment':
+        return { comment: { connect: { id } } };
+    }
+  }
+
+  private async getAuthor(
+    typeOfLike: TypeOfLike,
+    id: string,
+  ): Promise<IPost | IComment | null> {
+    switch (typeOfLike) {
+      case 'post':
+        return await this.getPostAuthor(id);
+      case 'comment':
+        return await this.getCommentAuthor(id);
+    }
+  }
+
+  private getLikeNotificationMessage(typeOfLike: TypeOfLike, username: string) {
+    switch (typeOfLike) {
+      case 'post':
+        return `${username} liked your post.`;
+      case 'comment':
+        return `${username} liked your comment.`;
+    }
+  }
+
   public async createFollowNotification(
-    followedByUser: boolean,
     receiverUsername: string,
     username: string,
   ) {
-    const notificationAuthor = await this.prisma.user.findUnique({
-      where: { username },
+    let notification = await this.checkAlreadyCreatedNotification({
+      senderUsername: username,
+      operatorAND: [
+        { receiver: { username: receiverUsername } },
+        { commentId: null },
+        { postId: null },
+      ],
     });
-    let message = '';
 
-    let notification = await this.checkAlreadyCreatedNotification(
-      username,
-      '',
-      receiverUsername,
-    );
+    const message = `${username} followed you.`;
 
-    // Update notification
+    // Delete notification
     if (notification !== null) {
-      if (!followedByUser) {
-        message = `${notificationAuthor.username} unfollowed you.`;
-      } else {
-        message = `${notificationAuthor.username} followed you.`;
-      }
-
-      notification = await this.prisma.notification.update({
+      notification = await this.prisma.notification.delete({
         where: { id: notification.id },
-        data: { message },
       });
+      return {
+        message: 'Notification deleted (user unfollowed)',
+      };
       // Create notification
     } else {
-      if (followedByUser) {
-        message = `${notificationAuthor.username} followed you.`;
-      } else {
-        message = `${notificationAuthor.username} unfollowed you.`;
-      }
-
       notification = await this.prisma.notification.create({
         data: {
           receiver: {
@@ -127,29 +159,28 @@ export class NotificationService {
     };
   }
 
-  public async createCommentNotification(postId: string, username: string) {
-    const commentAuthor = await this.prisma.user.findUnique({
-      where: { username },
-    });
-    const message = `${commentAuthor.username} commented on your post.`;
+  public async createCommentNotification(
+    postId: string,
+    commentId: string,
+    username: string,
+  ) {
+    const { author } = await this.getPostAuthor(postId);
 
-    const postCreatorUsername = await this.getPostCreatorUsername(
-      postId,
-      commentAuthor.username,
-    );
-
-    if (postCreatorUsername === null) {
+    if (author === null || author.username === username) {
       return {
         message: 'No action needed (same user)',
       };
     }
 
+    const message = `${username} commented on your post.`;
+
     const createdNotification = await this.prisma.notification.create({
       data: {
         receiver: {
-          connect: { username: postCreatorUsername },
+          connect: { username: author.username },
         },
         sender: { connect: { username } },
+        comment: { connect: { id: commentId } },
         post: { connect: { id: postId } },
         message,
       },
@@ -197,27 +228,31 @@ export class NotificationService {
     };
   }
 
-  private async getPostCreatorUsername(
-    postId: string,
-    authorUsername: string,
-  ): Promise<string | null> {
+  private async getPostAuthor(postId: string): Promise<IPost | null> {
     const post = await this.prisma.post.findUnique({
       where: { id: postId },
       include: { author: { select: { username: true } } },
     });
 
-    if (post?.author.username === authorUsername) {
-      return null;
-    }
-
-    return post.author.username;
+    return post;
   }
 
-  private async checkAlreadyCreatedNotification(
-    senderUsername: string,
-    postId: string,
-    recieverUsername: string,
-  ): Promise<INotification | null> {
+  private async getCommentAuthor(commentId: string): Promise<IComment | null> {
+    const comment = await this.prisma.comment.findUnique({
+      where: { id: commentId },
+      include: { author: { select: { username: true } } },
+    });
+
+    return comment;
+  }
+
+  private async checkAlreadyCreatedNotification({
+    senderUsername,
+    operatorAND,
+  }: {
+    senderUsername: string;
+    operatorAND: Array<unknown>;
+  }): Promise<INotification | null> {
     const linkedNotification = await this.prisma.notification.findFirst({
       where: {
         AND: [
@@ -226,9 +261,7 @@ export class NotificationService {
               username: senderUsername,
             },
           },
-          {
-            OR: [{ postId }, { receiver: { username: recieverUsername } }],
-          },
+          ...operatorAND,
         ],
       },
     });

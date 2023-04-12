@@ -75,17 +75,16 @@ export class UserService {
   }
 
   async followUser(user: IUser, { username }: IToken) {
+    await this.notificationService.createFollowNotification(
+      user.username,
+      username,
+    );
+
     if (user.followers.some((user) => user.username === username)) {
       await this.prisma.user.update({
         where: { id: user.id },
         data: { followers: { disconnect: { username } } },
       });
-
-      await this.notificationService.createFollowNotification(
-        false,
-        user.username,
-        username,
-      );
 
       return {
         message: 'User unfollowed',
@@ -96,12 +95,6 @@ export class UserService {
       where: { id: user.id },
       data: { followers: { connect: { username } } },
     });
-
-    await this.notificationService.createFollowNotification(
-      true,
-      user.username,
-      username,
-    );
 
     return {
       message: 'Followed user',

@@ -13,6 +13,7 @@ interface IComment {
   _count: {
     likedBy: number;
   };
+  likedByUser?: boolean;
 }
 
 export default IComment;

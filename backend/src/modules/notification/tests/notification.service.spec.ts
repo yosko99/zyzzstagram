@@ -67,9 +67,9 @@ describe('Test notifications API', () => {
 
       const createdNotification =
         await notificationService.createLikeNotification(
-          true,
           createdPost.post.id,
           secondUserTokenData.username,
+          'post',
         );
 
       expect(createdNotification.message).toEqual('Like notification created');
@@ -82,7 +82,7 @@ describe('Test notifications API', () => {
       await userService.deleteUser(createdSecondUser.user);
     });
 
-    it('should create notification successfully with unliked post', async () => {
+    it('should delete notification from liked post', async () => {
       const {
         createdFirstUser,
         createdSecondUser,
@@ -90,18 +90,22 @@ describe('Test notifications API', () => {
         createdPost,
       } = await initMockData();
 
+      await notificationService.createLikeNotification(
+        createdPost.post.id,
+        secondUserTokenData.username,
+        'post',
+      );
+
       const createdNotification =
         await notificationService.createLikeNotification(
-          false,
           createdPost.post.id,
           secondUserTokenData.username,
+          'post',
         );
 
-      expect(createdNotification.message).toEqual('Like notification created');
-      expect(createdNotification.notification.message).toEqual(
-        `${createdSecondUser.user.username} unliked your post.`,
+      expect(createdNotification.message).toEqual(
+        'Notification deleted (removed like)',
       );
-      expect(createdNotification.notification).toBeTruthy();
 
       await userService.deleteUser(createdFirstUser.user);
       await userService.deleteUser(createdSecondUser.user);
@@ -117,9 +121,9 @@ describe('Test notifications API', () => {
 
       const createdNotification =
         await notificationService.createLikeNotification(
-          false,
           createdPost.post.id,
           firstUserTokenData.username,
+          'post',
         );
 
       expect(createdNotification.message).toEqual(
@@ -140,9 +144,24 @@ describe('Test notifications API', () => {
         createdPost,
       } = await initMockData();
 
+      const comment = await prisma.comment.create({
+        data: {
+          content: 'test',
+          author: {
+            connect: { username: createdFirstUser.user.username },
+          },
+          post: {
+            connect: {
+              id: createdPost.post.id,
+            },
+          },
+        },
+      });
+
       const createdNotification =
         await notificationService.createCommentNotification(
           createdPost.post.id,
+          comment.id,
           secondUserTokenData.username,
         );
 
@@ -163,9 +182,24 @@ describe('Test notifications API', () => {
         createdPost,
       } = await initMockData();
 
+      const comment = await prisma.comment.create({
+        data: {
+          content: 'test',
+          author: {
+            connect: { username: createdFirstUser.user.username },
+          },
+          post: {
+            connect: {
+              id: createdPost.post.id,
+            },
+          },
+        },
+      });
+
       const createdNotification =
         await notificationService.createCommentNotification(
           createdPost.post.id,
+          comment.id,
           firstUserTokenData.username,
         );
 
@@ -187,9 +221,24 @@ describe('Test notifications API', () => {
         createdPost,
       } = await initMockData();
 
+      const comment = await prisma.comment.create({
+        data: {
+          content: 'test',
+          author: {
+            connect: { username: createdFirstUser.user.username },
+          },
+          post: {
+            connect: {
+              id: createdPost.post.id,
+            },
+          },
+        },
+      });
+
       const createdNotification =
         await notificationService.createCommentNotification(
           createdPost.post.id,
+          comment.id,
           secondUserTokenData.username,
         );
 

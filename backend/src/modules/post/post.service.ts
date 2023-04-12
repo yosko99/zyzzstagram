@@ -2,14 +2,14 @@ import { Injectable } from '@nestjs/common';
 
 import { CreatePostDto } from '../../dto/post.dto';
 
-import IToken from '../../interfaces/IToken';
-
+import { NotificationService } from '../notification/notification.service';
 import { PrismaService } from '../../prisma/prisma.service';
 
+import IComment from '../../interfaces/IComment';
+import IToken from '../../interfaces/IToken';
 import IPost from '../../interfaces/IPost';
 
 import deleteImage from '../../functions/deleteImage';
-import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class PostService {
@@ -90,13 +90,13 @@ export class PostService {
   }
 
   async likePost(post: IPost, { username }: IToken) {
+    this.notificationService.createLikeNotification(post.id, username, 'post');
+
     if (post.likedBy.some((user) => user.username === username)) {
       await this.prisma.post.update({
         where: { id: post.id },
         data: { likedBy: { disconnect: { username } } },
       });
-
-      this.notificationService.createLikeNotification(false, post.id, username);
 
       return {
         message: 'Removed like',
@@ -108,22 +108,42 @@ export class PostService {
       data: { likedBy: { connect: { username } } },
     });
 
-    this.notificationService.createLikeNotification(true, post.id, username);
-
     return {
       message: 'Post liked',
     };
   }
 
+  async likeComment(comment: IComment, { username }: IToken) {}
+
   async commentPost(post: IPost, content: string, { username }: IToken) {
-    await this.prisma.post.update({
-      where: { id: post.id },
+    const newComment = await this.prisma.comment.create({
       data: {
-        comments: { create: { content, author: { connect: { username } } } },
+        content,
+        author: {
+          connect: { username },
+        },
+        post: {
+          connect: { id: post.id },
+        },
       },
     });
 
-    await this.notificationService.createCommentNotification(post.id, username);
+    await this.prisma.post.update({
+      where: { id: post.id },
+      data: {
+        comments: {
+          connect: {
+            id: newComment.id,
+          },
+        },
+      },
+    });
+
+    await this.notificationService.createCommentNotification(
+      post.id,
+      newComment.id,
+      username,
+    );
 
     return {
       message: 'Comment created',

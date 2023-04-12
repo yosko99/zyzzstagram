@@ -4,7 +4,7 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-import { CheckExistingPostByIdMiddleware } from 'src/middleware/post/checkExistingPostById.middleware';
+import { CheckExistingPostByIdMiddlewarePopulated } from 'src/middleware/post/checkExistingPostByIdPopulated.middleware';
 import { VerifyJWTMiddleware } from 'src/middleware/utils/verifyJWT.middleware';
 
 import { PrismaService } from '../../prisma/prisma.service';
@@ -32,13 +32,13 @@ export class PostModule implements NestModule {
       },
     );
 
-    consumer.apply(CheckExistingPostByIdMiddleware).forRoutes({
+    consumer.apply(CheckExistingPostByIdMiddlewarePopulated).forRoutes({
       path: '/posts/:id',
       method: RequestMethod.DELETE,
     });
 
     consumer
-      .apply(VerifyJWTMiddleware, CheckExistingPostByIdMiddleware)
+      .apply(VerifyJWTMiddleware, CheckExistingPostByIdMiddlewarePopulated)
       .forRoutes(
         {
           path: '/posts/:id/likes',

@@ -33,6 +33,7 @@ import { PostService } from './post.service';
 import { CreateCommentDto } from '../../dto/comment.dto';
 import { CreatePostDto } from '../../dto/post.dto';
 
+import IComment from '../../interfaces/IComment';
 import IToken from '../../interfaces/IToken';
 import IPost from '../../interfaces/IPost';
 
@@ -146,6 +147,23 @@ export class PostController {
       createCommentDto.content,
       tokenData,
     );
+  }
+
+  @Post('/:id/comments/:commentId/likes')
+  @ApiParam({ name: 'id', type: 'string', description: 'Post ID' })
+  @ApiParam({ name: 'commentId', type: 'string', description: 'Comment ID' })
+  @ApiOperation({ summary: 'Likes a post comment' })
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiResponse({ status: 201, description: 'Comment liked/unliked' })
+  @ApiResponse({ status: 404, description: 'Post not found' })
+  @ApiResponse({ status: 404, description: 'Comment not found' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  likeComment(
+    @RequestData('comment') comment: IComment,
+    @RequestData('userDataFromToken') tokenData: IToken,
+  ) {
+    return this.postService.likeComment(comment, tokenData);
   }
 
   @Delete('/:id')

@@ -148,7 +148,7 @@ describe('Test users API', () => {
 
       const followUserResult = await userService.followUser(
         createdUserResult.user,
-        { username: 'test', password: 'test' },
+        { username: createdUserResult.user.username, password: 'test' },
       );
 
       expect(followUserResult.message).toEqual('Followed user');

@@ -3,16 +3,16 @@ import { Request, Response } from 'express';
 
 import { PrismaService } from '../../../prisma/prisma.service';
 
-import { CheckExistingPostByIdMiddleware } from '../checkExistingPostById.middleware';
+import { CheckExistingPostByIdMiddlewarePopulated } from '../checkExistingPostByIdPopulated.middleware';
 
-describe('test CheckExistingPostById middleware', () => {
-  let middleware: CheckExistingPostByIdMiddleware;
+describe('test CheckExistingPostByIdPopulated middleware', () => {
+  let middleware: CheckExistingPostByIdMiddlewarePopulated;
   let prismaService: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        CheckExistingPostByIdMiddleware,
+        CheckExistingPostByIdMiddlewarePopulated,
         {
           provide: PrismaService,
           useValue: {
@@ -24,8 +24,8 @@ describe('test CheckExistingPostById middleware', () => {
       ],
     }).compile();
 
-    middleware = module.get<CheckExistingPostByIdMiddleware>(
-      CheckExistingPostByIdMiddleware,
+    middleware = module.get<CheckExistingPostByIdMiddlewarePopulated>(
+      CheckExistingPostByIdMiddlewarePopulated,
     );
     prismaService = module.get<PrismaService>(PrismaService);
   });
@@ -40,6 +40,7 @@ describe('test CheckExistingPostById middleware', () => {
         imageURL: 'image',
         published: true,
         updatedAt: new Date(),
+        comments: [],
       };
 
       jest.spyOn(prismaService.post, 'findUnique').mockResolvedValue(post);
