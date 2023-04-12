@@ -109,11 +109,37 @@ export class PostService {
     });
 
     return {
-      message: 'Post liked',
+      message: 'Liked post',
     };
   }
 
-  async likeComment(comment: IComment, { username }: IToken) {}
+  async likeComment(comment: IComment, { username }: IToken) {
+    this.notificationService.createLikeNotification(
+      comment.id,
+      username,
+      'comment',
+    );
+
+    if (comment.likedBy.some((user) => user.username === username)) {
+      await this.prisma.comment.update({
+        where: { id: comment.id },
+        data: { likedBy: { disconnect: { username } } },
+      });
+
+      return {
+        message: 'Removed like',
+      };
+    }
+
+    await this.prisma.comment.update({
+      where: { id: comment.id },
+      data: { likedBy: { connect: { username } } },
+    });
+
+    return {
+      message: 'Comment liked',
+    };
+  }
 
   async commentPost(post: IPost, content: string, { username }: IToken) {
     const newComment = await this.prisma.comment.create({

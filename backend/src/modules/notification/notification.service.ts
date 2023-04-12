@@ -7,7 +7,7 @@ import IComment from '../../interfaces/IComment';
 import IToken from '../../interfaces/IToken';
 import IPost from '../../interfaces/IPost';
 
-type TypeOfLike = 'post' | 'comment';
+import TypeOfLike from '../../types/typeOfLike.type';
 
 @Injectable()
 export class NotificationService {
@@ -27,6 +27,7 @@ export class NotificationService {
     }
 
     let notification;
+    let connectionObject = {};
 
     switch (typeOfLike) {
       case 'post':
@@ -39,6 +40,7 @@ export class NotificationService {
           ],
         });
 
+        connectionObject = { post: { connect: { id } } };
         break;
       case 'comment':
         const post = await this.prisma.post.findFirst({
@@ -54,6 +56,11 @@ export class NotificationService {
             { receiver: { id: author.id } },
           ],
         });
+
+        connectionObject = {
+          comment: { connect: { id } },
+          post: { connect: { id: post.id } },
+        };
         break;
     }
 
@@ -75,7 +82,7 @@ export class NotificationService {
           },
           sender: { connect: { username } },
           message,
-          ...this.getConnectionObject(typeOfLike, id),
+          ...connectionObject,
         },
       };
       notification = await this.prisma.notification.create(createInput);
@@ -85,15 +92,6 @@ export class NotificationService {
       message: 'Like notification created',
       notification,
     };
-  }
-
-  private getConnectionObject(typeOfLike: TypeOfLike, id: string) {
-    switch (typeOfLike) {
-      case 'post':
-        return { post: { connect: { id } } };
-      case 'comment':
-        return { comment: { connect: { id } } };
-    }
   }
 
   private async getAuthor(

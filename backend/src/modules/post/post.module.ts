@@ -12,6 +12,8 @@ import { NotificationService } from '../notification/notification.service';
 
 import { PostController } from './post.controller';
 import { PostService } from './post.service';
+import { CheckExistingCommentByIdMiddleware } from 'src/middleware/post/checkExistingCommentById.middleware';
+import { CheckExistingPostByIdMiddlewareUnpopulated } from 'src/middleware/post/checkExistingPostByIdUnpopulated.middleware';
 
 @Module({
   imports: [],
@@ -36,6 +38,17 @@ export class PostModule implements NestModule {
       path: '/posts/:id',
       method: RequestMethod.DELETE,
     });
+
+    consumer
+      .apply(
+        VerifyJWTMiddleware,
+        CheckExistingCommentByIdMiddleware,
+        CheckExistingPostByIdMiddlewareUnpopulated,
+      )
+      .forRoutes({
+        path: '/posts/:id/comments/:commentId/likes',
+        method: RequestMethod.POST,
+      });
 
     consumer
       .apply(VerifyJWTMiddleware, CheckExistingPostByIdMiddlewarePopulated)

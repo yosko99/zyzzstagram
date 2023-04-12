@@ -30,6 +30,7 @@ export class CheckExistingCommentByIdMiddleware implements NestMiddleware {
             username: true,
           },
         },
+        id: true,
       },
     });
 

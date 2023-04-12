@@ -103,7 +103,28 @@ describe('Test posts API', () => {
 
       const result = await postService.likePost(createdPost.post, tokenData);
 
-      expect(result.message).toBe('Post liked');
+      expect(result.message).toBe('Liked post');
+
+      await userService.deleteUser(createdUser.user);
+    });
+  });
+
+  describe('test likeComment service', () => {
+    it('should successfully like a comment', async () => {
+      const { createdPost, createdUser, tokenData } = await initMockData();
+
+      const comment = await prisma.comment.create({
+        data: {
+          post: { connect: { id: createdPost.post.id } },
+          content: 'test',
+          author: { connect: { id: createdUser.user.id } },
+        },
+        include: { likedBy: true },
+      });
+
+      const result = await postService.likeComment(comment, tokenData);
+
+      expect(result.message).toBe('Comment liked');
 
       await userService.deleteUser(createdUser.user);
     });
