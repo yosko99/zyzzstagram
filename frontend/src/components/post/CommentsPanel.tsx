@@ -10,11 +10,11 @@ interface Props {
   showComments: boolean;
 }
 
-const PostComments = ({ post, showComments }: Props) => {
+const CommentsPanel = ({ post, showComments }: Props) => {
   return (
     <>
       {showComments ? (
-        <div style={{ maxHeight: '25vh', overflow: 'auto' }}>
+        <div className="pt-2" style={{ maxHeight: '25vh', overflow: 'auto' }}>
           {post.comments?.map((comment, index: number) => (
             <PostComment post={post} comment={comment} key={index} />
           ))}
@@ -37,4 +37,4 @@ const PostComments = ({ post, showComments }: Props) => {
   );
 };
 
-export default PostComments;
+export default CommentsPanel;

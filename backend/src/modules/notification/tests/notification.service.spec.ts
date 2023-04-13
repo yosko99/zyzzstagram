@@ -74,7 +74,7 @@ describe('Test notifications API', () => {
 
       expect(createdNotification.message).toEqual('Like notification created');
       expect(createdNotification.notification.message).toEqual(
-        `${createdSecondUser.user.username} liked your post.`,
+        `${createdSecondUser.user.username} liked your post`,
       );
       expect(createdNotification.notification).toBeTruthy();
 

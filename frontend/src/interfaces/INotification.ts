@@ -1,3 +1,4 @@
+import IComment from './IComment';
 import IPost from './IPost';
 import IUser from './IUser';
 
@@ -11,6 +12,7 @@ interface INotification {
   receiver?: IUser;
   receiverId: string;
   post?: IPost;
+  comment: IComment;
 }
 
 export default INotification;

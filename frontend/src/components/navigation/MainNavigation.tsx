@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import INotification from '../../interfaces/INotification';
 import NotificationsButton from '../buttons/NotificationsButton';
 import UploadPostForm from '../forms/UploadPostForm';
-import Notifications from '../notifications/Notifications';
+import NotificationsPanel from '../notifications/NotificationsPanel';
 import CustomModal from '../utils/CustomModal';
 
 interface Tab {
@@ -42,7 +42,7 @@ const MainNavigation = () => {
             <NotificationsButton setNotifications={setNotifications} />
           }
           modalHeader={<p className="m-0">Notifications</p>}
-          modalBody={<Notifications notifications={notifications} />}
+          modalBody={<NotificationsPanel notifications={notifications} />}
         />
       ),
       label: (
@@ -52,7 +52,7 @@ const MainNavigation = () => {
             <NotificationsButton setNotifications={setNotifications} />
           }
           modalHeader={<p className="m-0">Notifications</p>}
-          modalBody={<Notifications notifications={notifications} />}
+          modalBody={<NotificationsPanel notifications={notifications} />}
         />
       )
     },

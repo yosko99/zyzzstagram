@@ -43,6 +43,7 @@ const PostCommentInput = ({ post }: Props) => {
   return (
     <div className="comment-wrapper">
       <input
+        maxLength={100}
         type="text"
         className="comment-box ms-3"
         placeholder="Add a comment..."

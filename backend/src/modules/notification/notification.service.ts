@@ -109,9 +109,9 @@ export class NotificationService {
   private getLikeNotificationMessage(typeOfLike: TypeOfLike, username: string) {
     switch (typeOfLike) {
       case 'post':
-        return `${username} liked your post.`;
+        return `${username} liked your post`;
       case 'comment':
-        return `${username} liked your comment.`;
+        return `${username} liked your comment`;
     }
   }
 
@@ -170,7 +170,7 @@ export class NotificationService {
       };
     }
 
-    const message = `${username} commented on your post.`;
+    const message = `${username} commented on your post`;
 
     const createdNotification = await this.prisma.notification.create({
       data: {

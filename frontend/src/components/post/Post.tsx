@@ -11,8 +11,9 @@ import BookmarkButton from '../buttons/BookmarkButton';
 import LikeButton from '../buttons/LikeButton';
 import PostCommentInput from '../inputs/PostCommentInput';
 import UserThumbnail from '../user/UserThumbnail';
-import PostComments from './PostComments';
+import CommentsPanel from './CommentsPanel';
 import PostImage from './PostImage';
+import PostModal from './PostModal';
 
 interface Props {
   user: IUser;
@@ -39,13 +40,20 @@ const Post = ({ user, post, className, showComments }: Props) => {
             <PostImage username={user.username} post={post} />
             <div className="post-content">
               <div className="reaction-wrapper d-flex fs-2 justify-content-between">
-                <div>
+                <div className="d-flex">
                   <LikeButton
                     likedByUser={post.likedByUser!}
                     useCustomLikeHook={useLikePost(post)}
                   />
-                  <AiOutlineComment role={'button'} className="mx-1" />
-                  <AiOutlineSend role={'button'} className="ms-1" />
+                  <PostModal
+                    post={post}
+                    activateButtonElement={
+                      <AiOutlineComment role={'button'} className="mx-1" />
+                    }
+                  />
+                  <div>
+                    <AiOutlineSend role={'button'} className="ms-1" />
+                  </div>
                 </div>
                 <div>
                   <BookmarkButton
@@ -59,9 +67,8 @@ const Post = ({ user, post, className, showComments }: Props) => {
                 <span>{user.username} </span> {post.description}
               </p>
 
-              <PostComments post={post} showComments={showComments} />
+              <CommentsPanel post={post} showComments={showComments} />
             </div>
-
             <PostCommentInput post={post} />
           </div>
         </div>
