@@ -42,6 +42,10 @@ export class UserModule implements NestModule {
         path: '/users/current/saved-posts',
         method: RequestMethod.GET,
       },
+      {
+        path: '/users',
+        method: RequestMethod.GET,
+      },
     );
 
     consumer

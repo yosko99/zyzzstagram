@@ -208,4 +208,12 @@ describe('Test users API', () => {
       await userService.deleteUser(createdUserResult.user);
     });
   });
+
+  describe('test getUsers service', () => {
+    test('should get users', async () => {
+      const response = await userService.getUsers();
+
+      expect(response).toEqual(expect.any(Array));
+    });
+  });
 });

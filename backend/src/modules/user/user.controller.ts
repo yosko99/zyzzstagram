@@ -10,13 +10,14 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { Get, HttpCode } from '@nestjs/common/decorators';
+import { Get, HttpCode, Query } from '@nestjs/common/decorators';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiConsumes,
   ApiHeader,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -36,6 +37,21 @@ import IToken from '../../interfaces/IToken';
 @ApiTags('Users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Get()
+  @ApiQuery({
+    name: 'search',
+    type: 'string',
+    description: 'Search by username query',
+  })
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiOperation({ summary: 'Get users with optional query search param' })
+  @ApiResponse({ status: 200, description: 'Receive users' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  getUsers(@Query('search') search: string) {
+    return this.userService.getUsers(search);
+  }
 
   @Get('/:username/user')
   @ApiParam({ name: 'username', type: 'string' })

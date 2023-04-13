@@ -19,6 +19,16 @@ export class UserService {
     private readonly notificationService: NotificationService,
   ) {}
 
+  async getUsers(search?: string) {
+    return await this.prisma.user.findMany({
+      where: { username: { contains: search !== undefined ? search : '' } },
+      select: {
+        username: true,
+        imageURL: true,
+      },
+    });
+  }
+
   async createUser(
     { email, password, username }: CreateUserDto,
     filename: string,
