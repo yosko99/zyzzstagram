@@ -4,9 +4,9 @@ import React from 'react';
 import { getPostRoute } from '../../constants/apiRoutes';
 import useFetch from '../../hooks/useFetch';
 import IPost from '../../interfaces/IPost';
-import Post from '../layout/Post';
 import CustomModal from '../utils/CustomModal';
 import LoadingSpinner from '../utils/LoadingSpinner';
+import Post from './Post';
 
 interface Props {
   post: IPost;

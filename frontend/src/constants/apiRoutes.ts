@@ -24,6 +24,8 @@ export const getCommentPostRoute = (id: string) =>
   `${getPostsRoute()}/${id}/comments`;
 export const getPostSavedByRoute = (id: string) =>
   `${getPostsRoute()}/${id}/saved-by`;
+export const getLikeCommentRoute = (postId: string, commentId: string) =>
+  `${getPostsRoute()}/${postId}/comments/${commentId}/likes`;
 
 // NOTIFICATIONS
 export const getNotificationsRoute = () => API_PREFIX + 'notifications/';

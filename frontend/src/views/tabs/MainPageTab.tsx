@@ -1,9 +1,9 @@
 /* eslint-disable multiline-ternary */
 import React from 'react';
 
-import Post from '../../components/layout/Post';
 import StoriesHolder from '../../components/layout/StoriesHolder';
 import Story from '../../components/layout/Story';
+import Post from '../../components/post/Post';
 import LoadingSpinner from '../../components/utils/LoadingSpinner';
 import { getPostsRoute } from '../../constants/apiRoutes';
 import useFetch from '../../hooks/useFetch';

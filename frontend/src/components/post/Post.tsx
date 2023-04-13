@@ -4,14 +4,15 @@ import { AiOutlineComment, AiOutlineSend } from 'react-icons/ai';
 import { FaAngleDoubleDown } from 'react-icons/fa';
 
 import dateFormatter from '../../functions/dateFormatter';
+import useLikePost from '../../hooks/useLikePost';
 import IPost from '../../interfaces/IPost';
 import IUser from '../../interfaces/IUser';
 import BookmarkButton from '../buttons/BookmarkButton';
 import LikeButton from '../buttons/LikeButton';
 import PostCommentInput from '../inputs/PostCommentInput';
-import PostComments from '../post/PostComments';
-import PostImage from '../post/PostImage';
 import UserThumbnail from '../user/UserThumbnail';
+import PostComments from './PostComments';
+import PostImage from './PostImage';
 
 interface Props {
   user: IUser;
@@ -39,7 +40,10 @@ const Post = ({ user, post, className, showComments }: Props) => {
             <div className="post-content">
               <div className="reaction-wrapper d-flex fs-2 justify-content-between">
                 <div>
-                  <LikeButton post={post} />
+                  <LikeButton
+                    likedByUser={post.likedByUser!}
+                    useCustomLikeHook={useLikePost(post)}
+                  />
                   <AiOutlineComment role={'button'} className="mx-1" />
                   <AiOutlineSend role={'button'} className="ms-1" />
                 </div>

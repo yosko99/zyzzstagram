@@ -11,10 +11,10 @@ import { getPostRoute } from '../../constants/apiRoutes';
 import useFetch from '../../hooks/useFetch';
 import IPost from '../../interfaces/IPost';
 import CenteredItems from '../../styles/CenteredItems';
-import Post from '../layout/Post';
 import CustomModal from '../utils/CustomModal';
 import LoadingSpinner from '../utils/LoadingSpinner';
 import GridPost from './GridPost';
+import Post from './Post';
 
 interface Props {
   posts: IPost[];

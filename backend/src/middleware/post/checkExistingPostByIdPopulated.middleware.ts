@@ -47,6 +47,7 @@ export class CheckExistingPostByIdMiddlewarePopulated
         },
         comments: {
           select: {
+            id: true,
             createdAt: true,
             content: true,
             author: { select: { username: true, imageURL: true } },
