@@ -1,7 +1,7 @@
 /* eslint-disable multiline-ternary */
 import React from 'react';
 
-import FollowButton from '../components/buttons/FollowButton';
+import FollowButton from '../components/buttons/user/FollowButton';
 import UserThumbnail from '../components/user/UserThumbnail';
 import CustomModal from '../components/utils/CustomModal';
 import LoadingSpinner from '../components/utils/LoadingSpinner';

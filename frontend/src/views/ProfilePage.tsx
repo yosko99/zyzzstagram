@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 
 import { Container, Row, Col, Image } from 'react-bootstrap';
 
-import FollowersButton from '../components/buttons/FollowersButton';
-import FollowingButton from '../components/buttons/FollowingButton';
+import FollowersButton from '../components/buttons/user/FollowersButton';
+import FollowingButton from '../components/buttons/user/FollowingButton';
 import MainNavigation from '../components/navigation/MainNavigation';
 import ProfileNavigation from '../components/navigation/ProfileNavigation';
 import UserButtons from '../components/user/UserButtons';

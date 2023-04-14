@@ -6,11 +6,11 @@ import { useQueryClient } from 'react-query';
 import {
   getNotificationsReadRoute,
   getNotificationsRoute
-} from '../../constants/apiRoutes';
-import useFetch from '../../hooks/useFetch';
-import { useMutationWithToken } from '../../hooks/useUploadImage';
-import INotification from '../../interfaces/INotification';
-import NotificationNumberStyle from '../../styles/NotificationNumberStyle';
+} from '../../../constants/apiRoutes';
+import useFetch from '../../../hooks/useFetch';
+import { useMutationWithToken } from '../../../hooks/useUploadImage';
+import INotification from '../../../interfaces/INotification';
+import NotificationNumberStyle from '../../../styles/NotificationNumberStyle';
 
 interface Props {
   setNotifications: React.Dispatch<React.SetStateAction<INotification[]>>;

@@ -7,7 +7,7 @@ import dateFormatter from '../../functions/dateFormatter';
 import useLikeComment from '../../hooks/useLikeComment';
 import IComment from '../../interfaces/IComment';
 import IPost from '../../interfaces/IPost';
-import LikeButton from '../buttons/LikeButton';
+import LikeButton from '../buttons/utils/LikeButton';
 
 interface Props {
   comment: IComment;

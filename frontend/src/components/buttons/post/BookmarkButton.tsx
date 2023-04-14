@@ -4,8 +4,8 @@ import React from 'react';
 import { MdOutlineBookmark, MdOutlineBookmarkBorder } from 'react-icons/md';
 import { useQueryClient } from 'react-query';
 
-import { getPostSavedByRoute } from '../../constants/apiRoutes';
-import { useMutationWithToken } from '../../hooks/useUploadImage';
+import { getPostSavedByRoute } from '../../../constants/apiRoutes';
+import { useMutationWithToken } from '../../../hooks/useUploadImage';
 
 interface Props {
   savedByUser: boolean;

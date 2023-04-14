@@ -1,8 +1,8 @@
 /* eslint-disable multiline-ternary */
 import React from 'react';
 
-import IUser from '../../interfaces/IUser';
-import FollowingButtonTemplate from '../../templates/FollowingButtonTemplate';
+import IUser from '../../../interfaces/IUser';
+import FollowingButtonTemplate from '../../../templates/FollowingButtonTemplate';
 
 interface Props {
   user: IUser;

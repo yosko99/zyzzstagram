@@ -2,15 +2,17 @@ const API_PREFIX = '/api/';
 export const PUBLIC_IMAGES_PREFIX = '/public/';
 
 // USERS
-export const getUsersRoute = () => API_PREFIX + 'users/';
+export const getUsersRoute = () => API_PREFIX + 'users';
+export const getUsersRouteWithSearchQuery = (search: string) =>
+  `${getUsersRoute()}?search=${search}`;
 export const getUserByUsernameRoute = (username: string) =>
-  `${getUsersRoute()}${username}/user`;
-export const getLoginRoute = () => getUsersRoute() + 'login';
-export const getCurrentUserRoute = () => getUsersRoute() + 'current';
+  `${getUsersRoute()}/${username}/user`;
+export const getLoginRoute = () => getUsersRoute() + '/login';
+export const getCurrentUserRoute = () => getUsersRoute() + '/current';
 export const getUserFollowersRoute = (username: string) =>
-  `${getUsersRoute()}${username}/followers`;
+  `${getUsersRoute()}/${username}/followers`;
 export const getUserFollowingRoute = (username: string) =>
-  `${getUsersRoute()}${username}/following`;
+  `${getUsersRoute()}/${username}/following`;
 export const getCurrentUserSavedPostsRoute = () =>
   `${getCurrentUserRoute()}/saved-posts`;
 

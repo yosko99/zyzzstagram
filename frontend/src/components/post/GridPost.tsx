@@ -33,7 +33,11 @@ const GridPost = ({ post }: Props) => {
       onMouseOut={handleMouseOut}
       role={'button'}
     >
-      <Card.Img variant="top" src={PUBLIC_IMAGES_PREFIX + post.imageURL} />
+      <Card.Img
+        variant="top"
+        style={{ width: '100%', height: 'auto' }}
+        src={PUBLIC_IMAGES_PREFIX + post.imageURL}
+      />
       <div
         style={{
           visibility: isHovered ? 'visible' : 'hidden',

@@ -26,6 +26,7 @@ export class UserService {
         username: true,
         imageURL: true,
       },
+      take: 10,
     });
   }
 

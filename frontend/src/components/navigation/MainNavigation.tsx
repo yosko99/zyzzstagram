@@ -1,80 +1,16 @@
-import React, { ReactElement, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Nav, Navbar } from 'react-bootstrap';
-import {
-  FaHome,
-  FaSearch,
-  FaCompass,
-  FaPlay,
-  FaEnvelope,
-  FaUser,
-  FaPlusSquare
-} from 'react-icons/fa';
-import { IconType } from 'react-icons/lib';
 import { useNavigate } from 'react-router-dom';
 
+import getNavigationTabs from '../../data/navigationTabs';
 import INotification from '../../interfaces/INotification';
-import NotificationsButton from '../buttons/NotificationsButton';
-import UploadPostForm from '../forms/UploadPostForm';
-import NotificationsPanel from '../notifications/NotificationsPanel';
-import CustomModal from '../utils/CustomModal';
-
-interface Tab {
-  label: string | React.ReactNode;
-  icon: ReactElement<IconType>;
-  href?: string;
-}
 
 const MainNavigation = () => {
   const [notifications, setNotifications] = useState<INotification[]>([]);
   const navigate = useNavigate();
 
-  const tabs: Tab[] = [
-    { icon: <FaHome />, label: 'Home', href: '/' },
-    { icon: <FaSearch />, label: 'Search', href: '/search' },
-    { icon: <FaCompass />, label: 'Explore', href: '/explore' },
-    { icon: <FaPlay />, label: 'Reels', href: '/reels' },
-    { icon: <FaEnvelope />, label: 'Messages', href: '/messages' },
-    {
-      icon: (
-        <CustomModal
-          activateButtonElement={
-            <NotificationsButton setNotifications={setNotifications} />
-          }
-          modalHeader={<p className="m-0">Notifications</p>}
-          modalBody={<NotificationsPanel notifications={notifications} />}
-        />
-      ),
-      label: (
-        <CustomModal
-          activateButtonClassName="m-0"
-          activateButtonElement={
-            <NotificationsButton setNotifications={setNotifications} />
-          }
-          modalHeader={<p className="m-0">Notifications</p>}
-          modalBody={<NotificationsPanel notifications={notifications} />}
-        />
-      )
-    },
-    {
-      icon: (
-        <CustomModal
-          activateButtonElement={<FaPlusSquare />}
-          modalHeader={<p className="m-0">Upload your image</p>}
-          modalBody={<UploadPostForm />}
-        />
-      ),
-      label: (
-        <CustomModal
-          activateButtonClassName="m-0"
-          activateButtonElement="Create"
-          modalHeader={<p className="m-0">Upload your image</p>}
-          modalBody={<UploadPostForm />}
-        />
-      )
-    },
-    { icon: <FaUser />, label: 'Profile', href: '/profile' }
-  ];
+  const tabs = getNavigationTabs(setNotifications, notifications);
 
   const handleRedirect = (href: string | undefined) => {
     if (href !== undefined) {

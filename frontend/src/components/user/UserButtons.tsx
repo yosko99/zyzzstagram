@@ -2,7 +2,7 @@
 import React from 'react';
 
 import IUser from '../../interfaces/IUser';
-import FollowButton from '../buttons/FollowButton';
+import FollowButton from '../buttons/user/FollowButton';
 
 interface Props {
   user: IUser;

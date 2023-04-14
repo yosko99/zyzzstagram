@@ -3,9 +3,9 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { useQueryClient } from 'react-query';
 
-import { getUserFollowersRoute } from '../../constants/apiRoutes';
-import { SocketContext } from '../../context/SocketContext';
-import { useMutationWithToken } from '../../hooks/useUploadImage';
+import { getUserFollowersRoute } from '../../../constants/apiRoutes';
+import { SocketContext } from '../../../context/SocketContext';
+import { useMutationWithToken } from '../../../hooks/useUploadImage';
 
 interface Props {
   isFollowedByRequester: boolean;
