@@ -31,7 +31,8 @@ const Post = ({ user, post, className, showComments }: Props) => {
         <div className="left-col">
           <div className="post">
             <UserThumbnail
-              user={user}
+              username={user.username}
+              imageURL={user.imageURL}
               additionalElement={
                 <span className="text-muted">{formattedDate}</span>
               }

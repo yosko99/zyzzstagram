@@ -3,35 +3,42 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { PUBLIC_IMAGES_PREFIX } from '../../constants/apiRoutes';
-import IUser from '../../interfaces/IUser';
 
 interface Props {
-  user: IUser;
+  username: string;
+  imageURL: string;
   additionalElement?: React.ReactNode;
   sideElement?: React.ReactNode;
+  onClick?: () => void;
 }
 
-const UserThumbnail = ({ user, additionalElement, sideElement }: Props) => {
+const UserThumbnail = ({
+  username,
+  imageURL,
+  additionalElement,
+  sideElement,
+  onClick
+}: Props) => {
   const navigate = useNavigate();
 
   return (
     <div className="info">
-      <div className="user">
+      <div className="user" onClick={onClick}>
         <div className="profile-pic">
-          <Link to={`/profile/${user.username}`}>
+          <Link to={`/profile/${username}`}>
             <img
               style={{ objectFit: 'cover' }}
-              src={PUBLIC_IMAGES_PREFIX + user.imageURL}
-              alt={user.username}
+              src={PUBLIC_IMAGES_PREFIX + imageURL}
+              alt={username}
             />
           </Link>
         </div>
         <p
           className="username"
           role={'button'}
-          onClick={() => navigate(`/profile/${user.username}`)}
+          onClick={() => navigate(`/profile/${username}`)}
         >
-          {user.username} {additionalElement && additionalElement}
+          {username} {additionalElement && additionalElement}
         </p>
       </div>
       {sideElement && sideElement}

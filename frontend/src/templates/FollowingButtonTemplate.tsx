@@ -51,7 +51,8 @@ const FollowingButtonTemplate = ({ user, typeOfUsers }: Props) => {
             ) : (
               followUsers?.map((follow, index: number) => (
                 <UserThumbnail
-                  user={follow}
+                  username={follow.username}
+                  imageURL={follow.imageURL}
                   key={index}
                   sideElement={
                     <FollowButton
