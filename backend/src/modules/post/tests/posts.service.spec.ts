@@ -90,10 +90,25 @@ describe('Test posts API', () => {
           username: 'username',
           password: 'password',
         },
-        'true',
+        'explore',
       );
 
       expect(response).toEqual(expect.any(Array));
+    });
+
+    it('should get following users posts', async () => {
+      const { createdUser } = await initMockData();
+      const response = await postService.getPosts(
+        {
+          username: createdUser.user.username,
+          password: createdUser.user.password,
+        },
+        'following',
+      );
+
+      expect(response).toEqual(expect.any(Array));
+
+      await userService.deleteUser(createdUser.user);
     });
   });
 

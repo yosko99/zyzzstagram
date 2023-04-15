@@ -7,7 +7,7 @@ import IComment from '../../interfaces/IComment';
 import IToken from '../../interfaces/IToken';
 import IPost from '../../interfaces/IPost';
 
-import TypeOfLike from '../../types/typeOfLike.type';
+import LikeType from '../../types/like.type';
 
 @Injectable()
 export class NotificationService {
@@ -16,7 +16,7 @@ export class NotificationService {
   public async createLikeNotification(
     id: string,
     username: string,
-    typeOfLike: TypeOfLike,
+    typeOfLike: LikeType,
   ) {
     const { author } = await this.getAuthor(typeOfLike, id);
 
@@ -95,7 +95,7 @@ export class NotificationService {
   }
 
   private async getAuthor(
-    typeOfLike: TypeOfLike,
+    typeOfLike: LikeType,
     id: string,
   ): Promise<IPost | IComment | null> {
     switch (typeOfLike) {
@@ -106,7 +106,7 @@ export class NotificationService {
     }
   }
 
-  private getLikeNotificationMessage(typeOfLike: TypeOfLike, username: string) {
+  private getLikeNotificationMessage(typeOfLike: LikeType, username: string) {
     switch (typeOfLike) {
       case 'post':
         return `${username} liked your post`;

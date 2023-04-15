@@ -18,7 +18,10 @@ export const getCurrentUserSavedPostsRoute = () =>
 
 // POSTS
 export const getPostsRoute = () => API_PREFIX + 'posts';
-export const getExplorePostsRoute = () => `${getPostsRoute()}?explore=true`;
+export const getExplorePostsRoute = () =>
+  `${getPostsRoute()}?postsType=explore`;
+export const getFollowingUsersPostsRoute = () =>
+  `${getPostsRoute()}?postsType=following`;
 export const getPostRoute = (id: string) => `${getPostsRoute()}/${id}`;
 export const getLikePostRoute = (id: string) =>
   `${getPostsRoute()}/${id}/likes`;

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 
 import { CreatePostDto } from '../../dto/post.dto';
 
@@ -9,7 +10,10 @@ import IComment from '../../interfaces/IComment';
 import IToken from '../../interfaces/IToken';
 import IPost from '../../interfaces/IPost';
 
+import transformPosts from '../../functions/post/transformPosts';
 import deleteImage from '../../functions/deleteImage';
+
+import PostsType from '../../types/posts.type';
 
 @Injectable()
 export class PostService {
@@ -53,12 +57,79 @@ export class PostService {
     };
   }
 
-  async getPosts({ username }: IToken, explore?: 'true' | 'false') {
-    if (explore !== undefined && explore === 'true') {
-      return this.getExplorePosts();
+  async getPosts({ username }: IToken, postsType?: PostsType) {
+    switch (postsType) {
+      case 'explore':
+        return this.getExplorePosts();
+      case 'following':
+        return this.getFollowingPosts(username);
+      default:
+        return this.getAllPosts(username);
     }
+  }
 
-    return this.getAllPosts(username);
+  private async getFollowingPosts(username: string) {
+    const postSelectQuery: Prisma.PostSelect = {
+      savedBy: {
+        where: {
+          username,
+        },
+        select: { username: true },
+      },
+      likedBy: {
+        where: {
+          username,
+        },
+        select: {
+          username: true,
+        },
+      },
+      id: true,
+      imageURL: true,
+      _count: {
+        select: {
+          likedBy: true,
+          comments: true,
+        },
+      },
+      description: true,
+      createdAt: true,
+      author: {
+        select: {
+          username: true,
+          imageURL: true,
+        },
+      },
+    };
+
+    const user = await this.prisma.user.findUnique({
+      where: { username },
+      include: {
+        following: {
+          include: {
+            posts: {
+              select: postSelectQuery,
+              orderBy: { createdAt: 'desc' },
+            },
+          },
+        },
+        posts: {
+          select: postSelectQuery,
+          orderBy: { createdAt: 'desc' },
+        },
+      },
+    });
+
+    const userPosts = transformPosts(user.posts);
+    const followingPosts = user.following.flatMap((follower) => {
+      return transformPosts(follower.posts);
+    });
+
+    return [...followingPosts, ...userPosts].sort((a, b) => {
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
+      return dateB - dateA;
+    });
   }
 
   private async getAllPosts(username: string) {
@@ -82,11 +153,7 @@ export class PostService {
       orderBy: { createdAt: 'desc' },
     });
 
-    return posts.map((post) => ({
-      ...post,
-      likedByUser: post.likedBy.length > 0,
-      savedByUser: post.savedBy.length > 0,
-    }));
+    return transformPosts(posts);
   }
 
   async likePost(post: IPost, { username }: IToken) {

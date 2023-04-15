@@ -37,6 +37,8 @@ import IComment from '../../interfaces/IComment';
 import IToken from '../../interfaces/IToken';
 import IPost from '../../interfaces/IPost';
 
+import PostsType from '../../types/posts.type';
+
 @Controller('/posts')
 @ApiTags('Posts')
 export class PostController {
@@ -45,10 +47,11 @@ export class PostController {
   @Get('/')
   @ApiOperation({ summary: 'Get all posts' })
   @ApiQuery({
-    name: 'explore',
-    type: 'boolean',
+    name: 'postsType',
+    allowEmptyValue: true,
+    enum: ['following', 'explore'],
     required: false,
-    description: 'Flag if route should get explore posts',
+    description: 'Optional query which decides what kind of posts to',
   })
   @ApiHeader({ name: 'Authorization', required: true })
   @ApiResponse({ status: 200, description: 'Receive posts' })
@@ -56,9 +59,9 @@ export class PostController {
   @ApiResponse({ status: 498, description: 'Provided invalid token' })
   getPosts(
     @RequestData('userDataFromToken') tokenData: IToken,
-    @Query('explore') explore: 'true' | 'false',
+    @Query('postsType') postsType: PostsType,
   ) {
-    return this.postService.getPosts(tokenData, explore);
+    return this.postService.getPosts(tokenData, postsType);
   }
 
   @Get('/:id')

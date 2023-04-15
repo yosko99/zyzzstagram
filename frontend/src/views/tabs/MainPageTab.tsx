@@ -1,15 +1,19 @@
+/* eslint-disable indent */
 /* eslint-disable multiline-ternary */
 import React from 'react';
+
+import { IoIosCheckmarkCircleOutline } from 'react-icons/io';
 
 import StoriesHolder from '../../components/layout/StoriesHolder';
 import Story from '../../components/layout/Story';
 import Post from '../../components/post/Post';
 import LoadingSpinner from '../../components/utils/LoadingSpinner';
-import { getPostsRoute } from '../../constants/apiRoutes';
+import { getFollowingUsersPostsRoute } from '../../constants/apiRoutes';
 import useFetch from '../../hooks/useFetch';
 import IPost from '../../interfaces/IPost';
 import IStory from '../../interfaces/IStory';
 import IUser from '../../interfaces/IUser';
+import CenteredItems from '../../styles/CenteredItems';
 
 const MainPageTab = () => {
   const user: IUser = {
@@ -35,7 +39,7 @@ const MainPageTab = () => {
 
   const { data, error, isLoading } = useFetch(
     'posts',
-    getPostsRoute(),
+    getFollowingUsersPostsRoute(),
     true,
     true
   );
@@ -57,15 +61,25 @@ const MainPageTab = () => {
         <LoadingSpinner />
       ) : (
         <div className="d-flex flex-column">
-          {posts.map((post, index: number) => (
-            <Post
-              className="mt-5"
-              user={post.author}
-              post={post}
-              key={index}
-              showComments={false}
-            />
-          ))}
+          {posts.length === 0 ? (
+            <CenteredItems flexColumn className="mt-5">
+              <IoIosCheckmarkCircleOutline size={'5em'} />
+              <p className="fs-2 mb-0">You are all caught up</p>
+              <p className="fs-4 text-muted mt-0">
+                You have seen all new posts recently
+              </p>
+            </CenteredItems>
+          ) : (
+            posts.map((post, index: number) => (
+              <Post
+                className="mt-5"
+                user={post.author}
+                post={post}
+                key={index}
+                showComments={false}
+              />
+            ))
+          )}
         </div>
       )}
     </div>
