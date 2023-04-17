@@ -18,9 +18,9 @@ export class NotificationService {
     username: string,
     typeOfLike: LikeType,
   ) {
-    const { author } = await this.getAuthor(typeOfLike, id);
+    const user = await this.getAuthor(typeOfLike, id);
 
-    if (author === null || author.username === username) {
+    if (user === null || user.author.username === username) {
       return {
         message: 'No action needed (same user)',
       };
@@ -35,7 +35,7 @@ export class NotificationService {
           senderUsername: username,
           operatorAND: [
             { postId: id },
-            { receiver: { id: author.id } },
+            { receiver: { id: user.author.id } },
             { commentId: null },
           ],
         });
@@ -53,7 +53,7 @@ export class NotificationService {
           operatorAND: [
             { postId: post.id },
             { commentId: id },
-            { receiver: { id: author.id } },
+            { receiver: { id: user.author.id } },
           ],
         });
 
@@ -78,7 +78,7 @@ export class NotificationService {
       const createInput = {
         data: {
           receiver: {
-            connect: { username: author.username },
+            connect: { username: user.author.username },
           },
           sender: { connect: { username } },
           message,

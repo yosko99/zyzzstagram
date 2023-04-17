@@ -216,4 +216,15 @@ describe('Test users API', () => {
       expect(response).toEqual(expect.any(Array));
     });
   });
+
+  describe('test getCurrentUserSuggestedUsers service', () => {
+    test('should get suggested users', async () => {
+      const response = await userService.getCurrentUserSuggestedUsers({
+        username: 'test',
+        password: 'test',
+      });
+
+      expect(response.suggestedUsers).toEqual(expect.any(Array));
+    });
+  });
 });

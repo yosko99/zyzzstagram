@@ -154,7 +154,46 @@ export class UserService {
     return savedPosts;
   }
 
-  async getCurrentUserSuggestedUsers({ username }: IToken) {}
+  async getCurrentUserSuggestedUsers({ username }: IToken) {
+    const currentUser = await this.prisma.user.findUnique({
+      where: { username },
+      select: { username: true, imageURL: true },
+    });
+
+    let suggestedUsers = await this.prisma.user.findMany({
+      where: {
+        NOT: [
+          {
+            username,
+          },
+          {
+            followers: {
+              some: {
+                username,
+              },
+            },
+          },
+        ],
+      },
+      select: {
+        username: true,
+        imageURL: true,
+      },
+      take: 5,
+    });
+
+    suggestedUsers = suggestedUsers.map((user) => {
+      return {
+        ...user,
+        isFollowedByRequester: false,
+      };
+    });
+
+    return {
+      currentUser,
+      suggestedUsers,
+    };
+  }
 
   async getUserByUsername(user: IUser, tokenData: IToken) {
     const isFollowedByRequester =
@@ -189,23 +228,29 @@ export class UserService {
 
   getUserFollowers = (user: IUser, tokenData: IToken) => {
     return user.followers.map((follower) => {
-      const isFollowedByRequester =
-        follower.followers.filter(
-          (user) => user.username === tokenData.username,
-        ).length !== 0;
-
-      return { ...follower, isFollowedByRequester };
+      return {
+        ...follower,
+        isFollowedByRequester: this.isFollowedByRequester(
+          follower.followers,
+          tokenData.username,
+        ),
+      };
     });
   };
 
   getUserFollowing = (user: IUser, tokenData: IToken) => {
     return user.following.map((follower) => {
-      const isFollowedByRequester =
-        follower.followers.filter(
-          (user) => user.username === tokenData.username,
-        ).length !== 0;
-
-      return { ...follower, isFollowedByRequester };
+      return {
+        ...follower,
+        isFollowedByRequester: this.isFollowedByRequester(
+          follower.followers,
+          tokenData.username,
+        ),
+      };
     });
   };
+
+  isFollowedByRequester(users: IUser[], username: string): boolean {
+    return users.filter((user) => user.username === username).length !== 0;
+  }
 }

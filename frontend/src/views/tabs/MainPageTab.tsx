@@ -47,7 +47,7 @@ const MainPageTab = () => {
   const posts = data as unknown as IPost[];
 
   return (
-    <div className="d-flex flex-column w-100">
+    <div className="d-flex flex-column">
       <StoriesHolder>
         <Story story={story} />
         <Story story={story} />

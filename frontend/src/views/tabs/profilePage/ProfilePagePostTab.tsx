@@ -11,7 +11,7 @@ interface Props {
 
 const ProfilePagePostTab = ({ posts, isSameAsRequester }: Props) => {
   return (
-    <PostsThumbnailGrid isSameAsRequester={isSameAsRequester} posts={posts} />
+    <PostsThumbnailGrid isSameAsRequester={!isSameAsRequester} posts={posts} />
   );
 };
 
