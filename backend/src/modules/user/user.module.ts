@@ -46,6 +46,10 @@ export class UserModule implements NestModule {
         path: '/users',
         method: RequestMethod.GET,
       },
+      {
+        path: '/users/current/suggested',
+        method: RequestMethod.GET,
+      },
     );
 
     consumer

@@ -43,6 +43,7 @@ export class UserController {
     name: 'search',
     type: 'string',
     description: 'Search by username query',
+    required: false,
   })
   @ApiHeader({ name: 'Authorization', required: true })
   @ApiOperation({ summary: 'Get users with optional query search param' })
@@ -70,7 +71,7 @@ export class UserController {
 
   @Get('/current')
   @ApiHeader({ name: 'Authorization', required: true })
-  @ApiOperation({ summary: 'Get current user data by token' })
+  @ApiOperation({ summary: 'Get current user profile data by token' })
   @ApiResponse({ status: 200, description: 'Receive user data' })
   @ApiResponse({ status: 404, description: 'Non existent user' })
   @ApiResponse({ status: 401, description: 'Token not provided' })
@@ -90,6 +91,18 @@ export class UserController {
     @RequestData('userDataFromToken') tokenData: IToken,
   ) {
     return this.userService.getCurrentUserSavedPosts(tokenData);
+  }
+
+  @Get('/current/suggested')
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiOperation({ summary: 'Get current user suggested users' })
+  @ApiResponse({ status: 200, description: 'Receive suggested users' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  getCurrentUserSuggestedUsers(
+    @RequestData('userDataFromToken') tokenData: IToken,
+  ) {
+    return this.userService.getCurrentUserSuggestedUsers(tokenData);
   }
 
   @Get('/:username/followers')

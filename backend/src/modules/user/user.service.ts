@@ -154,6 +154,8 @@ export class UserService {
     return savedPosts;
   }
 
+  async getCurrentUserSuggestedUsers({ username }: IToken) {}
+
   async getUserByUsername(user: IUser, tokenData: IToken) {
     const isFollowedByRequester =
       user.followers.filter((user) => user.username === tokenData.username)
@@ -186,35 +188,24 @@ export class UserService {
   };
 
   getUserFollowers = (user: IUser, tokenData: IToken) => {
-    return this.appendIsFollowedByRequester(
-      user,
-      tokenData.username,
-      'followers',
-    );
+    return user.followers.map((follower) => {
+      const isFollowedByRequester =
+        follower.followers.filter(
+          (user) => user.username === tokenData.username,
+        ).length !== 0;
+
+      return { ...follower, isFollowedByRequester };
+    });
   };
 
   getUserFollowing = (user: IUser, tokenData: IToken) => {
-    return this.appendIsFollowedByRequester(
-      user,
-      tokenData.username,
-      'following',
-    );
-  };
+    return user.following.map((follower) => {
+      const isFollowedByRequester =
+        follower.followers.filter(
+          (user) => user.username === tokenData.username,
+        ).length !== 0;
 
-  private appendIsFollowedByRequester(
-    user: IUser,
-    requesterUsername: string,
-    key: 'following' | 'followers',
-  ) {
-    return user[key].map((follower) => {
-      if (
-        follower[key].filter((user) => user.username === requesterUsername)
-          .length !== 0
-      ) {
-        return { ...follower, isFollowedByRequester: true };
-      } else {
-        return { ...follower, isFollowedByRequester: false };
-      }
+      return { ...follower, isFollowedByRequester };
     });
-  }
+  };
 }
