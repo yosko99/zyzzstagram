@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { AiFillTags } from 'react-icons/ai';
 import { BsFillGrid3X3GapFill } from 'react-icons/bs';
@@ -15,9 +15,12 @@ interface Props {
 }
 
 const ProfileNavigation = ({ user, setCurrentTab }: Props) => {
+  const currentTab = useRef('posts');
+
   const handleNavigationClick = (
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>
   ) => {
+    currentTab.current = e.currentTarget.id;
     switch (e.currentTarget.id) {
       case 'posts':
         setCurrentTab(
@@ -40,7 +43,7 @@ const ProfileNavigation = ({ user, setCurrentTab }: Props) => {
     <div className="text-uppercase d-flex justify-content-around justify-content-lg-center">
       <div
         id="posts"
-        className="me-3 mt-2"
+        className={`me-3 mt-2 ${currentTab.current === 'posts' && 'text-info'}`}
         onClick={(e) => handleNavigationClick(e)}
       >
         <div role={'button'} className="d-block d-lg-none fs-2">
@@ -52,7 +55,9 @@ const ProfileNavigation = ({ user, setCurrentTab }: Props) => {
       </div>
       {user.isSameAsRequester && (
         <div
-          className="mx-3 mt-2"
+          className={`mx-3 mt-2 ${
+            currentTab.current === 'saved' && 'text-info'
+          }`}
           id="saved"
           onClick={(e) => handleNavigationClick(e)}
         >
@@ -65,7 +70,9 @@ const ProfileNavigation = ({ user, setCurrentTab }: Props) => {
         </div>
       )}
       <div
-        className="ms-3 mt-2"
+        className={`ms-3 mt-2 ${
+          currentTab.current === 'tagged' && 'text-info'
+        }`}
         id="tagged"
         onClick={(e) => handleNavigationClick(e)}
       >
