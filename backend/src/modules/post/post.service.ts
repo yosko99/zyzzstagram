@@ -48,7 +48,6 @@ export class PostService {
   }
 
   async deletePost(post: IPost) {
-    await this.prisma.comment.deleteMany({ where: { postId: post.id } });
     await this.prisma.post.delete({ where: { id: post.id } });
     deleteImage(post.imageURL);
 

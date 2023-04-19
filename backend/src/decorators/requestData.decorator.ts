@@ -5,6 +5,7 @@ type IPassedRequestData =
   | 'userDataFromToken'
   | 'post'
   | 'notification'
+  | 'story'
   | 'comment';
 
 export const RequestData = createParamDecorator(

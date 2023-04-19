@@ -23,6 +23,12 @@ export const createUserForPostDto = {
   ...userData,
 };
 
+export const createUserForStoryDto = {
+  email: 'testStory@example.com',
+  username: 'testStory',
+  ...userData,
+};
+
 export const createFirstUserForNotificationDto = {
   email: 'testNotification1@example.com',
   username: 'testNotification1',
