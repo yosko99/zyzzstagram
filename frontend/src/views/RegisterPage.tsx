@@ -35,7 +35,7 @@ const RegisterPage = () => {
         <EmailInput />
         <UsernameInput />
         <PasswordInput />
-        <ImageUploadInput setImageFile={setImageFile} />
+        <ImageUploadInput aspectRatio={4 / 3} setImageFile={setImageFile} />
 
         {alert}
         {isLoading && <LoadingSpinner />}

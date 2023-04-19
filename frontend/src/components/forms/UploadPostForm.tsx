@@ -31,7 +31,7 @@ const UploadPostForm = () => {
           placeholder="Write your posts description"
         />
       </FloatingLabel>
-      <ImageUploadInput setImageFile={setImageFile} />
+      <ImageUploadInput aspectRatio={4 / 3} setImageFile={setImageFile} />
 
       {alert}
       {isLoading && <LoadingSpinner />}

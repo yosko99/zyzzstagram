@@ -8,6 +8,7 @@ import toggleThumbnail from '../../functions/toggleThumbnail';
 interface Props {
   imageURL: string | ArrayBuffer | null;
   setImageFile: React.Dispatch<React.SetStateAction<File | undefined>>;
+  aspectRatio: number;
 }
 
 interface ICroppedArea {
@@ -17,7 +18,7 @@ interface ICroppedArea {
   height: number;
 }
 
-const ImageCropper = ({ imageURL, setImageFile }: Props) => {
+const ImageCropper = ({ imageURL, setImageFile, aspectRatio }: Props) => {
   const [modalShow, setModalShow] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -104,7 +105,7 @@ const ImageCropper = ({ imageURL, setImageFile }: Props) => {
           style={{
             containerStyle: { height: '50vh', backgroundColor: 'white' }
           }}
-          aspect={4 / 3}
+          aspect={aspectRatio}
           onCropChange={setCrop}
           onCropComplete={onCropComplete}
           onZoomChange={setZoom}

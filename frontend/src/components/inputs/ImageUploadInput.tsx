@@ -9,9 +9,10 @@ import ImageCropper from '../utils/ImageCropper';
 
 interface Props {
   setImageFile: React.Dispatch<React.SetStateAction<File | undefined>>;
+  aspectRatio: number;
 }
 
-const ImageUploadInput = ({ setImageFile }: Props) => {
+const ImageUploadInput = ({ setImageFile, aspectRatio }: Props) => {
   const [imageURL, setImageURL] = useState<string | ArrayBuffer | null>('');
   const [alert, setAlert] = useState<React.ReactNode>(null);
   const { getRootProps, getInputProps } = useDropzone({
@@ -46,7 +47,11 @@ const ImageUploadInput = ({ setImageFile }: Props) => {
   return (
     <div>
       {imageURL !== '' && (
-        <ImageCropper setImageFile={setImageFile} imageURL={imageURL} />
+        <ImageCropper
+          aspectRatio={aspectRatio}
+          setImageFile={setImageFile}
+          imageURL={imageURL}
+        />
       )}
 
       <section className="container" id="drag-me-container">

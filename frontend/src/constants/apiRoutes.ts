@@ -38,3 +38,6 @@ export const getLikeCommentRoute = (postId: string, commentId: string) =>
 export const getNotificationsRoute = () => API_PREFIX + 'notifications/';
 export const getNotificationsLikeRoute = () => getNotificationsRoute() + 'like';
 export const getNotificationsReadRoute = () => getNotificationsRoute() + 'read';
+
+// STORIES
+export const getStoriesRoute = () => API_PREFIX + 'stories';

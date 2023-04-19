@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AiOutlinePlusCircle } from 'react-icons/ai';
+import CreateStoryButton from '../buttons/story/CreateStoryButton';
 
 const MainPageStoriesPanel = (props: {
   children:
@@ -20,10 +20,7 @@ const MainPageStoriesPanel = (props: {
           <div className="status-wrapper">
             <div className="status-card">
               <div className="profile-pic">
-                <AiOutlinePlusCircle
-                  role={'button'}
-                  style={{ width: '100%', height: '100%', color: 'white' }}
-                />
+                <CreateStoryButton />
               </div>
               <p className="username">Your story</p>
             </div>
