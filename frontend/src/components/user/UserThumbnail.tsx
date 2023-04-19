@@ -10,6 +10,7 @@ interface Props {
   additionalElement?: React.ReactNode;
   sideElement?: React.ReactNode;
   onClick?: () => void;
+  usernameClassName?: string;
 }
 
 const UserThumbnail = ({
@@ -17,6 +18,7 @@ const UserThumbnail = ({
   imageURL,
   additionalElement,
   sideElement,
+  usernameClassName,
   onClick
 }: Props) => {
   const navigate = useNavigate();
@@ -34,7 +36,7 @@ const UserThumbnail = ({
           </Link>
         </div>
         <p
-          className="username"
+          className={`username ${usernameClassName && usernameClassName}`}
           role={'button'}
           onClick={() => navigate(`/profile/${username}`)}
         >

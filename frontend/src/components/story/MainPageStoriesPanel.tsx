@@ -2,7 +2,7 @@ import React from 'react';
 
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 
-const StoriesHolder = (props: {
+const MainPageStoriesPanel = (props: {
   children:
     | string
     | number
@@ -35,4 +35,4 @@ const StoriesHolder = (props: {
   );
 };
 
-export default StoriesHolder;
+export default MainPageStoriesPanel;

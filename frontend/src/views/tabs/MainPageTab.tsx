@@ -1,42 +1,18 @@
-/* eslint-disable indent */
 /* eslint-disable multiline-ternary */
 import React from 'react';
 
 import { IoIosCheckmarkCircleOutline } from 'react-icons/io';
 
-import StoriesHolder from '../../components/layout/StoriesHolder';
-import Story from '../../components/layout/Story';
 import Post from '../../components/post/Post';
+import MainPageStoriesPanel from '../../components/story/MainPageStoriesPanel';
+import MainPageStory from '../../components/story/MainPageStory';
 import LoadingSpinner from '../../components/utils/LoadingSpinner';
 import { getFollowingUsersPostsRoute } from '../../constants/apiRoutes';
 import useFetch from '../../hooks/useFetch';
 import IPost from '../../interfaces/IPost';
-import IStory from '../../interfaces/IStory';
-import IUser from '../../interfaces/IUser';
 import CenteredItems from '../../styles/CenteredItems';
 
 const MainPageTab = () => {
-  const user: IUser = {
-    username: 'yosko99',
-    isFollowedByRequester: false,
-    email: 'azis@asdsa.com',
-    password: 'a',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    id: 'asdaads',
-    isSameAsRequester: false,
-    imageURL:
-      'https://cdn.marica.bg/images/marica.bg/967/1200_azis-shashna-s-priznania-za-jivota-i-karierata-si-video-1.jpg'
-  };
-
-  const story: IStory = {
-    createdAt: new Date(),
-    id: '1',
-    imageURL: 'https://pbs.twimg.com/media/CJOYk7QXAAA_0fd.jpg',
-    user,
-    userId: user.id
-  };
-
   const { data, error, isLoading } = useFetch(
     'posts',
     getFollowingUsersPostsRoute(),
@@ -48,15 +24,12 @@ const MainPageTab = () => {
 
   return (
     <div className="d-flex flex-column">
-      <StoriesHolder>
-        <Story story={story} />
-        <Story story={story} />
-        <Story story={story} />
-        <Story story={story} />
-        <Story story={story} />
-        <Story story={story} />
-        <Story story={story} />
-      </StoriesHolder>
+      <MainPageStoriesPanel>
+        <MainPageStory
+          imageURL="https://cdn.marica.bg/images/marica.bg/967/1200_azis-shashna-s-priznania-za-jivota-i-karierata-si-video-1.jpg"
+          username="test"
+        />
+      </MainPageStoriesPanel>
       {isLoading ? (
         <LoadingSpinner />
       ) : (

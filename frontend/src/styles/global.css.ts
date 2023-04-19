@@ -203,8 +203,8 @@ const GlobalCSS = createGlobalStyle`
 		outline: none;
 		text-transform: capitalize;
 		font-size: 16px;
-		color: rgb(0, 162, 255);
-		opacity: 0.5;
+		color: #007bff;
+		opacity: 1;
 	}
 	
 	.reaction-wrapper{

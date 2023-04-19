@@ -9,7 +9,7 @@ import IPost from '../../interfaces/IPost';
 import IUser from '../../interfaces/IUser';
 import BookmarkButton from '../buttons/post/BookmarkButton';
 import LikeButton from '../buttons/utils/LikeButton';
-import PostCommentInput from '../inputs/PostCommentInput';
+import CommentInput from '../inputs/CommentInput';
 import UserThumbnail from '../user/UserThumbnail';
 import CommentsPanel from './CommentsPanel';
 import PostImage from './PostImage';
@@ -70,7 +70,11 @@ const Post = ({ user, post, className, showComments }: Props) => {
 
               <CommentsPanel post={post} showComments={showComments} />
             </div>
-            <PostCommentInput post={post} />
+            <CommentInput
+              typeOfComment="post"
+              id={post.id}
+              authorUsername={post.author.username}
+            />
           </div>
         </div>
       </div>

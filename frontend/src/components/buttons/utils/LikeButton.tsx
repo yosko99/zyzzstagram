@@ -6,17 +6,23 @@ import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 interface Props {
   useCustomLikeHook: { handleLike: () => Promise<void> };
   likedByUser: boolean;
+  size?: string;
 }
 
-const LikeButton = ({ likedByUser, useCustomLikeHook }: Props) => {
+const LikeButton = ({ likedByUser, useCustomLikeHook, size }: Props) => {
   const { handleLike } = useCustomLikeHook;
 
   return (
     <span onClick={() => handleLike()}>
       {!likedByUser ? (
-        <AiOutlineHeart role={'button'} className="me-1" />
+        <AiOutlineHeart role={'button'} size={size && size} className="me-1" />
       ) : (
-        <AiFillHeart color="red" role={'button'} className="me-1" />
+        <AiFillHeart
+          color="red"
+          size={size && size}
+          role={'button'}
+          className="me-1"
+        />
       )}
     </span>
   );

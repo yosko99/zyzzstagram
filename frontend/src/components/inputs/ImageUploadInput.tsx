@@ -65,7 +65,7 @@ const ImageUploadInput = ({ setImageFile }: Props) => {
         <Image
           fluid
           id="thumbnail"
-          style={{ objectFit: 'cover', width: '100%', height: '250px' }}
+          style={{ objectFit: 'contain', width: '100%', height: '250px' }}
         />
       </div>
       {alert}

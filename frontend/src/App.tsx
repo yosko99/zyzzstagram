@@ -16,6 +16,7 @@ import PostPage from './views/PostPage';
 import ProfilePage from './views/ProfilePage';
 import RegisterPage from './views/RegisterPage';
 import './styles/bootstrap.min.css';
+import StoriesPage from './views/StoriesPage';
 import UserPage from './views/UserPage';
 
 const socket = io('ws://localhost:5000', {
@@ -42,6 +43,7 @@ const App = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/post/:id" element={<PostPage />} />
           <Route path="/explore" element={<ExplorePage />} />
+          <Route path="/stories" element={<StoriesPage />} />
         </Routes>
       </TokenContext.Provider>
     </SocketContext.Provider>

@@ -5,14 +5,20 @@ import { useQueryClient } from 'react-query';
 import { getCommentPostRoute } from '../../constants/apiRoutes';
 import { SocketContext } from '../../context/SocketContext';
 import { useMutationWithToken } from '../../hooks/useUploadImage';
-import IPost from '../../interfaces/IPost';
 
 interface Props {
-  post: IPost;
+  id: string;
+  authorUsername: string;
+  typeOfComment: 'post' | 'story';
 }
 
-const PostCommentInput = ({ post }: Props) => {
-  const { mutate } = useMutationWithToken(getCommentPostRoute(post.id), false);
+const CommentInput = ({ id, typeOfComment, authorUsername }: Props) => {
+  const link =
+    typeOfComment === 'post'
+      ? getCommentPostRoute(id)
+      : getCommentPostRoute(id);
+
+  const { mutate } = useMutationWithToken(link, false);
   const queryClient = useQueryClient();
   const socket = useContext(SocketContext);
 
@@ -26,8 +32,8 @@ const PostCommentInput = ({ post }: Props) => {
         {
           onSuccess: () => {
             queryClient.invalidateQueries();
-            queryClient.refetchQueries(`post-${post.id}`);
-            socket.emit('notification', post.author.username);
+            queryClient.refetchQueries(`${typeOfComment}-${id}`);
+            socket.emit('notification', authorUsername);
           }
         }
       );
@@ -62,4 +68,4 @@ const PostCommentInput = ({ post }: Props) => {
   );
 };
 
-export default PostCommentInput;
+export default CommentInput;

@@ -4,8 +4,8 @@ interface IStory {
   id: string;
   imageURL: string;
   createdAt: Date;
-  user: IUser;
-  userId: string;
+  user?: IUser;
+  userId?: string;
 }
 
 export default IStory;
