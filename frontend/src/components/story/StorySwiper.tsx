@@ -5,8 +5,9 @@ import {
   BsFillArrowLeftCircleFill,
   BsFillArrowRightCircleFill
 } from 'react-icons/bs';
+import { useLocation, useNavigate } from 'react-router-dom';
 import LoadingBar from 'react-top-loading-bar';
-import Swiper, { EffectCoverflow } from 'swiper';
+import Swiper, { EffectCoverflow, Keyboard } from 'swiper';
 import { Swiper as SwiperSlider, SwiperSlide } from 'swiper/react';
 
 import 'swiper/css';
@@ -15,11 +16,24 @@ import 'swiper/css/effect-creative';
 import IUser from '../../interfaces/IUser';
 import Stories from './Stories';
 
-interface Props {
-  users: IUser[];
-}
+const StorySwiper = () => {
+  const [swiper, setSwiper] = useState<Swiper>();
 
-const StorySwiper = ({ users }: Props) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const users = useRef<IUser[]>([]);
+  useEffect(() => {
+    if (location.state === null) {
+      navigate('/404');
+    }
+
+    users.current = location.state.users;
+  }, []);
+
+  const startIndex = useRef(
+    location.state !== null ? location.state.startIndex : 0
+  );
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [slideChange, setSlideChange] = useState(false);
 
@@ -43,17 +57,15 @@ const StorySwiper = ({ users }: Props) => {
     interval.current = window.setInterval(loadingProgressInterval, 1000);
   };
 
-  const [swiperRef, setSwiperRef] = useState<Swiper>();
-
   const handleSlideNext = () => {
-    if (swiperRef!.activeIndex < users.length) {
-      swiperRef!.slideTo(swiperRef!.activeIndex + 1);
+    if (swiper!.activeIndex < users.current.length) {
+      swiper!.slideTo(swiper!.activeIndex + 1);
     }
   };
 
   const handleSlidePrev = () => {
-    if (swiperRef!.activeIndex > 0) {
-      swiperRef!.slideTo(swiperRef!.activeIndex - 1);
+    if (swiper!.activeIndex > 0) {
+      swiper!.slideTo(swiper!.activeIndex - 1);
     }
   };
 
@@ -66,7 +78,7 @@ const StorySwiper = ({ users }: Props) => {
       <BsFillArrowLeftCircleFill
         role="button"
         size={'15em'}
-        className={`ps-5 ${swiperRef?.activeIndex === 0 && 'text-white'}`}
+        className={`ps-5 ${swiper?.activeIndex === 0 && 'text-white'}`}
         onClick={handleSlidePrev}
       />
       <LoadingBar
@@ -83,6 +95,7 @@ const StorySwiper = ({ users }: Props) => {
         onSlideChange={handleMainSwiper}
         centeredSlides={true}
         slidesPerView={'auto'}
+        initialSlide={startIndex.current}
         coverflowEffect={{
           rotate: 50,
           stretch: 0,
@@ -92,11 +105,11 @@ const StorySwiper = ({ users }: Props) => {
         }}
         onInit={(e) => {
           // @ts-ignore
-          setSwiperRef(e);
+          setSwiper(e);
         }}
-        modules={[EffectCoverflow]}
+        modules={[EffectCoverflow, Keyboard]}
       >
-        {users.map((user, index: number) => (
+        {users.current.map((user, index: number) => (
           <SwiperSlide key={index}>
             <Stories
               stories={user.stories!}
@@ -112,7 +125,7 @@ const StorySwiper = ({ users }: Props) => {
         onClick={handleSlideNext}
         size={'15em'}
         className={`pe-5 ${
-          swiperRef?.activeIndex === users.length - 1 && 'text-white'
+          swiper?.activeIndex === users.current.length - 1 && 'text-white'
         }`}
       />
     </div>
