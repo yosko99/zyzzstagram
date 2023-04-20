@@ -6,6 +6,7 @@ import IToken from '../../interfaces/IToken';
 import IStory from '../../interfaces/IStory';
 
 import deleteImage from '../../functions/deleteImage';
+import StoriesType from 'src/types/stories.type';
 
 @Injectable()
 export class StoryService {
@@ -40,5 +41,72 @@ export class StoryService {
     return {
       message: 'Story deleted successfully',
     };
+  }
+
+  async getStories({ username }: IToken, storiesType?: StoriesType) {
+    switch (storiesType) {
+      case 'following':
+        return this.getFollowingStories(username);
+      default:
+        return this.getAllStories(username);
+    }
+  }
+
+  private async getAllStories(username: string) {
+    const stories = await this.prisma.story.findMany({
+      include: {
+        likedBy: {
+          where: {
+            username,
+          },
+          select: { username: true },
+        },
+      },
+    });
+
+    return stories.map((story) => {
+      return {
+        ...story,
+        likedByUser: story.likedBy.length > 0,
+      };
+    });
+  }
+
+  private async getFollowingStories(username: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        username,
+      },
+      select: {
+        following: {
+          select: {
+            stories: {
+              select: {
+                createdAt: true,
+                imageURL: true,
+                id: true,
+                likedBy: {
+                  where: {
+                    username,
+                  },
+                  select: { username: true },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const followingStories = user.following.flatMap((follower) => {
+      return follower.stories.map((story) => {
+        return {
+          ...story,
+          likedByUser: story.likedBy.length > 0,
+        };
+      });
+    });
+
+    return followingStories;
   }
 }

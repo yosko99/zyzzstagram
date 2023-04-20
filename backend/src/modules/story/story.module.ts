@@ -20,9 +20,15 @@ import { StoryService } from './story.service';
 })
 export class StoryModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(VerifyJWTMiddleware).forRoutes({
-      path: '/stories',
-      method: RequestMethod.POST,
-    });
+    consumer.apply(VerifyJWTMiddleware).forRoutes(
+      {
+        path: '/stories',
+        method: RequestMethod.POST,
+      },
+      {
+        path: '/stories',
+        method: RequestMethod.GET,
+      },
+    );
   }
 }

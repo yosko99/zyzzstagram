@@ -17,6 +17,7 @@ model User {
     posts                 Post[]
     comments              Comment[]
     likedPosts            Post[]         @relation("PostLikes")
+    likedStories          Story[]        @relation("StoryLikes")
     savedPosts            Post[]         @relation("SavedPosts")
     likedComments         Comment[]      @relation("CommentLikes")
     followers             User[]         @relation("UserFollowers")
@@ -56,11 +57,13 @@ model Comment {
 }
 
 model Story {
-    id        String   @id @default(uuid())
-    imageURL  String
-    createdAt DateTime @default(now())
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId    String
+    id           String         @id @default(uuid())
+    imageURL     String
+    createdAt    DateTime       @default(now())
+    user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId       String
+    likedBy      User[]         @relation("StoryLikes")
+    Notification Notification[]
 }
 
 model Notification {
@@ -76,4 +79,6 @@ model Notification {
     postId     String?
     comment    Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
     commentId  String?
+    story      Story?   @relation(fields: [storyId], references: [id])
+    storyId    String?
 }

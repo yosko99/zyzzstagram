@@ -6,6 +6,7 @@ interface IStory {
   createdAt: Date;
   user: IUser;
   userId: string;
+  likedByUser?: boolean;
 }
 
 export default IStory;

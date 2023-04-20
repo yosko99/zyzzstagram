@@ -64,4 +64,34 @@ describe('test story API', () => {
       ).rejects.toThrow(TypeError);
     });
   });
+
+  describe('test get stories service', () => {
+    it('should get array of all stories', async () => {
+      const response = await storyService.getStories({
+        username: 'test',
+        password: 'test',
+      });
+
+      expect(response).toEqual(expect.any(Array));
+    });
+
+    it('should get following users stories', async () => {
+      const userForStory = await userService.createUser(
+        createUserForStoryDto,
+        filename,
+      );
+
+      const response = await storyService.getStories(
+        {
+          username: createUserForStoryDto.username,
+          password: 'test',
+        },
+        'following',
+      );
+
+      expect(response).toEqual(expect.any(Array));
+
+      await userService.deleteUser(userForStory.user);
+    });
+  });
 });

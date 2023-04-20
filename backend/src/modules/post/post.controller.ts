@@ -44,14 +44,14 @@ import PostsType from '../../types/posts.type';
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
-  @Get('/')
-  @ApiOperation({ summary: 'Get all posts' })
+  @Get()
+  @ApiOperation({ summary: 'Get posts' })
   @ApiQuery({
-    name: 'postsType',
+    name: 'posts_type',
     allowEmptyValue: true,
     enum: ['following', 'explore'],
     required: false,
-    description: 'Optional query which decides what kind of posts to',
+    description: 'Optional query which decides what kind of posts to get',
   })
   @ApiHeader({ name: 'Authorization', required: true })
   @ApiResponse({ status: 200, description: 'Receive posts' })
@@ -59,7 +59,7 @@ export class PostController {
   @ApiResponse({ status: 498, description: 'Provided invalid token' })
   getPosts(
     @RequestData('userDataFromToken') tokenData: IToken,
-    @Query('postsType') postsType: PostsType,
+    @Query('posts_type') postsType: PostsType,
   ) {
     return this.postService.getPosts(tokenData, postsType);
   }
