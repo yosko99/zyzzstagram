@@ -4,8 +4,7 @@ import React from 'react';
 import { IoIosCheckmarkCircleOutline } from 'react-icons/io';
 
 import Post from '../../components/post/Post';
-import MainPageStoriesPanel from '../../components/story/MainPageStoriesPanel';
-import MainPageStory from '../../components/story/MainPageStory';
+import StoriesPanel from '../../components/story/StoriesPanel';
 import LoadingSpinner from '../../components/utils/LoadingSpinner';
 import { getFollowingUsersPostsRoute } from '../../constants/apiRoutes';
 import useFetch from '../../hooks/useFetch';
@@ -24,12 +23,7 @@ const MainPageTab = () => {
 
   return (
     <div className="d-flex flex-column">
-      <MainPageStoriesPanel>
-        <MainPageStory
-          imageURL="https://cdn.marica.bg/images/marica.bg/967/1200_azis-shashna-s-priznania-za-jivota-i-karierata-si-video-1.jpg"
-          username="test"
-        />
-      </MainPageStoriesPanel>
+      <StoriesPanel />
       {isLoading ? (
         <LoadingSpinner />
       ) : (

@@ -10,7 +10,7 @@ import IComment from '../../interfaces/IComment';
 import IToken from '../../interfaces/IToken';
 import IPost from '../../interfaces/IPost';
 
-import transformPosts from '../../functions/post/transformPosts';
+import appendLikeAndSaveToPosts from '../../functions/post/appendLikeAndSavedToPosts';
 import deleteImage from '../../functions/deleteImage';
 
 import PostsType from '../../types/posts.type';
@@ -119,9 +119,9 @@ export class PostService {
       },
     });
 
-    const userPosts = transformPosts(user.posts);
+    const userPosts = appendLikeAndSaveToPosts(user.posts);
     const followingPosts = user.following.flatMap((follower) => {
-      return transformPosts(follower.posts);
+      return appendLikeAndSaveToPosts(follower.posts);
     });
 
     return [...followingPosts, ...userPosts].sort((a, b) => {
@@ -152,7 +152,7 @@ export class PostService {
       orderBy: { createdAt: 'desc' },
     });
 
-    return transformPosts(posts);
+    return appendLikeAndSaveToPosts(posts);
   }
 
   async likePost(post: IPost, { username }: IToken) {

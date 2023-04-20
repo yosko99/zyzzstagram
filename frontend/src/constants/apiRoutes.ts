@@ -21,9 +21,9 @@ export const getCurrentUserSuggestedUsers = () =>
 // POSTS
 export const getPostsRoute = () => API_PREFIX + 'posts';
 export const getExplorePostsRoute = () =>
-  `${getPostsRoute()}?postsType=explore`;
+  `${getPostsRoute()}?posts_type=explore`;
 export const getFollowingUsersPostsRoute = () =>
-  `${getPostsRoute()}?postsType=following`;
+  `${getPostsRoute()}?posts_type=following`;
 export const getPostRoute = (id: string) => `${getPostsRoute()}/${id}`;
 export const getLikePostRoute = (id: string) =>
   `${getPostsRoute()}/${id}/likes`;
@@ -41,3 +41,5 @@ export const getNotificationsReadRoute = () => getNotificationsRoute() + 'read';
 
 // STORIES
 export const getStoriesRoute = () => API_PREFIX + 'stories';
+export const getFollowingUsersStoriesRoute = () =>
+  `${getStoriesRoute()}?stories_type=following`;

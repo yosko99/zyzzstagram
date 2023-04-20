@@ -32,9 +32,8 @@ import IStory from '../../interfaces/IStory';
 
 import { multerFilter } from '../../config/multer';
 
-import { CreateStoryDto } from '../../dto/story.dto';
-
 import StoriesType from '../../types/stories.type';
+import { CreateStoryDto } from '../../dto/story.dto';
 
 @Controller('/stories')
 @ApiTags('Stories')
@@ -51,7 +50,10 @@ export class StoryController {
     description: 'Optional query which decides what kind of stories to get',
   })
   @ApiHeader({ name: 'Authorization', required: true })
-  @ApiResponse({ status: 200, description: 'Receive stories' })
+  @ApiResponse({
+    status: 200,
+    description: 'Receive all stories',
+  })
   @ApiResponse({ status: 401, description: 'Token not provided' })
   @ApiResponse({ status: 498, description: 'Provided invalid token' })
   getPosts(

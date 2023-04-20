@@ -5,8 +5,11 @@ import { PrismaService } from '../../prisma/prisma.service';
 import IToken from '../../interfaces/IToken';
 import IStory from '../../interfaces/IStory';
 
+import appendLikeToUsersStories from '../../functions/story/appendLikeToUsersStories';
+import getStorySelectQuery from '../../functions/story/getStorySelectQuery';
 import deleteImage from '../../functions/deleteImage';
-import StoriesType from 'src/types/stories.type';
+
+import StoriesType from '../../types/stories.type';
 
 @Injectable()
 export class StoryService {
@@ -53,60 +56,56 @@ export class StoryService {
   }
 
   private async getAllStories(username: string) {
-    const stories = await this.prisma.story.findMany({
-      include: {
-        likedBy: {
-          where: {
-            username,
-          },
-          select: { username: true },
-        },
+    const users = await this.prisma.user.findMany({
+      select: {
+        username: true,
+        imageURL: true,
+        stories: { select: getStorySelectQuery(username) },
       },
     });
 
-    return stories.map((story) => {
+    return appendLikeToUsersStories(users);
+  }
+
+  private async getFollowingStories(username: string) {
+    const followingUsers = await this.prisma.user.findMany({
+      where: {
+        followers: {
+          some: {
+            username,
+          },
+        },
+      },
+      select: {
+        username: true,
+        imageURL: true,
+        stories: { select: getStorySelectQuery(username) },
+      },
+    });
+
+    const followingUsersWithStories = appendLikeToUsersStories(followingUsers);
+
+    const currentUser = await this.prisma.user.findUnique({
+      where: {
+        username,
+      },
+      select: {
+        username: true,
+        imageURL: true,
+        stories: { select: getStorySelectQuery(username) },
+      },
+    });
+
+    currentUser.stories.map((story) => {
       return {
         ...story,
         likedByUser: story.likedBy.length > 0,
       };
     });
-  }
 
-  private async getFollowingStories(username: string) {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        username,
-      },
-      select: {
-        following: {
-          select: {
-            stories: {
-              select: {
-                createdAt: true,
-                imageURL: true,
-                id: true,
-                likedBy: {
-                  where: {
-                    username,
-                  },
-                  select: { username: true },
-                },
-              },
-            },
-          },
-        },
-      },
-    });
-
-    const followingStories = user.following.flatMap((follower) => {
-      return follower.stories.map((story) => {
-        return {
-          ...story,
-          likedByUser: story.likedBy.length > 0,
-        };
-      });
-    });
-
-    return followingStories;
+    return {
+      currentUser,
+      followingUsersWithStories,
+    };
   }
 }

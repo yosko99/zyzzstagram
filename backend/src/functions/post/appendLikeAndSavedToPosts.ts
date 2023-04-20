@@ -1,6 +1,6 @@
 import IPost from 'src/interfaces/IPost';
 
-const transformPosts = (posts: IPost[]) => {
+const appendLikeAndSaveToPosts = (posts: IPost[]) => {
   return posts.map((post) => {
     return {
       ...post,
@@ -10,4 +10,4 @@ const transformPosts = (posts: IPost[]) => {
   });
 };
 
-export default transformPosts;
+export default appendLikeAndSaveToPosts;

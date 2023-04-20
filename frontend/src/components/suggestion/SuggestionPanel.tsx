@@ -2,6 +2,7 @@
 import React from 'react';
 
 import { getCurrentUserSuggestedUsers } from '../../constants/apiRoutes';
+import suggestionPanelTabs from '../../data/suggestionPanelTabs';
 import useFetch from '../../hooks/useFetch';
 import IUser from '../../interfaces/IUser';
 import FollowButton from '../buttons/user/FollowButton';
@@ -15,18 +16,6 @@ const SuggestionPanel = () => {
     true,
     true
   );
-  const tabs = [
-    'About',
-    'Help',
-    'Press',
-    'API',
-    'Jobs',
-    'Privacy',
-    'Terms',
-    'Locations',
-    'Language',
-    'Zyzz verified'
-  ];
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -62,7 +51,7 @@ const SuggestionPanel = () => {
         className="d-flex flex-wrap ms-4 mt-3 text-muted"
         style={{ fontSize: '0.9em' }}
       >
-        {tabs.map((tab, index: number) => (
+        {suggestionPanelTabs.map((tab, index: number) => (
           <a key={index} role="button" className="mx-1 text-muted">
             {tab}
           </a>
