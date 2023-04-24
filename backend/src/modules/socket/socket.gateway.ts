@@ -10,8 +10,8 @@ import { Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import * as jwt from 'jsonwebtoken';
 
-import IToken from '../interfaces/IToken';
-import getMapByValue from 'src/functions/getMapByValue';
+import IToken from '../../interfaces/IToken';
+import getMapByValue from '../../functions/getMapByValue';
 
 @WebSocketGateway({ cors: true })
 export class SocketGateway

@@ -78,7 +78,7 @@ const StorySwiper = () => {
     <div className="d-flex justify-content-center align-items-center">
       <BsFillArrowLeftCircleFill
         role="button"
-        size={'15em'}
+        size={'10em'}
         className={`ps-5 ${swiper?.activeIndex === 0 && 'text-white'}`}
         onClick={handleSlidePrev}
       />
@@ -125,7 +125,7 @@ const StorySwiper = () => {
       <BsFillArrowRightCircleFill
         role="button"
         onClick={handleSlideNext}
-        size={'15em'}
+        size={'10em'}
         className={`pe-5 ${
           swiper?.activeIndex === users.current.length - 1 && 'text-white'
         }`}

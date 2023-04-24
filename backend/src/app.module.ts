@@ -7,10 +7,17 @@ import { StoryModule } from './modules/story/story.module';
 import { PostModule } from './modules/post/post.module';
 import { UserModule } from './modules/user/user.module';
 
-import { SocketGateway } from './socket/socket.gateway';
+import { SocketGateway } from './modules/socket/socket.gateway';
+import { TasksModule } from './modules/tasks/tasks.module';
 
 @Module({
-  imports: [UserModule, PostModule, NotificationModule, StoryModule],
+  imports: [
+    UserModule,
+    PostModule,
+    NotificationModule,
+    StoryModule,
+    TasksModule,
+  ],
   controllers: [],
   providers: [SocketGateway, GlobalExceptionFilter],
 })

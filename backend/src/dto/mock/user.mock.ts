@@ -41,4 +41,10 @@ export const createSecondUserForNotificationDto = {
   ...userData,
 };
 
+export const createUserForTasksDto = {
+  email: 'testTasks@example.com',
+  username: 'testTask',
+  ...userData,
+};
+
 export const createInvalidUserDto = { email: '', password: '', username: '' };

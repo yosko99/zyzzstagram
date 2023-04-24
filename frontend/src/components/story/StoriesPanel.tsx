@@ -51,25 +51,26 @@ const StoriesPanel = () => {
               <Spinner />
             ) : (
               <>
-                {response.currentUser && (
+                {response.currentUser?.stories?.length !== 0 && (
                   <StoryBubble
                     onClick={() =>
                       handleStoryClick(response.currentUser!.username)
                     }
-                    imageURL={response.currentUser.imageURL}
-                    username={response.currentUser.username}
+                    imageURL={response.currentUser!.imageURL}
+                    username={response.currentUser!.username}
                   />
                 )}
                 {response.followingUsersWithStories &&
                   response.followingUsersWithStories.map(
-                    (user, index: number) => (
-                      <StoryBubble
-                        onClick={() => handleStoryClick(user.username)}
-                        key={index}
-                        username={user.username}
-                        imageURL={user.imageURL}
-                      />
-                    )
+                    (user, index: number) =>
+                      user.stories?.length !== 0 && (
+                        <StoryBubble
+                          onClick={() => handleStoryClick(user.username)}
+                          key={index}
+                          username={user.username}
+                          imageURL={user.imageURL}
+                        />
+                      )
                   )}
               </>
             )}
