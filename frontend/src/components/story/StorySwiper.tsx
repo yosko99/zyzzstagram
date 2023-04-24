@@ -7,13 +7,14 @@ import {
 } from 'react-icons/bs';
 import { useLocation, useNavigate } from 'react-router-dom';
 import LoadingBar from 'react-top-loading-bar';
-import Swiper, { EffectCoverflow, Keyboard } from 'swiper';
+import Swiper, { EffectCoverflow } from 'swiper';
 import { Swiper as SwiperSlider, SwiperSlide } from 'swiper/react';
 
 import 'swiper/css';
 import 'swiper/css/effect-creative';
 
 import IUser from '../../interfaces/IUser';
+import CloseStoriesButton from '../buttons/story/CloseStoriesButton';
 import Stories from './Stories';
 
 const StorySwiper = () => {
@@ -107,7 +108,7 @@ const StorySwiper = () => {
           // @ts-ignore
           setSwiper(e);
         }}
-        modules={[EffectCoverflow, Keyboard]}
+        modules={[EffectCoverflow]}
       >
         {users.current.map((user, index: number) => (
           <SwiperSlide key={index}>
@@ -120,6 +121,7 @@ const StorySwiper = () => {
           </SwiperSlide>
         ))}
       </SwiperSlider>
+      <CloseStoriesButton />
       <BsFillArrowRightCircleFill
         role="button"
         onClick={handleSlideNext}

@@ -49,7 +49,7 @@ const Post = ({ user, post, className, showComments }: Props) => {
                   <PostModal
                     post={post}
                     activateButtonElement={
-                      <AiOutlineComment role={'button'} className="mx-1" />
+                      <AiOutlineComment role={'button'} className="mx-3" />
                     }
                   />
                   <div>

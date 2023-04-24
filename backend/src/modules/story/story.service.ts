@@ -4,6 +4,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 
 import IToken from '../../interfaces/IToken';
 import IStory from '../../interfaces/IStory';
+import IUser from '../../interfaces/IUser';
 
 import appendLikeToUsersStories from '../../functions/story/appendLikeToUsersStories';
 import getStorySelectQuery from '../../functions/story/getStorySelectQuery';
@@ -46,7 +47,13 @@ export class StoryService {
     };
   }
 
-  async getStories({ username }: IToken, storiesType?: StoriesType) {
+  async getStories(
+    { username }: IToken,
+    storiesType?: StoriesType,
+  ): Promise<
+    | IUser[]
+    | Promise<{ currentUser: IUser; followingUsersWithStories: IUser[] }>
+  > {
     switch (storiesType) {
       case 'following':
         return this.getFollowingStories(username);

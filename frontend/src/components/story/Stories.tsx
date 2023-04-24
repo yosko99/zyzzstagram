@@ -1,9 +1,16 @@
 import React from 'react';
 
-import { Autoplay, EffectCards, Navigation, Pagination } from 'swiper';
+import Swiper, {
+  Autoplay,
+  EffectCards,
+  Keyboard,
+  Navigation,
+  Pagination
+} from 'swiper';
 import { SwiperSlide, Swiper as SwiperSlider } from 'swiper/react';
 
 import { PUBLIC_IMAGES_PREFIX } from '../../constants/apiRoutes';
+import dateFormatter from '../../functions/dateFormatter';
 import useLikePost from '../../hooks/useLikePost';
 import IStory from '../../interfaces/IStory';
 import CenteredItems from '../../styles/CenteredItems';
@@ -25,6 +32,19 @@ const Stories = ({
   imageURL,
   onAutoplayTimeLeft
 }: Props) => {
+  const handleSlideChange = (
+    swiper: Swiper,
+    event: MouseEvent | TouchEvent
+  ) => {
+    const { x } = event as MouseEvent & { x: number };
+
+    if (x <= window.innerWidth / 2) {
+      swiper.slidePrev();
+    } else {
+      swiper.slideNext();
+    }
+  };
+
   return (
     <SwiperSlider
       autoplay={{
@@ -35,16 +55,9 @@ const Stories = ({
       onAutoplayTimeLeft={onAutoplayTimeLeft}
       cardsEffect={{ slideShadows: false }}
       className="d-flex"
-      onClick={(swiper, event) => {
-        const { x } = event as MouseEvent & { x: number };
-
-        if (x <= window.innerWidth / 2) {
-          swiper.slidePrev();
-        } else {
-          swiper.slideNext();
-        }
-      }}
-      modules={[Autoplay, Navigation, Pagination, EffectCards]}
+      keyboard
+      onClick={(swiper, e) => handleSlideChange(swiper, e)}
+      modules={[Keyboard, Autoplay, Navigation, Pagination, EffectCards]}
       navigation
       effect="cards"
       pagination={{ clickable: true }}
@@ -56,12 +69,18 @@ const Stories = ({
               <SwiperDiv
                 className="text-white"
                 height="90vh"
+                hasShadow
                 backgroundImage={`url('${PUBLIC_IMAGES_PREFIX}${story.imageURL}')`}
               >
                 <UserThumbnail
                   usernameClassName="text-white"
                   imageURL={imageURL}
                   username={username}
+                  additionalElement={
+                    <span className="">
+                      {dateFormatter(new Date(story.createdAt))}
+                    </span>
+                  }
                 />
               </SwiperDiv>
               <div>
