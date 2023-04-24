@@ -1,4 +1,4 @@
-# Zyzzstagram
+# Zyzzstagram (under development)
 
 Purpose of this project is to practice with Socket.IO, NestJS, Prisma (postgresql).
 
@@ -31,13 +31,20 @@ This command will concurrently install the necessary npm packages for both backe
 Make sure you have your database running, or use the dockerized one in the main directory using `docker-compose up`.
 You need to create `.env` file in `backend` directory and populate it by following `.env.example` file. </br>
 
-Next run the following command
+Next change the directory from main folder to
 
 ```
-npm run migrateDB
+cd ./backend/src
 ```
 
-This command will migrate the prisma schema to the database.
+And run the following two commands
+
+```
+npx prisma migrate dev
+npx prisma generate
+```
+
+This command will migrate the prisma schema to the database, and generate artifacts.
 
 #
 
