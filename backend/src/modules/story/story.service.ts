@@ -50,10 +50,7 @@ export class StoryService {
   async getStories(
     { username }: IToken,
     storiesType?: StoriesType,
-  ): Promise<
-    | IUser[]
-    | Promise<{ currentUser: IUser; followingUsersWithStories: IUser[] }>
-  > {
+  ): Promise<IUser[]> {
     switch (storiesType) {
       case 'following':
         return this.getFollowingStories(username);
@@ -103,16 +100,17 @@ export class StoryService {
       },
     });
 
-    currentUser.stories.map((story) => {
-      return {
-        ...story,
-        likedByUser: story.likedBy.length > 0,
-      };
-    });
+    if (currentUser.stories.length !== 0) {
+      currentUser.stories.map((story) => {
+        return {
+          ...story,
+          likedByUser: story.likedBy.length > 0,
+        };
+      });
 
-    return {
-      currentUser,
-      followingUsersWithStories,
-    };
+      return [currentUser, ...followingUsersWithStories];
+    }
+
+    return followingUsersWithStories;
   }
 }

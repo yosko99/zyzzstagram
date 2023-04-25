@@ -89,8 +89,7 @@ describe('test story API', () => {
         'following',
       );
 
-      // @ts-ignore
-      expect(response.currentUser).toBeTruthy();
+      expect(response).toEqual(expect.any(Array));
 
       await userService.deleteUser(userForStory.user);
     });

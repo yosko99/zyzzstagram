@@ -4,16 +4,18 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-import { CheckExistingPostByIdMiddlewarePopulated } from 'src/middleware/post/checkExistingPostByIdPopulated.middleware';
-import { VerifyJWTMiddleware } from 'src/middleware/utils/verifyJWT.middleware';
 
-import { PrismaService } from '../../prisma/prisma.service';
+import { CheckExistingPostByIdMiddlewareUnpopulated } from '../../middleware/post/checkExistingPostByIdUnpopulated.middleware';
+import { CheckExistingPostByIdMiddlewarePopulated } from '../../middleware/post/checkExistingPostByIdPopulated.middleware';
+import { CheckIfUploadsFolderExistsMiddleware } from '../../middleware/utils/checkIfUploadsFolderExists.middleware';
+import { CheckExistingCommentByIdMiddleware } from '../../middleware/post/checkExistingCommentById.middleware';
+import { VerifyJWTMiddleware } from '../../middleware/utils/verifyJWT.middleware';
+
 import { NotificationService } from '../notification/notification.service';
+import { PrismaService } from '../../prisma/prisma.service';
+import { PostService } from './post.service';
 
 import { PostController } from './post.controller';
-import { PostService } from './post.service';
-import { CheckExistingCommentByIdMiddleware } from 'src/middleware/post/checkExistingCommentById.middleware';
-import { CheckExistingPostByIdMiddlewareUnpopulated } from 'src/middleware/post/checkExistingPostByIdUnpopulated.middleware';
 
 @Module({
   imports: [],
@@ -23,16 +25,17 @@ import { CheckExistingPostByIdMiddlewareUnpopulated } from 'src/middleware/post/
 })
 export class PostModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(VerifyJWTMiddleware).forRoutes(
-      {
+    consumer.apply(VerifyJWTMiddleware).forRoutes({
+      path: '/posts',
+      method: RequestMethod.GET,
+    });
+
+    consumer
+      .apply(CheckIfUploadsFolderExistsMiddleware, VerifyJWTMiddleware)
+      .forRoutes({
         path: '/posts',
         method: RequestMethod.POST,
-      },
-      {
-        path: '/posts',
-        method: RequestMethod.GET,
-      },
-    );
+      });
 
     consumer.apply(CheckExistingPostByIdMiddlewarePopulated).forRoutes({
       path: '/posts/:id',

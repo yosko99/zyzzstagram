@@ -20,20 +20,14 @@ const StoriesPanel = () => {
 
   const navigate = useNavigate();
 
-  const response = data as {
-    currentUser?: IUser;
-    followingUsersWithStories?: IUser[];
-  };
+  const response = data as IUser[];
 
   const handleStoryClick = (username: string) => {
-    const stories = [
-      response.currentUser,
-      ...response.followingUsersWithStories!
-    ];
+    const startIndex = response.findIndex(
+      (user) => user?.username === username
+    );
 
-    const startIndex = stories.findIndex((user) => user?.username === username);
-
-    navigate('/stories', { state: { users: stories, startIndex } });
+    navigate('/stories', { state: { users: response, startIndex } });
   };
 
   return (
@@ -51,27 +45,17 @@ const StoriesPanel = () => {
               <Spinner />
             ) : (
               <>
-                {response.currentUser?.stories?.length !== 0 && (
-                  <StoryBubble
-                    onClick={() =>
-                      handleStoryClick(response.currentUser!.username)
-                    }
-                    imageURL={response.currentUser!.imageURL}
-                    username={response.currentUser!.username}
-                  />
+                {response.map(
+                  (user, index: number) =>
+                    user.stories?.length !== 0 && (
+                      <StoryBubble
+                        onClick={() => handleStoryClick(user.username)}
+                        key={index}
+                        username={user.username}
+                        imageURL={user.imageURL}
+                      />
+                    )
                 )}
-                {response.followingUsersWithStories &&
-                  response.followingUsersWithStories.map(
-                    (user, index: number) =>
-                      user.stories?.length !== 0 && (
-                        <StoryBubble
-                          onClick={() => handleStoryClick(user.username)}
-                          key={index}
-                          username={user.username}
-                          imageURL={user.imageURL}
-                        />
-                      )
-                  )}
               </>
             )}
           </div>
