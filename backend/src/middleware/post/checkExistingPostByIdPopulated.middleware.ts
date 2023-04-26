@@ -10,9 +10,7 @@ import IComment from 'src/interfaces/IComment';
 type ExtendedRequest = Request & { post?: IPost; userDataFromToken?: IToken };
 
 @Injectable()
-export class CheckExistingPostByIdMiddlewarePopulated
-  implements NestMiddleware
-{
+export class CheckExistingPostByIdPopulated implements NestMiddleware {
   constructor(private prisma: PrismaService) {}
 
   async use(req: ExtendedRequest, res: Response, next: NextFunction) {

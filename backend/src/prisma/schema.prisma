@@ -79,6 +79,6 @@ model Notification {
     postId     String?
     comment    Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
     commentId  String?
-    story      Story?   @relation(fields: [storyId], references: [id])
+    story      Story?   @relation(fields: [storyId], references: [id], onDelete: Cascade)
     storyId    String?
 }

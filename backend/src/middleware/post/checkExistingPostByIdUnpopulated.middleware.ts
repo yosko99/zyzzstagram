@@ -8,9 +8,7 @@ import IPost from '../../interfaces/IPost';
 type ExtendedRequest = Request & { post?: IPost };
 
 @Injectable()
-export class CheckExistingPostByIdMiddlewareUnpopulated
-  implements NestMiddleware
-{
+export class CheckExistingPostByIdUnpopulated implements NestMiddleware {
   constructor(private prisma: PrismaService) {}
 
   async use(req: ExtendedRequest, res: Response, next: NextFunction) {

@@ -24,6 +24,48 @@ export class NotificationService {
       };
     }
 
+    const { connectionObject, notification } =
+      await this.getNotificationAndConnectionObject(
+        typeOfLike,
+        id,
+        username,
+        authorUsername,
+      );
+
+    const message = this.getLikeNotificationMessage(typeOfLike, username);
+
+    if (notification !== null) {
+      await this.prisma.notification.delete({
+        where: { id: notification.id },
+      });
+      return {
+        message: 'Notification deleted (removed like)',
+      };
+    } else {
+      const createInput = {
+        data: {
+          receiver: {
+            connect: { username: authorUsername },
+          },
+          sender: { connect: { username } },
+          message,
+          ...connectionObject,
+        },
+      };
+
+      return {
+        message: 'Like notification created',
+        notification: await this.prisma.notification.create(createInput),
+      };
+    }
+  }
+
+  async getNotificationAndConnectionObject(
+    typeOfLike: string,
+    id: string,
+    username: string,
+    authorUsername: string,
+  ) {
     let notification;
     let connectionObject = {};
 
@@ -75,34 +117,7 @@ export class NotificationService {
         break;
     }
 
-    const message = this.getLikeNotificationMessage(typeOfLike, username);
-    // Delete notification
-    if (notification !== null) {
-      await this.prisma.notification.delete({
-        where: { id: notification.id },
-      });
-      return {
-        message: 'Notification deleted (removed like)',
-      };
-      // Create notification
-    } else {
-      const createInput = {
-        data: {
-          receiver: {
-            connect: { username: authorUsername },
-          },
-          sender: { connect: { username } },
-          message,
-          ...connectionObject,
-        },
-      };
-      notification = await this.prisma.notification.create(createInput);
-    }
-
-    return {
-      message: 'Like notification created',
-      notification,
-    };
+    return { notification, connectionObject };
   }
 
   private async getAuthorUsername(
@@ -214,6 +229,7 @@ export class NotificationService {
         read: true,
         sender: { select: { username: true, imageURL: true } },
         createdAt: true,
+        story: { select: { imageURL: true } },
         post: { select: { imageURL: true, id: true } },
       },
       orderBy: {

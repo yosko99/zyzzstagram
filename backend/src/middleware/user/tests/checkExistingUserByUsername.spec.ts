@@ -1,11 +1,11 @@
 import { PrismaService } from '../../../prisma/prisma.service';
 
-import { CheckExistingUserByUsernameMiddleware } from '../checkExistingUserByUsername.middleware';
+import { CheckExistingUserByUsername } from '../checkExistingUserByUsername.middleware';
 
 describe('test checkExistingUserByUsername middleware', () => {
   const prismaService = new PrismaService();
-  const middleware: CheckExistingUserByUsernameMiddleware =
-    new CheckExistingUserByUsernameMiddleware(prismaService);
+  const middleware: CheckExistingUserByUsername =
+    new CheckExistingUserByUsername(prismaService);
 
   it('should set user property on request object if user with provided username exists', async () => {
     const req: any = { params: { username: 'testuser' } };

@@ -12,7 +12,7 @@ type ExtendedRequest = Request & {
 };
 
 @Injectable()
-export class CheckExistingCommentByIdMiddleware implements NestMiddleware {
+export class CheckExistingCommentById implements NestMiddleware {
   constructor(private prisma: PrismaService) {}
 
   async use(req: ExtendedRequest, res: Response, next: NextFunction) {

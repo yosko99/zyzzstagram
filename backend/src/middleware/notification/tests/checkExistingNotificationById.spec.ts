@@ -3,12 +3,12 @@ import { NextFunction, Request, Response } from 'express';
 
 import { PrismaService } from '../../../prisma/prisma.service';
 
-import { CheckExistingNotificationByIdMiddleware } from '../checkExistingNotificationById.middleware';
+import { CheckExistingNotificationById } from '../checkExistingNotificationById.middleware';
 
 import INotification from '../../../interfaces/INotification';
 
 describe('test checkExistingNotificationById middleware', () => {
-  let middleware: CheckExistingNotificationByIdMiddleware;
+  let middleware: CheckExistingNotificationById;
   let mockPrismaService: PrismaService;
 
   let mockRequest: Request & { notification: INotification };
@@ -31,7 +31,7 @@ describe('test checkExistingNotificationById middleware', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
-        CheckExistingNotificationByIdMiddleware,
+        CheckExistingNotificationById,
         {
           provide: PrismaService,
           useValue: {
@@ -43,8 +43,8 @@ describe('test checkExistingNotificationById middleware', () => {
       ],
     }).compile();
 
-    middleware = moduleRef.get<CheckExistingNotificationByIdMiddleware>(
-      CheckExistingNotificationByIdMiddleware,
+    middleware = moduleRef.get<CheckExistingNotificationById>(
+      CheckExistingNotificationById,
     );
 
     mockPrismaService = moduleRef.get<PrismaService>(PrismaService);

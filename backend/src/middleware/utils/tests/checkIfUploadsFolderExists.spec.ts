@@ -1,12 +1,12 @@
-import { CheckIfUploadsFolderExistsMiddleware } from '../checkIfUploadsFolderExists.middleware';
+import { CheckIfUploadsFolderExists } from '../checkIfUploadsFolderExists.middleware';
 import { Request, Response } from 'express';
 import * as fs from 'fs';
 
 describe('test CheckIfUploadsFolderExists middleware', () => {
-  let middleware: CheckIfUploadsFolderExistsMiddleware;
+  let middleware: CheckIfUploadsFolderExists;
 
   beforeEach(() => {
-    middleware = new CheckIfUploadsFolderExistsMiddleware();
+    middleware = new CheckIfUploadsFolderExists();
   });
 
   describe('use', () => {

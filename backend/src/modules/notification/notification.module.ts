@@ -10,8 +10,8 @@ import { NotificationService } from './notification.service';
 
 import { NotificationController } from './notification.controller';
 
-import { CheckExistingNotificationByIdMiddleware } from '../../middleware/notification/checkExistingNotificationById.middleware';
-import { VerifyJWTMiddleware } from '../../middleware/utils/verifyJWT.middleware';
+import { CheckExistingNotificationById } from '../../middleware/notification/checkExistingNotificationById.middleware';
+import { VerifyJWT } from '../../middleware/utils/verifyJWT.middleware';
 
 @Module({
   imports: [],
@@ -21,7 +21,7 @@ import { VerifyJWTMiddleware } from '../../middleware/utils/verifyJWT.middleware
 })
 export class NotificationModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(VerifyJWTMiddleware).forRoutes(
+    consumer.apply(VerifyJWT).forRoutes(
       {
         path: '/notifications',
         method: RequestMethod.GET,
@@ -32,7 +32,7 @@ export class NotificationModule implements NestModule {
       },
     );
 
-    consumer.apply(CheckExistingNotificationByIdMiddleware).forRoutes({
+    consumer.apply(CheckExistingNotificationById).forRoutes({
       path: '/notifications/:id',
       method: RequestMethod.DELETE,
     });

@@ -1,19 +1,20 @@
+/* eslint-disable multiline-ternary */
 import React from 'react';
 
 import { Col, Row, Image } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { PUBLIC_IMAGES_PREFIX } from '../../constants/apiRoutes';
 import dateFormatter from '../../functions/dateFormatter';
 import INotification from '../../interfaces/INotification';
+import NotificationPostImage from './NotificationPostImage';
+import NotificationStoryImage from './NotificationStoryImage';
 
 interface Props {
   notification: INotification;
 }
 
 const Notification = ({ notification }: Props) => {
-  const navigate = useNavigate();
-
   return (
     <Row
       style={{
@@ -42,15 +43,10 @@ const Notification = ({ notification }: Props) => {
         </p>
       </Col>
       <Col xs={2} className="d-flex justify-content-center align-items-center">
-        {notification.post && (
-          <Image
-            fluid
-            style={{ minWidth: '50px', minHeight: '50px' }}
-            src={PUBLIC_IMAGES_PREFIX + notification.post?.imageURL}
-            alt={notification.receiver?.username + ' post'}
-            role="button"
-            onClick={() => navigate(`/post/${notification.post?.id}`)}
-          />
+        {notification.post ? (
+          <NotificationPostImage notification={notification} />
+        ) : (
+          <NotificationStoryImage notification={notification} />
         )}
       </Col>
     </Row>

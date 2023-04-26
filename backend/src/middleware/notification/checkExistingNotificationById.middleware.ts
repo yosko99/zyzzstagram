@@ -8,7 +8,7 @@ import INotification from '../../interfaces/INotification';
 type ExtendedRequest = Request & { notification: INotification };
 
 @Injectable()
-export class CheckExistingNotificationByIdMiddleware implements NestMiddleware {
+export class CheckExistingNotificationById implements NestMiddleware {
   constructor(private prisma: PrismaService) {}
 
   async use(req: ExtendedRequest, res: Response, next: NextFunction) {

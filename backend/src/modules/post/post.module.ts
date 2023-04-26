@@ -5,11 +5,11 @@ import {
   RequestMethod,
 } from '@nestjs/common';
 
-import { CheckExistingPostByIdMiddlewareUnpopulated } from '../../middleware/post/checkExistingPostByIdUnpopulated.middleware';
-import { CheckExistingPostByIdMiddlewarePopulated } from '../../middleware/post/checkExistingPostByIdPopulated.middleware';
-import { CheckIfUploadsFolderExistsMiddleware } from '../../middleware/utils/checkIfUploadsFolderExists.middleware';
-import { CheckExistingCommentByIdMiddleware } from '../../middleware/post/checkExistingCommentById.middleware';
-import { VerifyJWTMiddleware } from '../../middleware/utils/verifyJWT.middleware';
+import { CheckExistingPostByIdUnpopulated } from '../../middleware/post/checkExistingPostByIdUnpopulated.middleware';
+import { CheckExistingPostByIdPopulated } from '../../middleware/post/checkExistingPostByIdPopulated.middleware';
+import { CheckIfUploadsFolderExists } from '../../middleware/utils/checkIfUploadsFolderExists.middleware';
+import { CheckExistingCommentById } from '../../middleware/post/checkExistingCommentById.middleware';
+import { VerifyJWT } from '../../middleware/utils/verifyJWT.middleware';
 
 import { NotificationService } from '../notification/notification.service';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -25,53 +25,49 @@ import { PostController } from './post.controller';
 })
 export class PostModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(VerifyJWTMiddleware).forRoutes({
+    consumer.apply(VerifyJWT).forRoutes({
       path: '/posts',
       method: RequestMethod.GET,
     });
 
-    consumer
-      .apply(CheckIfUploadsFolderExistsMiddleware, VerifyJWTMiddleware)
-      .forRoutes({
-        path: '/posts',
-        method: RequestMethod.POST,
-      });
+    consumer.apply(CheckIfUploadsFolderExists, VerifyJWT).forRoutes({
+      path: '/posts',
+      method: RequestMethod.POST,
+    });
 
-    consumer.apply(CheckExistingPostByIdMiddlewarePopulated).forRoutes({
+    consumer.apply(CheckExistingPostByIdPopulated).forRoutes({
       path: '/posts/:id',
       method: RequestMethod.DELETE,
     });
 
     consumer
       .apply(
-        VerifyJWTMiddleware,
-        CheckExistingCommentByIdMiddleware,
-        CheckExistingPostByIdMiddlewareUnpopulated,
+        VerifyJWT,
+        CheckExistingCommentById,
+        CheckExistingPostByIdUnpopulated,
       )
       .forRoutes({
         path: '/posts/:id/comments/:commentId/likes',
         method: RequestMethod.POST,
       });
 
-    consumer
-      .apply(VerifyJWTMiddleware, CheckExistingPostByIdMiddlewarePopulated)
-      .forRoutes(
-        {
-          path: '/posts/:id/likes',
-          method: RequestMethod.POST,
-        },
-        {
-          path: '/posts/:id/comments',
-          method: RequestMethod.POST,
-        },
-        {
-          path: '/posts/:id',
-          method: RequestMethod.GET,
-        },
-        {
-          path: '/posts/:id/saved-by',
-          method: RequestMethod.POST,
-        },
-      );
+    consumer.apply(VerifyJWT, CheckExistingPostByIdPopulated).forRoutes(
+      {
+        path: '/posts/:id/likes',
+        method: RequestMethod.POST,
+      },
+      {
+        path: '/posts/:id/comments',
+        method: RequestMethod.POST,
+      },
+      {
+        path: '/posts/:id',
+        method: RequestMethod.GET,
+      },
+      {
+        path: '/posts/:id/saved-by',
+        method: RequestMethod.POST,
+      },
+    );
   }
 }

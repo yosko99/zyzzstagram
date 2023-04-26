@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import mkdirp from 'mkdirp';
 
 @Injectable()
-export class CheckIfUploadsFolderExistsMiddleware implements NestMiddleware {
+export class CheckIfUploadsFolderExists implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     mkdirp.sync('./uploads');
 

@@ -8,7 +8,7 @@ import IUser from '../../interfaces/IUser';
 type ExtendedRequest = Request & { user: IUser };
 
 @Injectable()
-export class CheckExistingUserByIdMiddleware implements NestMiddleware {
+export class CheckExistingUserById implements NestMiddleware {
   constructor(private prisma: PrismaService) {}
 
   async use(req: ExtendedRequest, res: Response, next: NextFunction) {

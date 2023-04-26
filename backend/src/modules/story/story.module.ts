@@ -5,9 +5,9 @@ import {
   RequestMethod,
 } from '@nestjs/common';
 
-import { CheckIfUploadsFolderExistsMiddleware } from 'src/middleware/utils/checkIfUploadsFolderExists.middleware';
+import { CheckIfUploadsFolderExists } from 'src/middleware/utils/checkIfUploadsFolderExists.middleware';
 import { CheckExistingStoryById } from '../../middleware/story/checkExistingStoryById.middleware';
-import { VerifyJWTMiddleware } from '../../middleware/utils/verifyJWT.middleware';
+import { VerifyJWT } from '../../middleware/utils/verifyJWT.middleware';
 
 import { StoryController } from './story.controller';
 
@@ -23,21 +23,19 @@ import { StoryService } from './story.service';
 })
 export class StoryModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(VerifyJWTMiddleware).forRoutes({
+    consumer.apply(VerifyJWT).forRoutes({
       path: '/stories',
       method: RequestMethod.GET,
     });
 
-    consumer.apply(VerifyJWTMiddleware, CheckExistingStoryById).forRoutes({
+    consumer.apply(VerifyJWT, CheckExistingStoryById).forRoutes({
       path: '/stories/:id/likes',
       method: RequestMethod.POST,
     });
 
-    consumer
-      .apply(CheckIfUploadsFolderExistsMiddleware, VerifyJWTMiddleware)
-      .forRoutes({
-        path: '/stories',
-        method: RequestMethod.POST,
-      });
+    consumer.apply(CheckIfUploadsFolderExists, VerifyJWT).forRoutes({
+      path: '/stories',
+      method: RequestMethod.POST,
+    });
   }
 }

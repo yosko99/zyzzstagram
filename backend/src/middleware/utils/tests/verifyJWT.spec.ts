@@ -3,10 +3,10 @@ import * as jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-import { VerifyJWTMiddleware } from '../verifyJWT.middleware';
+import { VerifyJWT } from '../verifyJWT.middleware';
 
 describe('test VerifyJWT middleware', () => {
-  const middleware: VerifyJWTMiddleware = new VerifyJWTMiddleware();
+  const middleware: VerifyJWT = new VerifyJWT();
   const mockNext: NextFunction = jest.fn();
 
   let mockReq: Partial<Request>;

@@ -3,12 +3,12 @@ import { NextFunction, Request, Response } from 'express';
 
 import { PrismaService } from '../../../prisma/prisma.service';
 
-import { CheckExistingUserByIdMiddleware } from '../checkExistingUserByID.middleware';
+import { CheckExistingUserById } from '../checkExistingUserByID.middleware';
 
 import IUser from '../../../interfaces/IUser';
 
 describe('test checkExistingUserById middleware', () => {
-  let middleware: CheckExistingUserByIdMiddleware;
+  let middleware: CheckExistingUserById;
   let mockPrismaService: PrismaService;
 
   let mockRequest: Request & { user: IUser };
@@ -31,7 +31,7 @@ describe('test checkExistingUserById middleware', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
-        CheckExistingUserByIdMiddleware,
+        CheckExistingUserById,
         {
           provide: PrismaService,
           useValue: {
@@ -43,9 +43,7 @@ describe('test checkExistingUserById middleware', () => {
       ],
     }).compile();
 
-    middleware = moduleRef.get<CheckExistingUserByIdMiddleware>(
-      CheckExistingUserByIdMiddleware,
-    );
+    middleware = moduleRef.get<CheckExistingUserById>(CheckExistingUserById);
 
     mockPrismaService = moduleRef.get<PrismaService>(PrismaService);
   });

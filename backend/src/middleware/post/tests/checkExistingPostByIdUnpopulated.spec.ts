@@ -3,16 +3,16 @@ import { Request, Response } from 'express';
 
 import { PrismaService } from '../../../prisma/prisma.service';
 
-import { CheckExistingPostByIdMiddlewareUnpopulated } from '../checkExistingPostByIdUnpopulated.middleware';
+import { CheckExistingPostByIdUnpopulated } from '../checkExistingPostByIdUnpopulated.middleware';
 
 describe('test CheckExistingPostByIdUnpopulated middleware', () => {
-  let middleware: CheckExistingPostByIdMiddlewareUnpopulated;
+  let middleware: CheckExistingPostByIdUnpopulated;
   let prismaService: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        CheckExistingPostByIdMiddlewareUnpopulated,
+        CheckExistingPostByIdUnpopulated,
         {
           provide: PrismaService,
           useValue: {
@@ -24,8 +24,8 @@ describe('test CheckExistingPostByIdUnpopulated middleware', () => {
       ],
     }).compile();
 
-    middleware = module.get<CheckExistingPostByIdMiddlewareUnpopulated>(
-      CheckExistingPostByIdMiddlewareUnpopulated,
+    middleware = module.get<CheckExistingPostByIdUnpopulated>(
+      CheckExistingPostByIdUnpopulated,
     );
     prismaService = module.get<PrismaService>(PrismaService);
   });
