@@ -156,7 +156,11 @@ export class PostService {
   }
 
   async likePost(post: IPost, { username }: IToken) {
-    this.notificationService.createLikeNotification(post.id, username, 'post');
+    await this.notificationService.createLikeNotification(
+      post.id,
+      username,
+      'post',
+    );
 
     if (post.likedBy.some((user) => user.username === username)) {
       await this.prisma.post.update({
@@ -180,7 +184,7 @@ export class PostService {
   }
 
   async likeComment(comment: IComment, { username }: IToken) {
-    this.notificationService.createLikeNotification(
+    await this.notificationService.createLikeNotification(
       comment.id,
       username,
       'comment',

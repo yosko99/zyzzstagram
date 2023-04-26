@@ -3,9 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 
 import INotification from '../../interfaces/INotification';
-import IComment from '../../interfaces/IComment';
 import IToken from '../../interfaces/IToken';
-import IPost from '../../interfaces/IPost';
 
 import LikeType from '../../types/like.type';
 
@@ -18,9 +16,9 @@ export class NotificationService {
     username: string,
     typeOfLike: LikeType,
   ) {
-    const user = await this.getAuthor(typeOfLike, id);
+    const authorUsername = await this.getAuthorUsername(typeOfLike, id);
 
-    if (user === null || user.author.username === username) {
+    if (authorUsername === username) {
       return {
         message: 'No action needed (same user)',
       };
@@ -35,7 +33,7 @@ export class NotificationService {
           senderUsername: username,
           operatorAND: [
             { postId: id },
-            { receiver: { id: user.author.id } },
+            { receiver: { username: authorUsername } },
             { commentId: null },
           ],
         });
@@ -53,13 +51,26 @@ export class NotificationService {
           operatorAND: [
             { postId: post.id },
             { commentId: id },
-            { receiver: { id: user.author.id } },
+            { receiver: { username: authorUsername } },
           ],
         });
 
         connectionObject = {
           comment: { connect: { id } },
           post: { connect: { id: post.id } },
+        };
+        break;
+      case 'story':
+        notification = await this.checkAlreadyCreatedNotification({
+          senderUsername: username,
+          operatorAND: [
+            { storyId: id },
+            { receiver: { username: authorUsername } },
+          ],
+        });
+
+        connectionObject = {
+          story: { connect: { id } },
         };
         break;
     }
@@ -78,7 +89,7 @@ export class NotificationService {
       const createInput = {
         data: {
           receiver: {
-            connect: { username: user.author.username },
+            connect: { username: authorUsername },
           },
           sender: { connect: { username } },
           message,
@@ -94,15 +105,17 @@ export class NotificationService {
     };
   }
 
-  private async getAuthor(
+  private async getAuthorUsername(
     typeOfLike: LikeType,
     id: string,
-  ): Promise<IPost | IComment | null> {
+  ): Promise<string> {
     switch (typeOfLike) {
       case 'post':
-        return await this.getPostAuthor(id);
+        return await this.getPostAuthorUsername(id);
       case 'comment':
-        return await this.getCommentAuthor(id);
+        return await this.getCommentAuthorUsername(id);
+      case 'story':
+        return await this.getStoryAuthorUsername(id);
     }
   }
 
@@ -112,6 +125,8 @@ export class NotificationService {
         return `${username} liked your post`;
       case 'comment':
         return `${username} liked your comment`;
+      case 'story':
+        return `${username} liked your story`;
     }
   }
 
@@ -162,9 +177,9 @@ export class NotificationService {
     commentId: string,
     username: string,
   ) {
-    const { author } = await this.getPostAuthor(postId);
+    const authorUsername = await this.getPostAuthorUsername(postId);
 
-    if (author === null || author.username === username) {
+    if (authorUsername === username) {
       return {
         message: 'No action needed (same user)',
       };
@@ -175,7 +190,7 @@ export class NotificationService {
     const createdNotification = await this.prisma.notification.create({
       data: {
         receiver: {
-          connect: { username: author.username },
+          connect: { username: authorUsername },
         },
         sender: { connect: { username } },
         comment: { connect: { id: commentId } },
@@ -230,22 +245,31 @@ export class NotificationService {
     };
   }
 
-  private async getPostAuthor(postId: string): Promise<IPost | null> {
+  private async getPostAuthorUsername(postId: string): Promise<string> {
     const post = await this.prisma.post.findUnique({
       where: { id: postId },
-      include: { author: { select: { username: true } } },
+      select: { author: { select: { username: true } } },
     });
 
-    return post;
+    return post.author.username;
   }
 
-  private async getCommentAuthor(commentId: string): Promise<IComment | null> {
+  private async getCommentAuthorUsername(commentId: string): Promise<string> {
     const comment = await this.prisma.comment.findUnique({
       where: { id: commentId },
-      include: { author: { select: { username: true } } },
+      select: { author: { select: { username: true } } },
     });
 
-    return comment;
+    return comment.author.username;
+  }
+
+  private async getStoryAuthorUsername(storyId: string): Promise<string> {
+    const story = await this.prisma.story.findUnique({
+      where: { id: storyId },
+      select: { user: { select: { username: true } } },
+    });
+
+    return story.user.username;
   }
 
   private async checkAlreadyCreatedNotification({

@@ -8,8 +8,8 @@ import { createUserForStoryDto } from '../../../dto/mock/user.mock';
 
 describe('test story API', () => {
   const prisma = new PrismaService();
-  const storyService = new StoryService(prisma);
   const notificationService = new NotificationService(prisma);
+  const storyService = new StoryService(prisma, notificationService);
   const userService = new UserService(prisma, notificationService);
   const filename = 'testimage.jpg';
 
@@ -65,7 +65,7 @@ describe('test story API', () => {
     });
   });
 
-  describe('test get stories service', () => {
+  describe('test getStories service', () => {
     it('should get array of all stories', async () => {
       const response = await storyService.getStories({
         username: 'test',
@@ -90,6 +90,29 @@ describe('test story API', () => {
       );
 
       expect(response).toEqual(expect.any(Array));
+
+      await userService.deleteUser(userForStory.user);
+    });
+  });
+
+  describe('test likeStory service', () => {
+    it('should successfully like a story', async () => {
+      const userForStory = await userService.createUser(
+        createUserForStoryDto,
+        filename,
+      );
+
+      const createdStory = await storyService.createStory(filename, {
+        username: createUserForStoryDto.username,
+        password: createUserForStoryDto.password,
+      });
+
+      const response = await storyService.likeStory(createdStory.story, {
+        username: createUserForStoryDto.username,
+        password: 'test',
+      });
+
+      expect(response.message).toBe('Liked story');
 
       await userService.deleteUser(userForStory.user);
     });

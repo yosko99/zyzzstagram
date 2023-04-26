@@ -1,3 +1,3 @@
-type LikeType = 'post' | 'comment';
+type LikeType = 'post' | 'comment' | 'story';
 
 export default LikeType;

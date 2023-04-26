@@ -6,17 +6,19 @@ import {
 } from '@nestjs/common';
 
 import { CheckIfUploadsFolderExistsMiddleware } from 'src/middleware/utils/checkIfUploadsFolderExists.middleware';
+import { CheckExistingStoryById } from '../../middleware/story/checkExistingStoryById.middleware';
 import { VerifyJWTMiddleware } from '../../middleware/utils/verifyJWT.middleware';
 
 import { StoryController } from './story.controller';
 
+import { NotificationService } from '../notification/notification.service';
 import { PrismaService } from '../../prisma/prisma.service';
 import { StoryService } from './story.service';
 
 @Module({
   imports: [],
   controllers: [StoryController],
-  providers: [StoryService, PrismaService],
+  providers: [StoryService, PrismaService, NotificationService],
   exports: [StoryService],
 })
 export class StoryModule implements NestModule {
@@ -24,6 +26,11 @@ export class StoryModule implements NestModule {
     consumer.apply(VerifyJWTMiddleware).forRoutes({
       path: '/stories',
       method: RequestMethod.GET,
+    });
+
+    consumer.apply(VerifyJWTMiddleware, CheckExistingStoryById).forRoutes({
+      path: '/stories/:id/likes',
+      method: RequestMethod.POST,
     });
 
     consumer

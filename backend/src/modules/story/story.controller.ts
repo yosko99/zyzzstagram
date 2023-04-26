@@ -88,6 +88,21 @@ export class StoryController {
     return this.storyService.createStory(file.filename, tokenData);
   }
 
+  @Post('/:id/likes')
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiOperation({ summary: 'Like a story or remove like' })
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiResponse({ status: 201, description: 'Story liked/unliked' })
+  @ApiResponse({ status: 404, description: 'Story not found' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  likePost(
+    @RequestData('story') story: IStory,
+    @RequestData('userDataFromToken') tokenData: IToken,
+  ) {
+    return this.storyService.likeStory(story, tokenData);
+  }
+
   @Delete('/:id')
   @ApiOperation({ summary: 'Delete story by id' })
   @ApiParam({ name: 'id', type: 'string' })

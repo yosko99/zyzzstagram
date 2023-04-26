@@ -134,7 +134,7 @@ describe('Test posts API', () => {
           content: 'test',
           author: { connect: { id: createdUser.user.id } },
         },
-        include: { likedBy: true },
+        select: { likedBy: true, author: true, id: true },
       });
 
       const result = await postService.likeComment(comment, tokenData);

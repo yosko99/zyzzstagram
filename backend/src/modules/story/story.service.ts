@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
+import { NotificationService } from '../notification/notification.service';
 import { PrismaService } from '../../prisma/prisma.service';
 
 import IToken from '../../interfaces/IToken';
@@ -14,7 +15,10 @@ import StoriesType from '../../types/stories.type';
 
 @Injectable()
 export class StoryService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly notificationService: NotificationService,
+  ) {}
 
   async createStory(filename: string, { username }: IToken) {
     const newStory = await this.prisma.story.create({
@@ -23,6 +27,7 @@ export class StoryService {
         user: { connect: { username } },
       },
       include: {
+        likedBy: true,
         user: {
           select: {
             username: true,
@@ -71,6 +76,34 @@ export class StoryService {
     return appendLikeToUsersStories(users);
   }
 
+  async likeStory(story: IStory, { username }: IToken) {
+    await this.notificationService.createLikeNotification(
+      story.id,
+      username,
+      'story',
+    );
+
+    if (story.likedBy.some((user) => user.username === username)) {
+      await this.prisma.story.update({
+        where: { id: story.id },
+        data: { likedBy: { disconnect: { username } } },
+      });
+
+      return {
+        message: 'Removed like',
+      };
+    }
+
+    await this.prisma.story.update({
+      where: { id: story.id },
+      data: { likedBy: { connect: { username } } },
+    });
+
+    return {
+      message: 'Liked story',
+    };
+  }
+
   private async getFollowingStories(username: string) {
     const followingUsers = await this.prisma.user.findMany({
       where: {
@@ -101,7 +134,7 @@ export class StoryService {
     });
 
     if (currentUser.stories.length !== 0) {
-      currentUser.stories.map((story) => {
+      currentUser.stories = currentUser.stories.map((story) => {
         return {
           ...story,
           likedByUser: story.likedBy.length > 0,

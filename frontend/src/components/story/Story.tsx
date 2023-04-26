@@ -44,7 +44,7 @@ const Story = ({ story, imageURL, username }: Props) => {
           <CenteredItems>
             <LikeButton
               size="2em"
-              likedByUser
+              likedByUser={story.likedByUser}
               // @ts-ignores
               useCustomLikeHook={useLikePost({})}
             />
