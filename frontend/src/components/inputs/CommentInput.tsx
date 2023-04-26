@@ -13,12 +13,12 @@ interface Props {
 }
 
 const CommentInput = ({ id, typeOfComment, authorUsername }: Props) => {
-  const link =
+  const mutationURL =
     typeOfComment === 'post'
       ? getCommentPostRoute(id)
       : getCommentPostRoute(id);
 
-  const { mutate } = useMutationWithToken(link, false);
+  const { mutate } = useMutationWithToken(mutationURL, false);
   const queryClient = useQueryClient();
   const socket = useContext(SocketContext);
 

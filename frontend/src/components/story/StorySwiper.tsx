@@ -17,7 +17,6 @@ import CloseStoriesButton from '../buttons/story/CloseStoriesButton';
 import InnerStorySwiper from './InnerStorySwiper';
 
 const StorySwiper = () => {
-  const [slideChange, setSlideChange] = useState(false);
   const [swiper, setSwiper] = useState<Swiper>();
 
   const location = useLocation();
@@ -48,10 +47,6 @@ const StorySwiper = () => {
     }
   };
 
-  useEffect(() => {
-    setSlideChange(false);
-  }, [slideChange]);
-
   return (
     <div className="d-flex justify-content-center align-items-center">
       <BsFillArrowLeftCircleFill
@@ -63,7 +58,6 @@ const StorySwiper = () => {
 
       <SwiperSlider
         effect={'coverflow'}
-        onSlideChangeTransitionStart={() => setSlideChange(true)}
         grabCursor={true}
         keyboard={{ pageUpDown: true }}
         centeredSlides={true}

@@ -31,7 +31,6 @@ const getNavigationTabs = (
   const tabs: INavigationTabs[] = [
     { icon: <FaHome />, label: 'Home', href: '/' },
     { icon: <FaCompass />, label: 'Explore', href: '/explore' },
-    { icon: <FaPlay />, label: 'Reels', href: '/reels' },
     { icon: <FaEnvelope />, label: 'Messages', href: '/messages' },
     {
       icon: (

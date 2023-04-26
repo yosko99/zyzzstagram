@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { PUBLIC_IMAGES_PREFIX } from '../../constants/apiRoutes';
 import dateFormatter from '../../functions/dateFormatter';
-import useLikeComment from '../../hooks/useLikeComment';
+import useLike from '../../hooks/useLike';
 import IComment from '../../interfaces/IComment';
 import IPost from '../../interfaces/IPost';
 import LikeButton from '../buttons/utils/LikeButton';
@@ -51,10 +51,18 @@ const PostComment = ({ comment, post }: Props) => {
           </span>
         </div>
       </div>
-      <LikeButton
-        likedByUser={comment.likedByUser!}
-        useCustomLikeHook={useLikeComment(post, comment)}
-      />
+      <div className="pe-2">
+        <LikeButton
+          fakeUpdate={false}
+          likedByUser={comment.likedByUser!}
+          useCustomLikeHook={useLike({
+            id: post.id,
+            commentId: comment.id,
+            authorUsername: comment.author.username,
+            typeOfLike: 'comment'
+          })}
+        />
+      </div>
     </div>
   );
 };

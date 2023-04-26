@@ -2,7 +2,7 @@ import React from 'react';
 
 import { PUBLIC_IMAGES_PREFIX } from '../../constants/apiRoutes';
 import dateFormatter from '../../functions/dateFormatter';
-import useLikePost from '../../hooks/useLikePost';
+import useLike from '../../hooks/useLike';
 import IStory from '../../interfaces/IStory';
 import CenteredItems from '../../styles/CenteredItems';
 import SwiperDiv from '../../styles/SwiperDiv';
@@ -43,10 +43,14 @@ const Story = ({ story, imageURL, username }: Props) => {
           />
           <CenteredItems>
             <LikeButton
+              fakeUpdate
               size="2em"
               likedByUser={story.likedByUser}
-              // @ts-ignores
-              useCustomLikeHook={useLikePost({})}
+              useCustomLikeHook={useLike({
+                id: story.id,
+                authorUsername: username,
+                typeOfLike: 'story'
+              })}
             />
           </CenteredItems>
         </SwiperDiv>

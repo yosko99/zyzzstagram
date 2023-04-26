@@ -6,7 +6,7 @@ import { AiFillHeart } from 'react-icons/ai';
 import { BsHeartbreak } from 'react-icons/bs';
 
 import { PUBLIC_IMAGES_PREFIX } from '../../constants/apiRoutes';
-import useLikePost from '../../hooks/useLikePost';
+import useLike from '../../hooks/useLike';
 import IPost from '../../interfaces/IPost';
 
 interface Props {
@@ -16,10 +16,15 @@ interface Props {
 
 const PostImage = ({ post, username }: Props) => {
   const [showHeart, setShowHeart] = useState(false);
-  const { handleLike } = useLikePost(post);
+  const { handleLike } = useLike({
+    id: post.id,
+    authorUsername: post.author.username,
+    typeOfLike: 'post'
+  });
 
   const handleDoubleClick = () => {
     handleLike();
+    post.likedByUser = !post.likedByUser;
     setTimeout(() => setShowHeart(true), 50);
     setTimeout(() => setShowHeart(false), 1000);
   };

@@ -4,7 +4,7 @@ import { AiOutlineComment, AiOutlineSend } from 'react-icons/ai';
 import { FaAngleDoubleDown } from 'react-icons/fa';
 
 import dateFormatter from '../../functions/dateFormatter';
-import useLikePost from '../../hooks/useLikePost';
+import useLike from '../../hooks/useLike';
 import IPost from '../../interfaces/IPost';
 import IUser from '../../interfaces/IUser';
 import BookmarkButton from '../buttons/post/BookmarkButton';
@@ -43,8 +43,13 @@ const Post = ({ user, post, className, showComments }: Props) => {
               <div className="reaction-wrapper d-flex fs-2 justify-content-between">
                 <div className="d-flex">
                   <LikeButton
+                    fakeUpdate={false}
                     likedByUser={post.likedByUser!}
-                    useCustomLikeHook={useLikePost(post)}
+                    useCustomLikeHook={useLike({
+                      id: post.id,
+                      authorUsername: post.author.username,
+                      typeOfLike: 'post'
+                    })}
                   />
                   <PostModal
                     post={post}

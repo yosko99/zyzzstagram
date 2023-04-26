@@ -17,11 +17,11 @@ const InnerStorySwiper = ({ stories, username, imageURL }: Props) => {
     swiper: Swiper,
     event: MouseEvent | TouchEvent
   ) => {
-    const { x } = event as MouseEvent & { x: number };
+    const { x, y } = event as MouseEvent & { x: number; y: number };
 
-    if (x <= window.innerWidth / 2) {
+    if (x <= window.innerWidth / 2 && y < window.innerHeight - 200) {
       swiper.slidePrev();
-    } else {
+    } else if (x >= window.innerWidth / 2 && y < window.innerHeight - 200) {
       swiper.slideNext();
     }
   };
