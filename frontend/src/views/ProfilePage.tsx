@@ -1,16 +1,18 @@
 /* eslint-disable multiline-ternary */
 import React, { useState } from 'react';
 
-import { Container, Row, Col, Image } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 
 import FollowersButton from '../components/buttons/user/FollowersButton';
 import FollowingButton from '../components/buttons/user/FollowingButton';
+import UserProfileTopButtons from '../components/buttons/user/UserProfileTopButtons';
 import MainNavigation from '../components/navigation/MainNavigation';
 import ProfileNavigation from '../components/navigation/ProfileNavigation';
-import UserButtons from '../components/user/UserButtons';
+import ProfilePhoto from '../components/user/ProfilePhoto';
 import {
   getCurrentUserRoute,
-  PUBLIC_IMAGES_PREFIX
+  getUserByUsernameRoute
 } from '../constants/apiRoutes';
 import useFetch from '../hooks/useFetch';
 import IUser from '../interfaces/IUser';
@@ -19,9 +21,17 @@ import LoadingPage from './LoadingPage';
 import ProfilePagePostTab from './tabs/profilePage/ProfilePagePostTab';
 
 const ProfilePage = () => {
+  const params = useParams();
+  const username = params.username;
+
+  const profileURL =
+    username === undefined
+      ? getCurrentUserRoute()
+      : getUserByUsernameRoute(params.username!);
+
   const { data, isLoading, error } = useFetch(
-    'profile posts',
-    getCurrentUserRoute(),
+    `profile${username !== undefined ? `-${username}` : ''}`,
+    profileURL,
     true,
     true
   );
@@ -43,17 +53,15 @@ const ProfilePage = () => {
               xs={4}
               className="d-flex justify-content-center align-items-center"
             >
-              <Image
-                src={PUBLIC_IMAGES_PREFIX + user.imageURL}
-                height={'120px'}
-                width={'120px'}
-                roundedCircle
+              <ProfilePhoto
+                isSameAsRequester={user.isSameAsRequester}
+                imageURL={user.imageURL}
               />
             </Col>
             <Col xs={8}>
               <div className="d-flex mt-2 flex-wrap">
                 <p className="fs-4 m-0 me-3 text-break">{user.username}</p>
-                <UserButtons user={user} />
+                <UserProfileTopButtons user={user} />
               </div>
               <div className="d-flex w-100 justify-content-around justify-content-lg-start my-3">
                 <p className="me-lg-3 m-0">{user._count?.posts} posts</p>

@@ -1,14 +1,14 @@
 /* eslint-disable multiline-ternary */
 import React from 'react';
 
-import IUser from '../../interfaces/IUser';
-import FollowButton from '../buttons/user/FollowButton';
+import IUser from '../../../interfaces/IUser';
+import FollowButton from './FollowButton';
 
 interface Props {
   user: IUser;
 }
 
-const UserButtons = ({ user }: Props) => {
+const UserProfileTopButtons = ({ user }: Props) => {
   return (
     <>
       {user.isSameAsRequester ? (
@@ -30,4 +30,4 @@ const UserButtons = ({ user }: Props) => {
   );
 };
 
-export default UserButtons;
+export default UserProfileTopButtons;

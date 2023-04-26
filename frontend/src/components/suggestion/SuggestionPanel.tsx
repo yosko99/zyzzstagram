@@ -1,10 +1,13 @@
 /* eslint-disable multiline-ternary */
 import React from 'react';
 
+import { GoIssueClosed } from 'react-icons/go';
+
 import { getCurrentUserSuggestedUsers } from '../../constants/apiRoutes';
 import suggestionPanelTabs from '../../data/suggestionPanelTabs';
 import useFetch from '../../hooks/useFetch';
 import IUser from '../../interfaces/IUser';
+import CenteredItems from '../../styles/CenteredItems';
 import FollowButton from '../buttons/user/FollowButton';
 import UserThumbnail from '../user/UserThumbnail';
 import LoadingSpinner from '../utils/LoadingSpinner';
@@ -34,19 +37,26 @@ const SuggestionPanel = () => {
       />
 
       <p className="ms-4">Suggestions for you</p>
-      {suggestedUsers.map((user, index: number) => (
-        <UserThumbnail
-          key={index}
-          imageURL={user.imageURL}
-          username={user.username}
-          sideElement={
-            <FollowButton
-              isFollowedByRequester={user.isFollowedByRequester}
-              username={user.username}
-            />
-          }
-        />
-      ))}
+      {suggestedUsers.length === 0 ? (
+        <CenteredItems flexColumn>
+          <GoIssueClosed size={'3em'} />
+          <p className="mt-3 text-muted">No suggestions for now</p>
+        </CenteredItems>
+      ) : (
+        suggestedUsers.map((user, index: number) => (
+          <UserThumbnail
+            key={index}
+            imageURL={user.imageURL}
+            username={user.username}
+            sideElement={
+              <FollowButton
+                isFollowedByRequester={user.isFollowedByRequester}
+                username={user.username}
+              />
+            }
+          />
+        ))
+      )}
       <div
         className="d-flex flex-wrap ms-4 mt-3 text-muted"
         style={{ fontSize: '0.9em' }}
