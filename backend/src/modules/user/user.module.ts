@@ -28,6 +28,11 @@ export class UserModule implements NestModule {
       method: RequestMethod.POST,
     });
 
+    consumer.apply(CheckIfUploadsFolderExists, VerifyJWT).forRoutes({
+      path: '/users/current/photo',
+      method: RequestMethod.PUT,
+    });
+
     consumer.apply(CheckExistingUserById).forRoutes({
       path: '/users/:id',
       method: RequestMethod.DELETE,

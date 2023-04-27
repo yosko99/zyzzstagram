@@ -10,7 +10,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { Get, HttpCode, Query } from '@nestjs/common/decorators';
+import { Get, HttpCode, Put, Query } from '@nestjs/common/decorators';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiConsumes,
@@ -22,7 +22,11 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { CreateUserDto, LoginUserDto } from '../../dto/user.dto';
+import {
+  CreateUserDto,
+  LoginUserDto,
+  UpdateUserPhotoDto,
+} from '../../dto/user.dto';
 
 import { UserService } from './user.service';
 
@@ -78,6 +82,32 @@ export class UserController {
   @ApiResponse({ status: 498, description: 'Provided invalid token' })
   getCurrentUser(@RequestData('userDataFromToken') tokenData: IToken) {
     return this.userService.getCurrentUser(tokenData);
+  }
+
+  @Put('/current/photo')
+  @ApiConsumes('multipart/form-data')
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiOperation({ summary: 'Update current user profile photo' })
+  @ApiResponse({ status: 200, description: 'Update photo' })
+  @ApiResponse({ status: 404, description: 'Non existent user' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  @ApiResponse({ status: 400, description: 'Invalid or missing fields' })
+  @UsePipes(ValidationPipe)
+  @UseInterceptors(FileInterceptor('image', multerFilter))
+  updateCurrentUser(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new FileTypeValidator({ fileType: /(jpg|jpeg|png)$/ })],
+      }),
+    )
+    file: Express.Multer.File,
+    @Body()
+    _updateUserPhotoDto: UpdateUserPhotoDto,
+    @RequestData('userDataFromToken')
+    tokenData: IToken,
+  ) {
+    return this.userService.updateCurrentUserPhoto(file.filename, tokenData);
   }
 
   @Get('/current/saved-posts')

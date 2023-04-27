@@ -34,3 +34,8 @@ export class LoginUserDto {
   @ApiProperty({ minLength: 3 })
   username: string;
 }
+
+export class UpdateUserPhotoDto {
+  @ApiProperty()
+  image: Express.Multer.File;
+}

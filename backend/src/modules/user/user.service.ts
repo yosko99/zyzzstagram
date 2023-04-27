@@ -58,6 +58,24 @@ export class UserService {
     };
   }
 
+  async updateCurrentUserPhoto(filename: string, { username }: IToken) {
+    const user = await this.prisma.user.findUnique({
+      where: { username },
+      select: { imageURL: true },
+    });
+
+    deleteImage(user.imageURL);
+
+    await this.prisma.user.update({
+      where: { username },
+      data: { imageURL: filename },
+    });
+
+    return {
+      message: 'Profile photo updated',
+    };
+  }
+
   async deleteUser(user: IUser) {
     await this.prisma.user.delete({ where: { id: user.id } });
 

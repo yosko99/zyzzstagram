@@ -227,4 +227,22 @@ describe('Test users API', () => {
       expect(response.suggestedUsers).toEqual(expect.any(Array));
     });
   });
+
+  describe('test updateCurrentUserPhoto service', () => {
+    test('should update photo', async () => {
+      const createdUserResult = await userService.createUser(
+        createUserDto,
+        filename,
+      );
+
+      const response = await userService.updateCurrentUserPhoto(filename, {
+        password: 'test',
+        username: createUserDto.username,
+      });
+
+      expect(response.message).toEqual('Profile photo updated');
+
+      await userService.deleteUser(createdUserResult.user);
+    });
+  });
 });
