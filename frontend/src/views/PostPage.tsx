@@ -27,7 +27,13 @@ const PostPage = () => {
   return (
     <div className="d-flex flex-lg-row flex-column">
       <MainNavigation />
-      <Post post={post} user={post.author} className="mt-4" showComments />
+      <Post
+        post={post}
+        isInModal={false}
+        user={post.author}
+        className="mt-4"
+        showComments
+      />
     </div>
   );
 };

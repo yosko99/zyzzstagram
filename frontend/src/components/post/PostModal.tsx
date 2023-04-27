@@ -35,7 +35,12 @@ const PostModal = ({ post, activateButtonElement }: Props) => {
         postData === undefined ? (
           <LoadingSpinner height="25vh" />
         ) : (
-          <Post post={postData!} user={postData?.author} showComments />
+          <Post
+            isInModal
+            post={postData!}
+            user={postData?.author}
+            showComments
+          />
         )
       }
       activateButtonElement={activateButtonElement}

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import { useQueryClient } from 'react-query';
 
@@ -10,17 +10,27 @@ interface Props {
   id: string;
   authorUsername: string;
   typeOfComment: 'post' | 'story';
+  commentFocus?: boolean;
+  setCommentFocus?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CommentInput = ({ id, typeOfComment, authorUsername }: Props) => {
+const CommentInput = ({
+  id,
+  typeOfComment,
+  authorUsername,
+  setCommentFocus,
+  commentFocus
+}: Props) => {
   const mutationURL =
     typeOfComment === 'post'
       ? getCommentPostRoute(id)
       : getCommentPostRoute(id);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const { mutate } = useMutationWithToken(mutationURL, false);
-  const queryClient = useQueryClient();
   const socket = useContext(SocketContext);
+  const queryClient = useQueryClient();
 
   const [content, setContent] = useState('');
 
@@ -46,9 +56,18 @@ const CommentInput = ({ id, typeOfComment, authorUsername }: Props) => {
     }
   };
 
+  useEffect(() => {
+    if (commentFocus !== undefined && setCommentFocus !== undefined) {
+      inputRef.current?.focus();
+      setCommentFocus(false);
+    }
+  }, [commentFocus]);
+
   return (
     <div className="comment-wrapper">
       <input
+        ref={inputRef}
+        autoFocus
         maxLength={100}
         type="text"
         className="comment-box ms-3"

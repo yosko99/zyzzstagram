@@ -94,7 +94,12 @@ const PostsWithArrows = ({ posts }: Props) => {
                       }}
                     />
                   </CenteredItems>
-                  <Post post={postData!} user={postData?.author} showComments />
+                  <Post
+                    isInModal
+                    post={postData!}
+                    user={postData?.author}
+                    showComments
+                  />
                   <CenteredItems className="d-none d-sm-flex">
                     <BsFillArrowRightCircleFill
                       className="ms-5"

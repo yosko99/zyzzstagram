@@ -39,6 +39,7 @@ const MainPageTab = () => {
           ) : (
             posts.map((post, index: number) => (
               <Post
+                isInModal={false}
                 className="mt-5"
                 user={post.author}
                 post={post}

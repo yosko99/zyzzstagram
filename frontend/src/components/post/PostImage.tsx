@@ -38,29 +38,33 @@ const PostImage = ({ post, username }: Props) => {
           src={PUBLIC_IMAGES_PREFIX + post.imageURL}
           className="post-image"
           style={{
-            filter: showHeart ? 'brightness(0.8)' : 'brightness(1)',
+            filter: showHeart ? 'brightness(0.5)' : 'brightness(1)',
             transition: 'all 1s'
           }}
           alt={`${username} post`}
         />
-        {showHeart && (
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)'
-            }}
-          >
-            <span className="display-1" role="img" aria-label="heart">
-              {!post.likedByUser ? (
-                <BsHeartbreak color="white" />
-              ) : (
-                <AiFillHeart color="white" />
-              )}
-            </span>
-          </div>
-        )}
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)'
+          }}
+        >
+          <span className="display-1" role="img">
+            {!post.likedByUser ? (
+              <BsHeartbreak
+                className={showHeart ? 'animate__bounceIn' : 'd-none'}
+                color="white"
+              />
+            ) : (
+              <AiFillHeart
+                className={showHeart ? 'animate__bounceIn' : 'd-none'}
+                color="white"
+              />
+            )}
+          </span>
+        </div>
       </div>
     </>
   );
