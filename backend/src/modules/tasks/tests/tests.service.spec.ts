@@ -33,7 +33,6 @@ describe('test TasksService', () => {
 
     const { user: userForTasks } = await userService.createUser(
       createUserForTasksDto,
-      'test.jpg',
     );
 
     await prisma.story.createMany({

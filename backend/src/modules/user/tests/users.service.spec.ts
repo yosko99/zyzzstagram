@@ -19,7 +19,7 @@ describe('Test users API', () => {
 
   describe('test createUser service', () => {
     it('should create a user successfully', async () => {
-      const result = await userService.createUser(createUserDto, filename);
+      const result = await userService.createUser(createUserDto);
 
       expect(result.message).toEqual('User created successfully');
       expect(result.user.email).toEqual(createUserDto.email);
@@ -30,11 +30,11 @@ describe('Test users API', () => {
     });
 
     it('should throw an error if email is already taken', async () => {
-      const result = await userService.createUser(createUserDto, filename);
+      const result = await userService.createUser(createUserDto);
 
-      await expect(
-        userService.createUser(createUserDto, filename),
-      ).rejects.toThrow(HttpException);
+      await expect(userService.createUser(createUserDto)).rejects.toThrow(
+        HttpException,
+      );
 
       await userService.deleteUser(result.user);
     });
@@ -49,7 +49,7 @@ describe('Test users API', () => {
 
   describe('test deleteUser service', () => {
     it('should delete a user successfully', async () => {
-      const { user } = await userService.createUser(createUserDto, filename);
+      const { user } = await userService.createUser(createUserDto);
       const result = await userService.deleteUser(user);
 
       expect(result.message).toEqual('User deleted successfully');
@@ -58,10 +58,7 @@ describe('Test users API', () => {
 
   describe('test loginUser service', () => {
     test('should login successfully', async () => {
-      const createUserResult = await userService.createUser(
-        createUserDto,
-        filename,
-      );
+      const createUserResult = await userService.createUser(createUserDto);
 
       const loginResult = await userService.loginUser({
         username: createUserResult.user.username,
@@ -88,10 +85,7 @@ describe('Test users API', () => {
     });
 
     test('should throw error of password mismatch', async () => {
-      const createUserResult = await userService.createUser(
-        createUserDto,
-        filename,
-      );
+      const createUserResult = await userService.createUser(createUserDto);
 
       try {
         await userService.loginUser({
@@ -110,10 +104,7 @@ describe('Test users API', () => {
 
   describe('test getCurrentUser service', () => {
     test('should get user data successfully', async () => {
-      const createdUserResult = await userService.createUser(
-        createUserDto,
-        filename,
-      );
+      const createdUserResult = await userService.createUser(createUserDto);
 
       const currentUserResult = await userService.getCurrentUser({
         username: createdUserResult.user.username,
@@ -141,10 +132,7 @@ describe('Test users API', () => {
 
   describe('test followUser service', () => {
     test('should successfully follow user', async () => {
-      const createdUserResult = await userService.createUser(
-        createUserDto,
-        filename,
-      );
+      const createdUserResult = await userService.createUser(createUserDto);
 
       const followUserResult = await userService.followUser(
         createdUserResult.user,
@@ -159,10 +147,8 @@ describe('Test users API', () => {
 
   describe('test getUserFollowing service', () => {
     test('should get following users', async () => {
-      const createdUserResult = await userService.createUser(
-        createUserDto,
-        filename,
-      );
+      const createdUserResult = await userService.createUser(createUserDto);
+
       const response = await userService.getUserFollowing(
         createdUserResult.user,
         createdUserResult.token,
@@ -176,10 +162,8 @@ describe('Test users API', () => {
 
   describe('test getUserFollowers service', () => {
     test('should get followers users', async () => {
-      const createdUserResult = await userService.createUser(
-        createUserDto,
-        filename,
-      );
+      const createdUserResult = await userService.createUser(createUserDto);
+
       const response = await userService.getUserFollowers(
         createdUserResult.user,
         createdUserResult.token,
@@ -193,10 +177,7 @@ describe('Test users API', () => {
 
   describe('test getCurrentUserSavedPosts service', () => {
     test('should get current user saved posts', async () => {
-      const createdUserResult = await userService.createUser(
-        createUserDto,
-        filename,
-      );
+      const createdUserResult = await userService.createUser(createUserDto);
 
       const response = await userService.getCurrentUserSavedPosts({
         username: createUserDto.username,
@@ -230,10 +211,7 @@ describe('Test users API', () => {
 
   describe('test updateCurrentUserPhoto service', () => {
     test('should update photo', async () => {
-      const createdUserResult = await userService.createUser(
-        createUserDto,
-        filename,
-      );
+      const createdUserResult = await userService.createUser(createUserDto);
 
       const response = await userService.updateCurrentUserPhoto(filename, {
         password: 'test',

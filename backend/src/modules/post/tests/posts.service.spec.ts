@@ -16,10 +16,7 @@ describe('Test posts API', () => {
   const userService = new UserService(prisma, notificationService);
 
   const initMockData = async () => {
-    const createdUser = await userService.createUser(
-      createUserForPostDto,
-      filename,
-    );
+    const createdUser = await userService.createUser(createUserForPostDto);
 
     const tokenData: IToken = {
       username: createUserForPostDto.username,

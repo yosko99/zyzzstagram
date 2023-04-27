@@ -30,24 +30,20 @@ export class UserService {
     });
   }
 
-  async createUser(
-    { email, password, username }: CreateUserDto,
-    filename: string,
-  ) {
+  async createUser({ email, password, username }: CreateUserDto) {
     const doesUserExist =
       (await this.prisma.user.findFirst({
         where: { OR: [{ email }, { username }] },
       })) !== null;
 
     if (doesUserExist) {
-      deleteImage(filename);
       throw new HttpException('Username or email is already taken', 409);
     }
 
     const hashedPassword = (await bcrypt.hash(password, 10)) as string;
 
     const newUser = await this.prisma.user.create({
-      data: { email, password: hashedPassword, username, imageURL: filename },
+      data: { email, password: hashedPassword, username },
       include: { followers: true, following: true },
     });
 

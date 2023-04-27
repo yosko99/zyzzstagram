@@ -18,9 +18,6 @@ export class CreateUserDto {
   @IsEmail()
   @ApiProperty()
   email: string;
-
-  @ApiProperty()
-  image?: Express.Multer.File;
 }
 
 export class LoginUserDto {

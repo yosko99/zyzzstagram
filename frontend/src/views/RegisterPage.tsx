@@ -1,44 +1,41 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import EmailInput from '../components/inputs/EmailInput';
-import ImageUploadInput from '../components/inputs/ImageUploadInput';
 import PasswordInput from '../components/inputs/PasswordInput';
 import UsernameInput from '../components/inputs/UsernameInput';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
 import { getUsersRoute } from '../constants/apiRoutes';
 import useAuth from '../hooks/useAuth';
-import { useUploadForm } from '../hooks/useUploadImage';
+import useAuthFormSubmit from '../hooks/useAuthFormSubmit';
+import useFormUpdate from '../hooks/useFormUpdate';
 import CenteredItems from '../styles/CenteredItems';
 
 const RegisterPage = () => {
   // useAuth('/register');
+  const { alert, handleSubmit, isLoading } = useAuthFormSubmit(getUsersRoute());
+  const { formData, handleChange } = useFormUpdate();
 
-  const { setAlert, setImageFile, isLoading, imageFile, handleSubmit, alert } =
-    useUploadForm(getUsersRoute(), '/', true, false);
-
-  useEffect(() => {
-    setAlert(null);
-  }, [imageFile]);
+  const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSubmit(formData);
+  };
 
   return (
     <CenteredItems>
       <Form
         id="register-form"
         className="shadow-lg p-5"
-        onSubmit={(e) => handleSubmit(e)}
+        onChange={(e) => handleChange(e)}
+        onSubmit={(e) => handleRegister(e)}
       >
         <p className="fs-1">Register to Zysstragram</p>
 
         <EmailInput />
         <UsernameInput />
         <PasswordInput />
-        <ImageUploadInput aspectRatio={4 / 3} setImageFile={setImageFile} />
-
-        {alert}
-        {isLoading && <LoadingSpinner />}
 
         <Button variant="primary" className="w-100 mt-3" type="submit">
           Register
@@ -52,6 +49,8 @@ const RegisterPage = () => {
             </span>
           </Link>
         </p>
+        {alert}
+        {isLoading && <LoadingSpinner />}
       </Form>
     </CenteredItems>
   );

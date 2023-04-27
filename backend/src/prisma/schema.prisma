@@ -11,7 +11,7 @@ model User {
     id                    String         @id @default(uuid())
     username              String         @unique
     email                 String         @unique
-    imageURL              String
+    imageURL              String?        @default("no-image.png")
     description           String?
     password              String
     posts                 Post[]

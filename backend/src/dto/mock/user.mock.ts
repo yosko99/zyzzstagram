@@ -47,4 +47,4 @@ export const createUserForTasksDto = {
   ...userData,
 };
 
-export const createInvalidUserDto = { email: '', password: '', username: '' };
+export const createInvalidUserDto = { email: '', password: '' };

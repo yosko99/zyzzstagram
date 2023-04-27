@@ -167,24 +167,16 @@ export class UserController {
 
   @Post()
   @ApiOperation({ summary: 'Create user' })
-  @ApiConsumes('multipart/form-data')
   @ApiResponse({ status: 201, description: 'User created' })
   @ApiResponse({ status: 400, description: 'Invalid/missing fields' })
   @ApiResponse({ status: 409, description: 'Name or email is already taken' })
   @ApiResponse({ status: 400, description: 'Invalid or missing fields' })
   @UsePipes(ValidationPipe)
-  @UseInterceptors(FileInterceptor('image', multerFilter))
   createUser(
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [new FileTypeValidator({ fileType: /(jpg|jpeg|png)$/ })],
-      }),
-    )
-    file: Express.Multer.File,
     @Body()
     createUserDto: CreateUserDto,
   ) {
-    return this.userService.createUser(createUserDto, file.filename);
+    return this.userService.createUser(createUserDto);
   }
 
   @Post('/:username/followers')

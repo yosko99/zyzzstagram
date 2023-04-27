@@ -15,10 +15,7 @@ describe('test story API', () => {
 
   describe('test createStory service', () => {
     it('should create story successfully', async () => {
-      const userForStory = await userService.createUser(
-        createUserForStoryDto,
-        filename,
-      );
+      const userForStory = await userService.createUser(createUserForStoryDto);
 
       const response = await storyService.createStory(filename, {
         username: createUserForStoryDto.username,
@@ -41,10 +38,7 @@ describe('test story API', () => {
 
   describe('test deleteStory service', () => {
     it('should delete story successfully', async () => {
-      const userForStory = await userService.createUser(
-        createUserForStoryDto,
-        filename,
-      );
+      const userForStory = await userService.createUser(createUserForStoryDto);
 
       const createdStory = await storyService.createStory(filename, {
         username: createUserForStoryDto.username,
@@ -76,10 +70,7 @@ describe('test story API', () => {
     });
 
     it('should get following users stories', async () => {
-      const userForStory = await userService.createUser(
-        createUserForStoryDto,
-        filename,
-      );
+      const userForStory = await userService.createUser(createUserForStoryDto);
 
       const response = await storyService.getStories(
         {
@@ -97,10 +88,7 @@ describe('test story API', () => {
 
   describe('test likeStory service', () => {
     it('should successfully like a story', async () => {
-      const userForStory = await userService.createUser(
-        createUserForStoryDto,
-        filename,
-      );
+      const userForStory = await userService.createUser(createUserForStoryDto);
 
       const createdStory = await storyService.createStory(filename, {
         username: createUserForStoryDto.username,

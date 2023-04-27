@@ -23,12 +23,10 @@ describe('Test notifications API', () => {
   const initMockData = async () => {
     const createdFirstUser = await userService.createUser(
       createFirstUserForNotificationDto,
-      filename,
     );
 
     const createdSecondUser = await userService.createUser(
       createSecondUserForNotificationDto,
-      filename,
     );
 
     const firstUserTokenData: IToken = {
