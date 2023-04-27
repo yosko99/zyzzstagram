@@ -69,7 +69,7 @@ const SearchBox = () => {
             />
           ))
         ) : recentSearches.length === 0 && search === '' ? (
-          <p className="text-center mt-5">No recent searches.</p>
+          <p className="text-center my-5">No recent searches.</p>
         ) : loading ? (
           <LoadingSpinner />
         ) : users === undefined || users.length === 0 ? (

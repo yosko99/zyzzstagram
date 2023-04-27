@@ -1,17 +1,19 @@
 import React from 'react';
 
 import { Container, Row } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 import MainNavigation from '../components/navigation/MainNavigation';
 import PostsThumbnailGrid from '../components/post/PostsThumbnailGrid';
-import LoadingSpinner from '../components/utils/LoadingSpinner';
 import { getExplorePostsRoute } from '../constants/apiRoutes';
 import useFetch from '../hooks/useFetch';
 import IPost from '../interfaces/IPost';
 import ProfileContainer from '../styles/ProfileContainerStyle';
+import LoadingPage from './LoadingPage';
 
 const ExplorePage = () => {
-  const { data, isLoading } = useFetch(
+  const navigate = useNavigate();
+  const { data, isLoading, error } = useFetch(
     'explore',
     getExplorePostsRoute(),
     true,
@@ -19,7 +21,11 @@ const ExplorePage = () => {
   );
 
   if (isLoading) {
-    return <LoadingSpinner height="40vh" />;
+    return <LoadingPage />;
+  }
+
+  if (error) {
+    navigate('/404');
   }
 
   const posts = data as IPost[];

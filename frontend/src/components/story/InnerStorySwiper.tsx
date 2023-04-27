@@ -35,7 +35,6 @@ const InnerStorySwiper = ({ stories, username, imageURL }: Props) => {
       modules={[Keyboard, Navigation, EffectCards]}
       navigation
       effect="cards"
-      pagination={{ clickable: true }}
     >
       {stories &&
         stories.map((story, storyIndex: number) => (

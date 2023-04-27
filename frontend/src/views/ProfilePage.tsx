@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 
 import { Container, Row, Col } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import FollowersButton from '../components/buttons/user/FollowersButton';
 import FollowingButton from '../components/buttons/user/FollowingButton';
@@ -23,6 +23,7 @@ import ProfilePagePostTab from './tabs/profilePage/ProfilePagePostTab';
 const ProfilePage = () => {
   const params = useParams();
   const username = params.username;
+  const navigate = useNavigate();
 
   const profileURL =
     username === undefined
@@ -41,6 +42,10 @@ const ProfilePage = () => {
 
   if (isLoading) {
     return <LoadingPage />;
+  }
+
+  if (error) {
+    navigate('/404');
   }
 
   return (

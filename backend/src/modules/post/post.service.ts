@@ -268,7 +268,7 @@ export class PostService {
     const usersWithFirstPosts = await this.prisma.user.findMany({
       include: {
         posts: {
-          orderBy: { createdAt: 'asc' },
+          orderBy: { createdAt: 'desc' },
           take: 1,
           select: {
             imageURL: true,
