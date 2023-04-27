@@ -11,7 +11,7 @@ import LoadingSpinner from '../../utils/LoadingSpinner';
 
 const CreateStoryButton = () => {
   const { setAlert, setImageFile, isLoading, imageFile, handleSubmit, alert } =
-    useUploadForm(getStoriesRoute(), '/profile', false);
+    useUploadForm(getStoriesRoute(), '/profile', false, false);
 
   useEffect(() => {
     setAlert(null);

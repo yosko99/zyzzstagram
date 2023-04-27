@@ -14,6 +14,9 @@ export const getLoginRoute = () => getUsersRoute() + '/login';
 
 export const getCurrentUserRoute = () => getUsersRoute() + '/current';
 
+export const getCurrentUserPhotoRoute = () =>
+  getUsersRoute() + '/current/photo';
+
 export const getUserFollowersRoute = (username: string) =>
   `${getUsersRoute()}/${username}/followers`;
 

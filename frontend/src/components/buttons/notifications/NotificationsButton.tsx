@@ -8,7 +8,7 @@ import {
   getNotificationsRoute
 } from '../../../constants/apiRoutes';
 import useFetch from '../../../hooks/useFetch';
-import { useMutationWithToken } from '../../../hooks/useUploadImage';
+import useMutationWithToken from '../../../hooks/useMutationWithToken';
 import INotification from '../../../interfaces/INotification';
 import NotificationNumberStyle from '../../../styles/NotificationNumberStyle';
 

@@ -1,46 +1,23 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
-import axios, { AxiosResponse } from 'axios';
-import { useMutation, useQueryClient } from 'react-query';
+import { useQueryClient } from 'react-query';
 
 import CustomAlert from '../components/utils/CustomAlert';
-import { TokenContext } from '../context/TokenContext';
 import ExtendedAxiosError from '../types/ExtendedAxiosError';
-
-export const useMutationWithToken = (
-  routeURL: string,
-  updateRequest: boolean,
-  onMutate?: () => any
-) => {
-  const token = useContext(TokenContext);
-
-  const uploadPost = async (data: any) => {
-    const config = {
-      headers: { Authorization: `Bearer ${token?.token}` }
-    };
-    let response: AxiosResponse<any, any>;
-    if (!updateRequest) {
-      response = await axios.post(routeURL, data, config);
-    } else {
-      response = await axios.put(routeURL, data, config);
-    }
-    return response.data;
-  };
-
-  return useMutation(uploadPost, { onMutate: onMutate && onMutate });
-};
+import useMutationWithToken from './useMutationWithToken';
 
 export const useUploadForm = (
   routeURL: string,
   redirectOnSuccessURL: string = '',
-  setToken: boolean
+  setToken: boolean,
+  updateRequest: boolean
 ) => {
   const [alert, setAlert] = useState<React.ReactNode>();
   const [imageFile, setImageFile] = useState<File>();
 
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useMutationWithToken(routeURL, false);
+  const { mutate, isLoading } = useMutationWithToken(routeURL, updateRequest);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

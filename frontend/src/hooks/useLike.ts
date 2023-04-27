@@ -9,7 +9,7 @@ import {
 } from '../constants/apiRoutes';
 import { SocketContext } from '../context/SocketContext';
 import LikeType from '../types/like.type';
-import { useMutationWithToken } from './useUploadImage';
+import useMutationWithToken from './useMutationWithToken';
 
 interface Props {
   id: string;
