@@ -9,6 +9,7 @@ interface Props {
   modalHeader?: React.ReactNode;
   modalBody: React.ReactNode;
   onCloseFunction?: () => void;
+  modalClassName?: string;
 }
 
 const CustomModal: FC<Props> = ({
@@ -17,6 +18,7 @@ const CustomModal: FC<Props> = ({
   activateButtonOnClick,
   modalHeader,
   modalBody,
+  modalClassName,
   onCloseFunction
 }) => {
   const [show, setShow] = useState(false);
@@ -42,7 +44,13 @@ const CustomModal: FC<Props> = ({
         {activateButtonElement}
       </div>
 
-      <Modal centered animation show={show} onHide={handleClose}>
+      <Modal
+        centered
+        animation
+        show={show}
+        onHide={handleClose}
+        className={modalClassName && modalClassName}
+      >
         {modalHeader && (
           <Modal.Header closeButton>
             <Modal.Title className="w-100">

@@ -49,6 +49,9 @@ export const getCommentPostRoute = (id: string) =>
 export const getPostSavedByRoute = (id: string) =>
   `${getPostsRoute()}/${id}/saved-by`;
 
+export const getPostLikedByRoute = (id: string) =>
+  `${getPostsRoute()}/${id}/liked-by`;
+
 export const getLikeCommentRoute = (postId: string, commentId: string) =>
   `${getPostsRoute()}/${postId}/comments/${commentId}/likes`;
 

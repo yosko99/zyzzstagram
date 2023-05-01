@@ -90,7 +90,7 @@ export class PostService {
         username: user.username,
         imageURL: user.imageURL,
         isSameAsRequester: user.username === username,
-        followedByRequester:
+        isFollowedByRequester:
           user.followers.filter((user) => user.username === username).length !==
           0,
       };

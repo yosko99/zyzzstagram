@@ -9,6 +9,7 @@ import IPost from '../../interfaces/IPost';
 import IUser from '../../interfaces/IUser';
 import BookmarkButton from '../buttons/post/BookmarkButton';
 import DropdownButton from '../buttons/post/DropdownButton';
+import LikedByButton from '../buttons/post/LikedByButton';
 import LikeButton from '../buttons/utils/LikeButton';
 import CommentInput from '../inputs/CommentInput';
 import UserThumbnail from '../user/UserThumbnail';
@@ -82,7 +83,10 @@ const Post = ({ user, post, className, showComments, isInModal }: Props) => {
                   />
                 </div>
               </div>
-              <p className="likes">{post._count.likedBy} likes</p>
+              <LikedByButton
+                numberOfLikes={post._count.likedBy}
+                postId={post.id}
+              />
               <p className="description">
                 <span>{user.username} </span> {post.description}
               </p>

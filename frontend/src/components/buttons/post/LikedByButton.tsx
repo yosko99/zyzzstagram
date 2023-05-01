@@ -1,55 +1,50 @@
 /* eslint-disable multiline-ternary */
 import React from 'react';
 
-import FollowButton from '../components/buttons/user/FollowButton';
-import UserThumbnail from '../components/user/UserThumbnail';
-import CustomModal from '../components/utils/CustomModal';
-import LoadingSpinner from '../components/utils/LoadingSpinner';
-import {
-  getUserFollowersRoute,
-  getUserFollowingRoute
-} from '../constants/apiRoutes';
-import useFetch from '../hooks/useFetch';
-import IUser from '../interfaces/IUser';
-import CenteredItems from '../styles/CenteredItems';
+import { getPostLikedByRoute } from '../../../constants/apiRoutes';
+import useFetch from '../../../hooks/useFetch';
+import IUser from '../../../interfaces/IUser';
+import CenteredItems from '../../../styles/CenteredItems';
+import UserThumbnail from '../../user/UserThumbnail';
+import CustomModal from '../../utils/CustomModal';
+import LoadingSpinner from '../../utils/LoadingSpinner';
+import FollowButton from '../user/FollowButton';
 
 interface Props {
-  user: IUser;
-  typeOfUsers: 'following' | 'followers';
+  postId: string;
+  numberOfLikes: number;
 }
 
-const FollowingButtonTemplate = ({ user, typeOfUsers }: Props) => {
+const LikedByButton = ({ postId, numberOfLikes }: Props) => {
   const { data, isLoading, refetch } = useFetch(
-    `${user.username}-${typeOfUsers}`,
-    typeOfUsers === 'following'
-      ? getUserFollowingRoute(user.username)
-      : getUserFollowersRoute(user.username),
+    `post-${postId}-likedBy`,
+    getPostLikedByRoute(postId),
     false,
     true
   );
 
-  const followUsers = data as IUser[];
+  const usersLikedThePost = data as IUser[];
 
   return (
     <CustomModal
       activateButtonOnClick={refetch}
       activateButtonElement={
-        <p className="ms-lg-3 m-0" role="button">
-          {user._count![typeOfUsers]} {typeOfUsers}
+        <p className="m-0" role="button">
+          {numberOfLikes} likes
         </p>
       }
-      modalHeader={<p className="text-center m-0">{typeOfUsers}</p>}
+      modalHeader={<p className="text-center m-0">Likes</p>}
       modalBody={
         isLoading ? (
           <LoadingSpinner height="25vh" />
         ) : (
           <div style={{ overflow: 'auto' }}>
-            {followUsers?.length === 0 ? (
+            {usersLikedThePost?.length === 0 ? (
               <CenteredItems>
                 <p className="my-5">It&apos;s a bit empty here</p>
               </CenteredItems>
             ) : (
-              followUsers?.map((follow, index: number) => (
+              usersLikedThePost?.map((follow, index: number) => (
                 <UserThumbnail
                   username={follow.username}
                   imageURL={follow.imageURL}
@@ -72,4 +67,4 @@ const FollowingButtonTemplate = ({ user, typeOfUsers }: Props) => {
   );
 };
 
-export default FollowingButtonTemplate;
+export default LikedByButton;

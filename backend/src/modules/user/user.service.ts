@@ -243,7 +243,9 @@ export class UserService {
   getUserFollowers = (user: IUser, tokenData: IToken) => {
     return user.followers.map((follower) => {
       return {
-        ...follower,
+        username: follower.username,
+        imageURL: follower.imageURL,
+        isSameAsRequester: follower.username === tokenData.username,
         isFollowedByRequester: this.isFollowedByRequester(
           follower.followers,
           tokenData.username,
@@ -255,7 +257,9 @@ export class UserService {
   getUserFollowing = (user: IUser, tokenData: IToken) => {
     return user.following.map((follower) => {
       return {
-        ...follower,
+        username: follower.username,
+        imageURL: follower.imageURL,
+        isSameAsRequester: follower.username === tokenData.username,
         isFollowedByRequester: this.isFollowedByRequester(
           follower.followers,
           tokenData.username,
