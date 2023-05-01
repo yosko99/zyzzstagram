@@ -40,6 +40,11 @@ export class PostModule implements NestModule {
       method: RequestMethod.DELETE,
     });
 
+    consumer.apply(VerifyJWT).forRoutes({
+      path: '/posts/:id/liked-by',
+      method: RequestMethod.GET,
+    });
+
     consumer
       .apply(
         VerifyJWT,

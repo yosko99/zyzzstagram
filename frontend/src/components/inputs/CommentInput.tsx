@@ -57,7 +57,7 @@ const CommentInput = ({
   };
 
   useEffect(() => {
-    if (commentFocus !== undefined && setCommentFocus !== undefined) {
+    if (commentFocus && setCommentFocus !== undefined) {
       inputRef.current?.focus();
       setCommentFocus(false);
     }
@@ -67,7 +67,6 @@ const CommentInput = ({
     <div className="comment-wrapper">
       <input
         ref={inputRef}
-        autoFocus
         maxLength={100}
         type="text"
         className="comment-box ms-3"

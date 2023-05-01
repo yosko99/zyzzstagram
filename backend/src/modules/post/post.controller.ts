@@ -5,6 +5,7 @@ import {
   FileTypeValidator,
   Get,
   HttpCode,
+  Param,
   ParseFilePipe,
   Post,
   Query,
@@ -74,6 +75,21 @@ export class PostController {
   @ApiResponse({ status: 498, description: 'Provided invalid token' })
   getPostById(@RequestData('post') post: IPost) {
     return this.postService.getPostById(post);
+  }
+
+  @Get('/:id/liked-by')
+  @ApiParam({ name: 'id', type: 'string', description: 'Post ID' })
+  @ApiOperation({ summary: 'Get users who liked the post' })
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiResponse({ status: 200, description: 'Get users liked the post' })
+  @ApiResponse({ status: 404, description: 'Post not found' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  getPostLikedBy(
+    @Param('id') id: string,
+    @RequestData('userDataFromToken') tokenData: IToken,
+  ) {
+    return this.postService.getPostLikedBy(id, tokenData);
   }
 
   @Post('/:id/saved-by')

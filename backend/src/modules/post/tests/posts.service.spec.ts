@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import { HttpException } from '@nestjs/common';
+
 import { NotificationService } from '../../../modules/notification/notification.service';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { UserService } from '../../user/user.service';
@@ -188,6 +190,34 @@ describe('Test posts API', () => {
       expect(savePostResponse.message).toEqual('Post unsaved');
 
       await userService.deleteUser(createdUser.user);
+    });
+  });
+
+  describe('test getPostLikedBy service', () => {
+    test('should get array of users liked the post', async () => {
+      const { createdPost, createdUser, tokenData } = await initMockData();
+
+      createdPost.post = {
+        ...createdPost.post,
+        savedBy: [{ ...createUserForPostDto }],
+      };
+
+      const response = await postService.getPostLikedBy(
+        createdPost.post.id,
+        tokenData,
+      );
+
+      expect(response).toEqual(expect.any(Array));
+
+      await userService.deleteUser(createdUser.user);
+    });
+
+    test('should throw error, not found post', async () => {
+      await expect(
+        postService.getPostLikedBy('1', { username: 'test', password: 'test' }),
+      ).rejects.toThrow(
+        new HttpException({ message: 'Could not find provided post' }, 404),
+      );
     });
   });
 });

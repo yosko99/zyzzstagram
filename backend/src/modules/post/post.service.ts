@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
 import { CreatePostDto } from '../../dto/post.dto';
@@ -65,6 +65,36 @@ export class PostService {
       default:
         return this.getAllPosts(username);
     }
+  }
+
+  async getPostLikedBy(id: string, { username }: IToken) {
+    const post = await this.prisma.post.findUnique({
+      where: { id },
+      select: {
+        likedBy: {
+          select: {
+            username: true,
+            imageURL: true,
+            followers: { select: { username: true } },
+          },
+        },
+      },
+    });
+
+    if (post === null) {
+      throw new HttpException({ message: 'Could not find provided post' }, 404);
+    }
+
+    return post.likedBy.map((user) => {
+      return {
+        username: user.username,
+        imageURL: user.imageURL,
+        isSameAsRequester: user.username === username,
+        followedByRequester:
+          user.followers.filter((user) => user.username === username).length !==
+          0,
+      };
+    });
   }
 
   private async getFollowingPosts(username: string) {

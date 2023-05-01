@@ -55,12 +55,10 @@ const FollowingButtonTemplate = ({ user, typeOfUsers }: Props) => {
                   imageURL={follow.imageURL}
                   key={index}
                   sideElement={
-                    user.isSameAsRequester && (
-                      <FollowButton
-                        isFollowedByRequester={follow.isFollowedByRequester}
-                        username={follow.username}
-                      />
-                    )
+                    <FollowButton
+                      isFollowedByRequester={follow.isFollowedByRequester}
+                      username={follow.username}
+                    />
                   }
                 />
               ))

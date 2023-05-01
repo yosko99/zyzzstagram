@@ -6,12 +6,15 @@ import { useNavigate } from 'react-router-dom';
 import MainNavigation from '../components/navigation/MainNavigation';
 import PostsThumbnailGrid from '../components/post/PostsThumbnailGrid';
 import { getExplorePostsRoute } from '../constants/apiRoutes';
+import useAuth from '../hooks/useAuth';
 import useFetch from '../hooks/useFetch';
 import IPost from '../interfaces/IPost';
 import ProfileContainer from '../styles/ProfileContainerStyle';
 import LoadingPage from './LoadingPage';
 
 const ExplorePage = () => {
+  useAuth('/login');
+
   const navigate = useNavigate();
   const { data, isLoading, error } = useFetch(
     'explore',
