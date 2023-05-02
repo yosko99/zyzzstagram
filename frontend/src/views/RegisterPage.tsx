@@ -15,11 +15,15 @@ import CenteredItems from '../styles/CenteredItems';
 
 const RegisterPage = () => {
   // useAuth('/register');
-  const { alert, handleSubmit, isLoading } = useAuthFormSubmit(getUsersRoute());
+  const { alert, handleSubmit, isLoading } = useAuthFormSubmit(
+    getUsersRoute(),
+    'register'
+  );
   const { formData, handleChange } = useFormUpdate();
 
   const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     handleSubmit(formData);
   };
 

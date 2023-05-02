@@ -28,8 +28,9 @@ export class LoginUserDto {
   password: string;
 
   @IsNotEmpty()
-  @ApiProperty({ minLength: 3 })
-  username: string;
+  @IsEmail()
+  @ApiProperty()
+  email: string;
 }
 
 export class UpdateUserPhotoDto {

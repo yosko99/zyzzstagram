@@ -3,8 +3,8 @@ import React from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
+import EmailInput from '../components/inputs/EmailInput';
 import PasswordInput from '../components/inputs/PasswordInput';
-import UsernameInput from '../components/inputs/UsernameInput';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
 import { getLoginRoute } from '../constants/apiRoutes';
 import useAuthFormSubmit from '../hooks/useAuthFormSubmit';
@@ -13,7 +13,10 @@ import CenteredItems from '../styles/CenteredItems';
 
 const LoginPage = () => {
   // useAuth('/login');
-  const { alert, handleSubmit, isLoading } = useAuthFormSubmit(getLoginRoute());
+  const { alert, handleSubmit, isLoading } = useAuthFormSubmit(
+    getLoginRoute(),
+    'login'
+  );
   const { formData, handleChange } = useFormUpdate();
 
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
@@ -29,7 +32,7 @@ const LoginPage = () => {
         onChange={(e) => handleChange(e)}
       >
         <p className="fs-1">Login to Zysstagram</p>
-        <UsernameInput />
+        <EmailInput />
         <PasswordInput />
 
         <div className="d-flex justify-content-between">

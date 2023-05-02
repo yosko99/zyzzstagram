@@ -1,4 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcryptjs';
 
@@ -6,11 +7,11 @@ import deleteImage from '../../functions/deleteImage';
 
 import { CreateUserDto, LoginUserDto } from '../../dto/user.dto';
 
+import { NotificationService } from '../notification/notification.service';
 import { PrismaService } from '../../prisma/prisma.service';
 
-import IUser from 'src/interfaces/IUser';
-import IToken from 'src/interfaces/IToken';
-import { NotificationService } from '../notification/notification.service';
+import IUser from '../../interfaces/IUser';
+import IToken from '../../interfaces/IToken';
 
 @Injectable()
 export class UserService {
@@ -82,8 +83,8 @@ export class UserService {
     };
   }
 
-  async loginUser({ username, password }: LoginUserDto) {
-    const user = await this.checkUserExistence({ where: { username } });
+  async loginUser({ email, password }: LoginUserDto) {
+    const user = await this.checkUserExistence({ where: { email } });
 
     const doesPasswordMatch = await bcrypt.compare(password, user.password);
 
@@ -91,7 +92,7 @@ export class UserService {
       throw new HttpException('Provided invalid password', 401);
     }
 
-    const token = this.generateToken(username, password);
+    const token = this.generateToken(user.username, password);
 
     return {
       message: 'Logged in successfully',
@@ -230,7 +231,7 @@ export class UserService {
     return token;
   }
 
-  private checkUserExistence = async (query: any) => {
+  private checkUserExistence = async (query: Prisma.UserFindUniqueArgs) => {
     const user = await this.prisma.user.findUnique(query);
 
     if (user === null) {

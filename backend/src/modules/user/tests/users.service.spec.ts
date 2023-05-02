@@ -61,7 +61,7 @@ describe('Test users API', () => {
       const createUserResult = await userService.createUser(createUserDto);
 
       const loginResult = await userService.loginUser({
-        username: createUserResult.user.username,
+        email: createUserResult.user.email,
         password: createUserDto.password,
       });
 
@@ -74,7 +74,7 @@ describe('Test users API', () => {
     test('should throw error of non existent username', async () => {
       try {
         await userService.loginUser({
-          username: 'invalid',
+          email: 'invalid',
           password: 'a',
         });
       } catch (err) {
@@ -89,7 +89,7 @@ describe('Test users API', () => {
 
       try {
         await userService.loginUser({
-          username: createUserDto.username,
+          email: createUserDto.email,
           password: 'invalid',
         });
       } catch (err) {
