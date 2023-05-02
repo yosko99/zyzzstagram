@@ -3,6 +3,8 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { io } from 'socket.io-client';
 
+import { ChatContextProvider } from './context/ChatContext';
+import { FirebaseAuthContextProvider } from './context/FirebaseAuthContext';
 import { SocketContext } from './context/SocketContext';
 import { TokenContext } from './context/TokenContext';
 import useOnConnectedSocket from './hooks/sockets/useOnConnectedSocket';
@@ -13,6 +15,7 @@ import ErrorPage from './views/ErrorPage';
 import ExplorePage from './views/ExplorePage';
 import LoginPage from './views/LoginPage';
 import MainPage from './views/MainPage';
+import MessagesPage from './views/MessagesPage';
 import PostPage from './views/PostPage';
 import ProfilePage from './views/ProfilePage';
 import RegisterPage from './views/RegisterPage';
@@ -32,22 +35,27 @@ const App = () => {
   useOnNotification(socket);
 
   return (
-    <SocketContext.Provider value={socket}>
-      <TokenContext.Provider value={{ token, setToken }}>
-        <GlobalCSS />
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/profile/:username" element={<ProfilePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/post/:id" element={<PostPage />} />
-          <Route path="/explore" element={<ExplorePage />} />
-          <Route path="/stories" element={<StoriesPage />} />
-          <Route path="/*" element={<ErrorPage />} />
-        </Routes>
-      </TokenContext.Provider>
-    </SocketContext.Provider>
+    <FirebaseAuthContextProvider>
+      <ChatContextProvider>
+        <SocketContext.Provider value={socket}>
+          <TokenContext.Provider value={{ token, setToken }}>
+            <GlobalCSS />
+            <Routes>
+              <Route path="/" element={<MainPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/profile/:username" element={<ProfilePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/post/:id" element={<PostPage />} />
+              <Route path="/explore" element={<ExplorePage />} />
+              <Route path="/stories" element={<StoriesPage />} />
+              <Route path="/messages" element={<MessagesPage />} />
+              <Route path="/*" element={<ErrorPage />} />
+            </Routes>
+          </TokenContext.Provider>
+        </SocketContext.Provider>
+      </ChatContextProvider>
+    </FirebaseAuthContextProvider>
   );
 };
 

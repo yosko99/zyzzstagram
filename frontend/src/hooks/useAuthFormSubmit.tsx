@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 
 import {
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  updateProfile
 } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { useQueryClient } from 'react-query';
@@ -45,12 +46,18 @@ const useAuthFormSubmit = (
               data.email!,
               data.password!
             );
+
             const user = userCredentials.user;
+
+            await updateProfile(user, {
+              displayName: data.username,
+              photoURL: 'no-image.png'
+            });
 
             await setDoc(doc(db, 'users', user.uid), {
               displayName: data.username,
               email: data.email,
-              imageURL: 'no-image.png',
+              photoURL: 'no-image.png',
               uid: user.uid
             });
             await setDoc(doc(db, 'userChats', user.uid), {});

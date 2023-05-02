@@ -4,7 +4,7 @@ import { User, onAuthStateChanged } from 'firebase/auth';
 
 import { auth } from '../firebase';
 
-export const AuthContext = createContext<User | undefined>(undefined);
+export const FirebaseAuthContext = createContext<User | undefined>(undefined);
 
 interface Props {
   children: ReactNode;
@@ -24,6 +24,8 @@ export const FirebaseAuthContextProvider = ({ children }: Props) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={currentUser}>{children}</AuthContext.Provider>
+    <FirebaseAuthContext.Provider value={currentUser}>
+      {children}
+    </FirebaseAuthContext.Provider>
   );
 };
