@@ -14,7 +14,7 @@ import useFormUpdate from '../hooks/useFormUpdate';
 import CenteredItems from '../styles/CenteredItems';
 
 const RegisterPage = () => {
-  // useAuth('/register');
+  useAuth('/register');
   const { alert, handleSubmit, isLoading } = useAuthFormSubmit(
     getUsersRoute(),
     'register'

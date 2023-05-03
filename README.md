@@ -46,7 +46,9 @@ npx prisma generate
 
 This command will migrate the prisma schema to the database, and generate artifacts.
 
-#
+### Firebase 🔥
+
+This projects uses a second database with firebase for the messaging part of the system. So for this project to work you need to have a project created in firebase with enabled email auth. After that is completed you have to create an `.env` file in the `frontend` directory and populate it with your data by following the example shown in `.env.example` file.
 
 ## Running the project
 

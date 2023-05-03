@@ -11,11 +11,15 @@ interface Props {
 }
 
 export const FirebaseAuthContextProvider = ({ children }: Props) => {
-  const [currentUser, setCurrentUser] = useState<User | undefined>();
+  const [currentUser, setCurrentUser] = useState<User | undefined>(() => {
+    const user = localStorage.getItem('currentUser');
+    return user ? JSON.parse(user) : undefined;
+  });
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user as User);
+      localStorage.setItem('currentUser', JSON.stringify(user));
     });
 
     return () => {
