@@ -14,7 +14,9 @@ interface UserInfo {
 }
 
 interface Chat {
-  date: Date;
+  date: {
+    seconds: number;
+  };
   userInfo: UserInfo;
   lastMessage: {
     text: string;
@@ -25,7 +27,7 @@ const Chats = () => {
   const [chats, setChats] = useState<Chat[]>([]);
 
   const currentUser = useContext(FirebaseAuthContext);
-  const { dispatch } = useContext(ChatContext);
+  const { dispatch, data: selectedUser } = useContext(ChatContext);
 
   useEffect(() => {
     const getChats = () => {
@@ -51,10 +53,14 @@ const Chats = () => {
   return (
     <div className="chats">
       {Object.entries(chats)
-        // ?.sort((a, b) => b[1].date - a[1].date)
+        ?.sort((a, b) => b[1].date?.seconds - a[1].date?.seconds)
         .map((chat) => (
           <div
-            className="userChat"
+            className={`userChat ${
+              selectedUser.user?.displayName === chat[1].userInfo.displayName
+                ? 'bg-black text-white'
+                : 'bg-light'
+            }`}
             key={chat[0]}
             onClick={() => handleSelect(chat[1].userInfo)}
           >

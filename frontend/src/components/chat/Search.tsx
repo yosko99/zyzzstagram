@@ -14,12 +14,15 @@ import {
 } from 'firebase/firestore';
 
 import { PUBLIC_IMAGES_PREFIX } from '../../constants/apiRoutes';
+import { ChatContext } from '../../context/ChatContext';
 import { FirebaseAuthContext } from '../../context/FirebaseAuthContext';
 import { db } from '../../firebase';
 const ChatUserSearch = () => {
   const [username, setUsername] = useState('');
   const [user, setUser] = useState<User | undefined>(undefined);
   const [err, setErr] = useState(false);
+
+  const { dispatch } = useContext(ChatContext);
 
   const currentUser = useContext(FirebaseAuthContext);
 
@@ -48,6 +51,7 @@ const ChatUserSearch = () => {
       currentUser!.uid > user!.uid
         ? currentUser!.uid + user!.uid
         : user!.uid + currentUser!.uid;
+
     try {
       const res = await getDoc(doc(db, 'chats', combinedId));
 
@@ -74,9 +78,11 @@ const ChatUserSearch = () => {
       }
     } catch (err) {}
 
+    dispatch({ type: 'CHANGE_USER', payload: user });
     setUser(undefined);
     setUsername('');
   };
+
   return (
     <div className="search">
       <div className="searchForm">

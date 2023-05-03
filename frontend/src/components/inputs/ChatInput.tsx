@@ -52,8 +52,9 @@ const ChatInput = () => {
       setText('');
     }
   };
+
   return (
-    <div className="input">
+    <div className="input shadow">
       <input
         type="text"
         placeholder="Type something..."
@@ -61,9 +62,12 @@ const ChatInput = () => {
         value={text}
         onKeyDown={(e) => handleKeyDown(e)}
       />
-      <div className="send">
-        <button onClick={handleSend}>Send</button>
-      </div>
+      <button
+        className={`comment-btn ${text.length === 0 ? 'd-none' : 'd-block'}`}
+        onClick={handleSend}
+      >
+        Send
+      </button>
     </div>
   );
 };

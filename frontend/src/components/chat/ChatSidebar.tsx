@@ -6,7 +6,7 @@ import Search from './Search';
 
 const Sidebar = () => {
   return (
-    <div className="sidebar">
+    <div className="sidebar shadow">
       <ChatNavbar />
       <Search />
       <Chats />
