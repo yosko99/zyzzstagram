@@ -26,8 +26,8 @@ interface Chat {
 const Chats = () => {
   const [chats, setChats] = useState<Chat[]>([]);
 
-  const currentUser = useContext(FirebaseAuthContext);
   const { dispatch, data: selectedUser } = useContext(ChatContext);
+  const currentUser = useContext(FirebaseAuthContext);
 
   useEffect(() => {
     const getChats = () => {

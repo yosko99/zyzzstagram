@@ -1,17 +1,8 @@
 import React, { useContext, useState } from 'react';
 
-import {
-  arrayUnion,
-  doc,
-  serverTimestamp,
-  Timestamp,
-  updateDoc
-} from 'firebase/firestore';
-import { v4 as uuid } from 'uuid';
-
 import { ChatContext } from '../../context/ChatContext';
 import { FirebaseAuthContext } from '../../context/FirebaseAuthContext';
-import { db } from '../../firebase';
+import sendMessage from '../../functions/sendMessage';
 
 const ChatInput = () => {
   const [text, setText] = useState('');
@@ -19,31 +10,8 @@ const ChatInput = () => {
   const currentUser = useContext(FirebaseAuthContext);
   const { data } = useContext(ChatContext);
 
-  const handleSend = async () => {
-    await updateDoc(doc(db, 'chats', data.chatId), {
-      messages: arrayUnion({
-        id: uuid(),
-        text,
-        senderId: currentUser!.uid,
-        date: Timestamp.now()
-      })
-    });
-
-    await updateDoc(doc(db, 'userChats', currentUser!.uid), {
-      [data.chatId + '.lastMessage']: {
-        text
-      },
-      [data.chatId + '.date']: serverTimestamp()
-    });
-
-    await updateDoc(doc(db, 'userChats', data.user!.uid), {
-      [data.chatId + '.lastMessage']: {
-        text
-      },
-      [data.chatId + '.date']: serverTimestamp()
-    });
-
-    setText('');
+  const handleSend = () => {
+    sendMessage(currentUser!.uid, data.user!.uid, text);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

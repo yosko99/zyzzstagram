@@ -2,7 +2,7 @@ import React from 'react';
 
 import ChatNavbar from './ChatNavbar';
 import Chats from './Chats';
-import Search from './Search';
+import Search from './ChatUserSearch';
 
 const Sidebar = () => {
   return (

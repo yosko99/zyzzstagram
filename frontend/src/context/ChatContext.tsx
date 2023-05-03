@@ -2,6 +2,7 @@ import React, { ReactNode, createContext, useContext, useReducer } from 'react';
 
 import { User } from 'firebase/auth';
 
+import createCombinedChatId from '../functions/createCombinedChatId';
 import { FirebaseAuthContext } from './FirebaseAuthContext';
 
 interface State {
@@ -41,10 +42,7 @@ export const ChatContextProvider = ({ children }: Props) => {
       case 'CHANGE_USER':
         return {
           user: action.payload,
-          chatId:
-            currentUser!.uid > action.payload.uid
-              ? currentUser!.uid + action.payload.uid
-              : action.payload.uid + currentUser!.uid
+          chatId: createCombinedChatId(currentUser!.uid, action.payload.uid)
         };
       default:
         return state;
