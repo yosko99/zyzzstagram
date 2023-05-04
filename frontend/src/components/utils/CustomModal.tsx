@@ -48,6 +48,7 @@ const CustomModal: FC<Props> = ({
         centered
         animation
         show={show}
+        backdrop={'static'}
         onHide={handleClose}
         className={modalClassName && modalClassName}
       >

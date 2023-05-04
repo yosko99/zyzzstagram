@@ -35,11 +35,17 @@ export const useUploadForm = (
           setAlert(<CustomAlert variant="success" text={data.message} />);
           queryClient.refetchQueries();
 
-          if (redirectOnSuccessURL !== '') {
-            setTimeout(() => {
+          setTimeout(() => {
+            if (redirectOnSuccessURL !== '') {
               window.location.href = redirectOnSuccessURL;
-            }, 1000);
-          }
+            } else {
+              const escKeyDownEvent = new KeyboardEvent('keydown', {
+                key: 'Escape',
+                keyCode: 27
+              });
+              document.dispatchEvent(escKeyDownEvent);
+            }
+          }, 1000);
 
           if (setToken) {
             localStorage.setItem('token', data.token);

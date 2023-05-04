@@ -219,6 +219,7 @@ describe('Test users API', () => {
       });
 
       expect(response.message).toEqual('Profile photo updated');
+      expect(response.imageURL).toEqual(expect.any(String));
 
       await userService.deleteUser(createdUserResult.user);
     });

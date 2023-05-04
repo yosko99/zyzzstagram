@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { PUBLIC_IMAGES_PREFIX } from '../../constants/apiRoutes';
 import dateFormatter from '../../functions/dateFormatter';
@@ -7,7 +7,7 @@ import IStory from '../../interfaces/IStory';
 import CenteredItems from '../../styles/CenteredItems';
 import SwiperDiv from '../../styles/SwiperDiv';
 import LikeButton from '../buttons/utils/LikeButton';
-import CommentInput from '../inputs/CommentInput';
+import StoryInput from '../inputs/StoryInput';
 import UserThumbnail from '../user/UserThumbnail';
 
 interface Props {
@@ -17,6 +17,16 @@ interface Props {
 }
 
 const Story = ({ story, imageURL, username }: Props) => {
+  const [isSentReply, setIsSentReply] = useState(false);
+
+  useEffect(() => {
+    if (isSentReply) {
+      setTimeout(() => {
+        setIsSentReply(false);
+      }, 1000);
+    }
+  }, [isSentReply]);
+
   return (
     <CenteredItems flexColumn style={{ height: '100vh' }}>
       <SwiperDiv
@@ -33,13 +43,23 @@ const Story = ({ story, imageURL, username }: Props) => {
             <span className="">{dateFormatter(new Date(story.createdAt))}</span>
           }
         />
+        {isSentReply && (
+          <CenteredItems className={'h-100'}>
+            <p
+              className={
+                'bg-white fs-4 shadow-lg rounded text-black p-3  animate__backOutRight'
+              }
+            >
+              Message sent
+            </p>
+          </CenteredItems>
+        )}
       </SwiperDiv>
       <div>
         <SwiperDiv className="d-flex">
-          <CommentInput
-            id={story.id}
-            typeOfComment="story"
-            authorUsername={username}
+          <StoryInput
+            setIsSentReply={setIsSentReply}
+            receiverUsername={username}
           />
           <CenteredItems>
             <LikeButton

@@ -63,12 +63,13 @@ export class UserService {
 
     deleteImage(user.imageURL);
 
-    await this.prisma.user.update({
+    const updatedUser = await this.prisma.user.update({
       where: { username },
       data: { imageURL: filename },
     });
 
     return {
+      imageURL: updatedUser.imageURL,
       message: 'Profile photo updated',
     };
   }
