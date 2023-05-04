@@ -3,13 +3,13 @@ import React, { useEffect } from 'react';
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
 
 import { getPostsRoute } from '../../constants/apiRoutes';
-import { useUploadForm } from '../../hooks/useUploadImage';
+import { useUploadImage } from '../../hooks/useUploadImage';
 import ImageUploadInput from '../inputs/ImageUploadInput';
 import LoadingSpinner from '../utils/LoadingSpinner';
 
 const UploadPostForm = () => {
   const { setAlert, setImageFile, isLoading, imageFile, handleSubmit, alert } =
-    useUploadForm(getPostsRoute(), '', false, false);
+    useUploadImage(getPostsRoute(), '', false, false);
 
   useEffect(() => {
     setAlert(null);

@@ -52,7 +52,7 @@ export class StoryController {
   @ApiHeader({ name: 'Authorization', required: true })
   @ApiResponse({
     status: 200,
-    description: 'Receive all stories',
+    description: 'Receive stories',
   })
   @ApiResponse({ status: 401, description: 'Token not provided' })
   @ApiResponse({ status: 498, description: 'Provided invalid token' })

@@ -129,7 +129,16 @@ export class StoryService {
       select: {
         username: true,
         imageURL: true,
-        stories: { select: getStorySelectQuery(username) },
+        stories: {
+          select: {
+            createdAt: true,
+            likedBy: {
+              select: { username: true, imageURL: true },
+            },
+            id: true,
+            imageURL: true,
+          },
+        },
       },
     });
 
@@ -137,7 +146,7 @@ export class StoryService {
       currentUser.stories = currentUser.stories.map((story) => {
         return {
           ...story,
-          likedByUser: story.likedBy.length > 0,
+          sameAsRequester: true,
         };
       });
 

@@ -6,11 +6,12 @@ import CustomAlert from '../components/utils/CustomAlert';
 import ExtendedAxiosError from '../types/ExtendedAxiosError';
 import useMutationWithToken from './useMutationWithToken';
 
-export const useUploadForm = (
+export const useUploadImage = (
   routeURL: string,
   redirectOnSuccessURL: string = '',
   setToken: boolean,
-  updateRequest: boolean
+  updateRequest: boolean,
+  onSuccess?: () => void
 ) => {
   const [alert, setAlert] = useState<React.ReactNode>();
   const [imageFile, setImageFile] = useState<File>();
@@ -33,6 +34,8 @@ export const useUploadForm = (
 
       mutate(formData, {
         onSuccess: (data) => {
+          onSuccess && onSuccess();
+
           setAlert(<CustomAlert variant="success" text={data.message} />);
           response.current = data as Object;
 

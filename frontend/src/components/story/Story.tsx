@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable multiline-ternary */
 import React, { useEffect, useState } from 'react';
 
 import { PUBLIC_IMAGES_PREFIX } from '../../constants/apiRoutes';
@@ -6,6 +8,7 @@ import useLike from '../../hooks/useLike';
 import IStory from '../../interfaces/IStory';
 import CenteredItems from '../../styles/CenteredItems';
 import SwiperDiv from '../../styles/SwiperDiv';
+import StoryLikedByButton from '../buttons/story/StoryLikedByButton';
 import LikeButton from '../buttons/utils/LikeButton';
 import StoryInput from '../inputs/StoryInput';
 import UserThumbnail from '../user/UserThumbnail';
@@ -56,24 +59,28 @@ const Story = ({ story, imageURL, username }: Props) => {
         )}
       </SwiperDiv>
       <div>
-        <SwiperDiv className="d-flex">
-          <StoryInput
-            setIsSentReply={setIsSentReply}
-            receiverUsername={username}
-          />
-          <CenteredItems>
-            <LikeButton
-              fakeUpdate
-              size="2em"
-              likedByUser={story.likedByUser}
-              useCustomLikeHook={useLike({
-                id: story.id,
-                authorUsername: username,
-                typeOfLike: 'story'
-              })}
+        {story.sameAsRequester ? (
+          <StoryLikedByButton likedBy={story.likedBy} />
+        ) : (
+          <SwiperDiv className="d-flex">
+            <StoryInput
+              setIsSentReply={setIsSentReply}
+              receiverUsername={username}
             />
-          </CenteredItems>
-        </SwiperDiv>
+            <CenteredItems>
+              <LikeButton
+                fakeUpdate
+                size="2em"
+                likedByUser={story.likedByUser}
+                useCustomLikeHook={useLike({
+                  id: story.id,
+                  authorUsername: username,
+                  typeOfLike: 'story'
+                })}
+              />
+            </CenteredItems>
+          </SwiperDiv>
+        )}
       </div>
     </CenteredItems>
   );

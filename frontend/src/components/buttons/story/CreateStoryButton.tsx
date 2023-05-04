@@ -4,14 +4,14 @@ import { Button, Form } from 'react-bootstrap';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 
 import { getStoriesRoute } from '../../../constants/apiRoutes';
-import { useUploadForm } from '../../../hooks/useUploadImage';
+import { useUploadImage } from '../../../hooks/useUploadImage';
 import ImageUploadInput from '../../inputs/ImageUploadInput';
 import CustomModal from '../../utils/CustomModal';
 import LoadingSpinner from '../../utils/LoadingSpinner';
 
 const CreateStoryButton = () => {
   const { setAlert, setImageFile, isLoading, imageFile, handleSubmit, alert } =
-    useUploadForm(getStoriesRoute(), '', false, false);
+    useUploadImage(getStoriesRoute(), '', false, false);
 
   useEffect(() => {
     setAlert(null);

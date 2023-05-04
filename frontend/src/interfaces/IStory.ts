@@ -7,6 +7,8 @@ interface IStory {
   user?: IUser;
   userId?: string;
   likedByUser: boolean;
+  likedBy: IUser[];
+  sameAsRequester: boolean;
 }
 
 export default IStory;

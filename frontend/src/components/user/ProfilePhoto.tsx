@@ -9,7 +9,7 @@ import {
   getCurrentUserPhotoRoute
 } from '../../constants/apiRoutes';
 import { FirebaseAuthContext } from '../../context/FirebaseAuthContext';
-import { useUploadForm } from '../../hooks/useUploadImage';
+import { useUploadImage } from '../../hooks/useUploadImage';
 import ImageUploadInput from '../inputs/ImageUploadInput';
 import CustomModal from '../utils/CustomModal';
 import LoadingSpinner from '../utils/LoadingSpinner';
@@ -28,7 +28,7 @@ const ProfilePhoto = ({ imageURL, isSameAsRequester }: Props) => {
     handleSubmit,
     alert,
     response
-  } = useUploadForm(getCurrentUserPhotoRoute(), '', false, true);
+  } = useUploadImage(getCurrentUserPhotoRoute(), '', false, true);
   const currentUser = useContext(FirebaseAuthContext);
 
   if (response !== null) {
