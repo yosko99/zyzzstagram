@@ -3,7 +3,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { PUBLIC_IMAGES_PREFIX } from '../../constants/apiRoutes';
-import dateFormatter from '../../functions/dateFormatter';
+import dateFormatter from '../../functions/utils/dateFormatter';
 import useLike from '../../hooks/useLike';
 import IComment from '../../interfaces/IComment';
 import IPost from '../../interfaces/IPost';

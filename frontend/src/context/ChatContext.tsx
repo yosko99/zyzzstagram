@@ -2,7 +2,7 @@ import React, { ReactNode, createContext, useContext, useReducer } from 'react';
 
 import { User } from 'firebase/auth';
 
-import createCombinedChatId from '../functions/createCombinedChatId';
+import createCombinedChatId from '../functions/firebase/createCombinedChatId';
 import { FirebaseAuthContext } from './FirebaseAuthContext';
 
 interface State {

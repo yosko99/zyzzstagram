@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import Cropper from 'react-easy-crop';
 
-import toggleThumbnail from '../../functions/toggleThumbnail';
+import toggleThumbnail from '../../functions/utils/toggleThumbnail';
 
 interface Props {
   imageURL: string | ArrayBuffer | null;

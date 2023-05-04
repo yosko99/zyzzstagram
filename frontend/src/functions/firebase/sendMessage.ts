@@ -7,7 +7,7 @@ import {
 } from 'firebase/firestore';
 import { v4 as uuid } from 'uuid';
 
-import { db } from '../firebase';
+import { db } from '../../firebase';
 import createCombinedChatId from './createCombinedChatId';
 
 const sendMessage = async (

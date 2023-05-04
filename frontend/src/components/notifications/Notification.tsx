@@ -5,7 +5,7 @@ import { Col, Row, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import { PUBLIC_IMAGES_PREFIX } from '../../constants/apiRoutes';
-import dateFormatter from '../../functions/dateFormatter';
+import dateFormatter from '../../functions/utils/dateFormatter';
 import INotification from '../../interfaces/INotification';
 import NotificationPostImage from './NotificationPostImage';
 import NotificationStoryImage from './NotificationStoryImage';

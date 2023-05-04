@@ -11,9 +11,8 @@ const CloseStoriesButton = () => {
       navigate('/');
     }
   };
-
   useEffect(() => {
-    window.addEventListener('keydown', (e) => handleCloseStories(e));
+    window.addEventListener('keydown', handleCloseStories);
 
     return () => {
       window.removeEventListener('keydown', handleCloseStories);

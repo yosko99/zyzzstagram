@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { useQueryClient } from 'react-query';
 
@@ -14,6 +14,7 @@ export const useUploadForm = (
 ) => {
   const [alert, setAlert] = useState<React.ReactNode>();
   const [imageFile, setImageFile] = useState<File>();
+  const response = useRef<Object | null>(null);
 
   const queryClient = useQueryClient();
 
@@ -33,6 +34,8 @@ export const useUploadForm = (
       mutate(formData, {
         onSuccess: (data) => {
           setAlert(<CustomAlert variant="success" text={data.message} />);
+          response.current = data as Object;
+
           queryClient.refetchQueries();
 
           setTimeout(() => {
@@ -64,5 +67,13 @@ export const useUploadForm = (
     }
   };
 
-  return { alert, setAlert, imageFile, setImageFile, handleSubmit, isLoading };
+  return {
+    alert,
+    setAlert,
+    imageFile,
+    setImageFile,
+    handleSubmit,
+    isLoading,
+    response: response.current
+  };
 };

@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useRef } from 'react';
 import { PUBLIC_IMAGES_PREFIX } from '../../constants/apiRoutes';
 import { ChatContext } from '../../context/ChatContext';
 import { FirebaseAuthContext } from '../../context/FirebaseAuthContext';
-import dateFormatter from '../../functions/dateFormatter';
+import dateFormatter from '../../functions/utils/dateFormatter';
 import IMessage from '../../interfaces/IMessage';
 
 interface Props {

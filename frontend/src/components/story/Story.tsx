@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { PUBLIC_IMAGES_PREFIX } from '../../constants/apiRoutes';
-import dateFormatter from '../../functions/dateFormatter';
+import dateFormatter from '../../functions/utils/dateFormatter';
 import useLike from '../../hooks/useLike';
 import IStory from '../../interfaces/IStory';
 import CenteredItems from '../../styles/CenteredItems';

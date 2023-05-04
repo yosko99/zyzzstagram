@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 
 import { ChatContext } from '../../context/ChatContext';
 import { FirebaseAuthContext } from '../../context/FirebaseAuthContext';
-import sendMessage from '../../functions/sendMessage';
+import sendMessage from '../../functions/firebase/sendMessage';
 
 const ChatInput = () => {
   const [text, setText] = useState('');

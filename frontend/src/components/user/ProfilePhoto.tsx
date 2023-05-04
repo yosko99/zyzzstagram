@@ -1,12 +1,14 @@
 /* eslint-disable multiline-ternary */
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 
+import { updateProfile } from 'firebase/auth';
 import { Button, Form, Image } from 'react-bootstrap';
 
 import {
   PUBLIC_IMAGES_PREFIX,
   getCurrentUserPhotoRoute
 } from '../../constants/apiRoutes';
+import { FirebaseAuthContext } from '../../context/FirebaseAuthContext';
 import { useUploadForm } from '../../hooks/useUploadImage';
 import ImageUploadInput from '../inputs/ImageUploadInput';
 import CustomModal from '../utils/CustomModal';
@@ -18,8 +20,24 @@ interface Props {
 }
 
 const ProfilePhoto = ({ imageURL, isSameAsRequester }: Props) => {
-  const { setAlert, setImageFile, isLoading, imageFile, handleSubmit, alert } =
-    useUploadForm(getCurrentUserPhotoRoute(), '', false, true);
+  const {
+    setAlert,
+    setImageFile,
+    isLoading,
+    imageFile,
+    handleSubmit,
+    alert,
+    response
+  } = useUploadForm(getCurrentUserPhotoRoute(), '', false, true);
+  const currentUser = useContext(FirebaseAuthContext);
+
+  if (response !== null) {
+    const { imageURL } = response as { imageURL: string };
+
+    updateProfile(currentUser!, {
+      photoURL: imageURL
+    });
+  }
 
   useEffect(() => {
     setAlert(null);

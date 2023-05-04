@@ -10,7 +10,7 @@ import { useQueryClient } from 'react-query';
 
 import CustomAlert from '../components/utils/CustomAlert';
 import { auth, db } from '../firebase';
-import setTokenAndRedirect from '../functions/setTokenAndRedirect';
+import setTokenAndRedirect from '../functions/utils/setTokenAndRedirect';
 import ExtendedAxiosError from '../types/ExtendedAxiosError';
 import useMutationWithToken from './useMutationWithToken';
 

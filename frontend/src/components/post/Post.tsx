@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 import { AiOutlineComment, AiOutlineSend } from 'react-icons/ai';
 
-import dateFormatter from '../../functions/dateFormatter';
+import dateFormatter from '../../functions/utils/dateFormatter';
 import useLike from '../../hooks/useLike';
 import IPost from '../../interfaces/IPost';
 import IUser from '../../interfaces/IUser';

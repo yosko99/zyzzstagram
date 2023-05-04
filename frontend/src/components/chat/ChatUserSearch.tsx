@@ -1,13 +1,12 @@
 import React, { useContext, useState } from 'react';
 
 import { User } from 'firebase/auth';
-import { collection, query, where, getDocs } from 'firebase/firestore';
 
 import { PUBLIC_IMAGES_PREFIX } from '../../constants/apiRoutes';
 import { ChatContext } from '../../context/ChatContext';
 import { FirebaseAuthContext } from '../../context/FirebaseAuthContext';
-import { db } from '../../firebase';
-import initUserChats from '../../functions/initUserChats';
+import getFirebaseUser from '../../functions/firebase/getUser';
+import initUserChats from '../../functions/firebase/initUserChats';
 
 const ChatUserSearch = () => {
   const [username, setUsername] = useState('');
@@ -20,20 +19,14 @@ const ChatUserSearch = () => {
 
   const handleSearch = async () => {
     setIsSearching(true);
-    const q = query(
-      collection(db, 'users'),
-      where('displayName', '==', username)
-    );
 
-    try {
-      const querySnapshot = await getDocs(q);
-      if (querySnapshot.docs[0]?.data() !== undefined) {
-        setUser(querySnapshot.docs[0].data() as User);
-        setIsSearching(false);
-      } else {
-        setUser(undefined);
-      }
-    } catch (err) {}
+    const user = await getFirebaseUser(username);
+    if (user !== undefined) {
+      setUser(user);
+      setIsSearching(false);
+    } else {
+      setUser(undefined);
+    }
   };
 
   const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {

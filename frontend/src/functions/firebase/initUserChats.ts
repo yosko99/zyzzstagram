@@ -7,7 +7,7 @@ import {
   updateDoc
 } from 'firebase/firestore';
 
-import { db } from '../firebase';
+import { db } from '../../firebase';
 import createCombinedChatId from './createCombinedChatId';
 
 const initUserChats = async (currentUser: User, receiverUser: User) => {
