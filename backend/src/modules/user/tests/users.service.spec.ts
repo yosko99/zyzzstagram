@@ -2,9 +2,9 @@
 import { PrismaClientValidationError } from '@prisma/client/runtime/library';
 import { HttpException } from '@nestjs/common';
 
-import { NotificationService } from '../../../modules/notification/notification.service';
+import { NotificationServiceImpl } from '../../notification/notification.service.impl';
 import { PrismaService } from '../../../prisma/prisma.service';
-import { UserService } from '../user.service';
+import { UserServiceImpl } from '../user.service.impl';
 
 import {
   createInvalidUserDto,
@@ -13,8 +13,8 @@ import {
 
 describe('Test users API', () => {
   const prisma = new PrismaService();
-  const notificationService = new NotificationService(prisma);
-  const userService = new UserService(prisma, notificationService);
+  const notificationService = new NotificationServiceImpl(prisma);
+  const userService = new UserServiceImpl(prisma, notificationService);
   const filename = 'testimage.jpg';
 
   describe('test createUser service', () => {

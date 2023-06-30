@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { NotificationService } from '../../../modules/notification/notification.service';
-import { UserService } from '../../../modules/user/user.service';
+import { NotificationServiceImpl } from '../../notification/notification.service.impl';
+import { UserServiceImpl } from '../../user/user.service.impl';
 import { PrismaService } from '../../../prisma/prisma.service';
-import { StoryService } from '../story.service';
+import { StoryServiceImpl } from '../story.service.impl';
 
 import { createUserForStoryDto } from '../../../dto/mock/user.mock';
 
 describe('test story API', () => {
   const prisma = new PrismaService();
-  const notificationService = new NotificationService(prisma);
-  const storyService = new StoryService(prisma, notificationService);
-  const userService = new UserService(prisma, notificationService);
+  const notificationService = new NotificationServiceImpl(prisma);
+  const storyService = new StoryServiceImpl(prisma, notificationService);
+  const userService = new UserServiceImpl(prisma, notificationService);
   const filename = 'testimage.jpg';
 
   describe('test createStory service', () => {

@@ -7,12 +7,14 @@ import EmailInput from '../components/inputs/EmailInput';
 import PasswordInput from '../components/inputs/PasswordInput';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
 import { getLoginRoute } from '../constants/apiRoutes';
+import useAuth from '../hooks/useAuth';
 import useAuthFormSubmit from '../hooks/useAuthFormSubmit';
 import useFormUpdate from '../hooks/useFormUpdate';
 import CenteredItems from '../styles/CenteredItems';
 
 const LoginPage = () => {
-  // useAuth('/login');
+  useAuth('/login');
+
   const { alert, handleSubmit, isLoading } = useAuthFormSubmit(
     getLoginRoute(),
     'login'

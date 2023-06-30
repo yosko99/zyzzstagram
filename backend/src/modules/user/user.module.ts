@@ -8,18 +8,25 @@ import { CheckExistingUserById } from '../../middleware/user/checkExistingUserBy
 import { CheckIfUploadsFolderExists } from '../../middleware/utils/checkIfUploadsFolderExists.middleware';
 
 import { PrismaService } from '../../prisma/prisma.service';
-import { UserService } from './user.service';
+import { UserServiceImpl } from './user.service.impl';
 
 import { UserController } from './user.controller';
 import { CheckExistingUserByUsername } from 'src/middleware/user/checkExistingUserByUsername.middleware';
 import { VerifyJWT } from 'src/middleware/utils/verifyJWT.middleware';
-import { NotificationService } from '../notification/notification.service';
+import { NotificationServiceImpl } from '../notification/notification.service.impl';
+import { UserService } from './user.service';
 
 @Module({
   imports: [],
   controllers: [UserController],
-  providers: [UserService, PrismaService, NotificationService],
-  exports: [UserService],
+  providers: [
+    {
+      provide: UserService,
+      useClass: UserServiceImpl,
+    },
+    PrismaService,
+    NotificationServiceImpl,
+  ],
 })
 export class UserModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

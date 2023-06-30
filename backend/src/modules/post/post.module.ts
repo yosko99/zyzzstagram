@@ -11,17 +11,21 @@ import { CheckIfUploadsFolderExists } from '../../middleware/utils/checkIfUpload
 import { CheckExistingCommentById } from '../../middleware/post/checkExistingCommentById.middleware';
 import { VerifyJWT } from '../../middleware/utils/verifyJWT.middleware';
 
-import { NotificationService } from '../notification/notification.service';
+import { NotificationServiceImpl } from '../notification/notification.service.impl';
 import { PrismaService } from '../../prisma/prisma.service';
-import { PostService } from './post.service';
+import { PostServiceImpl } from './post.service.impl';
 
 import { PostController } from './post.controller';
+import { PostService } from './post.service';
 
 @Module({
   imports: [],
   controllers: [PostController],
-  providers: [PostService, PrismaService, NotificationService],
-  exports: [PostService],
+  providers: [
+    { provide: PostService, useClass: PostServiceImpl },
+    PrismaService,
+    NotificationServiceImpl,
+  ],
 })
 export class PostModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

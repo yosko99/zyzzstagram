@@ -8,7 +8,7 @@ import { PostModule } from './modules/post/post.module';
 import { UserModule } from './modules/user/user.module';
 
 import { SocketGateway } from './modules/socket/socket.gateway';
-import { TasksModule } from './modules/tasks/tasks.module';
+import { TaskModule } from './modules/tasks/task.module';
 
 @Module({
   imports: [
@@ -16,7 +16,7 @@ import { TasksModule } from './modules/tasks/tasks.module';
     PostModule,
     NotificationModule,
     StoryModule,
-    TasksModule,
+    TaskModule,
   ],
   controllers: [],
   providers: [SocketGateway, GlobalExceptionFilter],

@@ -4,6 +4,7 @@ import {
   Delete,
   FileTypeValidator,
   Get,
+  Inject,
   ParseFilePipe,
   Post,
   Query,
@@ -25,8 +26,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 
 import { RequestData } from '../../decorators/requestData.decorator';
 
-import { StoryService } from './story.service';
-
 import IToken from '../../interfaces/IToken';
 import IStory from '../../interfaces/IStory';
 
@@ -35,10 +34,14 @@ import { multerFilter } from '../../config/multer';
 import StoriesType from '../../types/stories.type';
 import { CreateStoryDto } from '../../dto/story.dto';
 
+import { StoryService } from './story.service';
+
 @Controller('/stories')
 @ApiTags('Stories')
 export class StoryController {
-  constructor(private readonly storyService: StoryService) {}
+  constructor(
+    @Inject(StoryService) private readonly storyService: StoryService,
+  ) {}
 
   @Get('/')
   @ApiOperation({ summary: 'Get stories' })

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { PrismaService } from '../../../prisma/prisma.service';
-import { UserService } from '../../user/user.service';
+import { UserServiceImpl } from '../../user/user.service.impl';
 
 import {
   createFirstUserForNotificationDto,
@@ -10,14 +10,14 @@ import { createPostDto } from '../../../dto/mock/post.mock';
 
 import IToken from '../../../interfaces/IToken';
 
-import { NotificationService } from '../notification.service';
-import { PostService } from '../../../modules/post/post.service';
+import { NotificationServiceImpl } from '../notification.service.impl';
+import { PostServiceImpl } from '../../post/post.service.impl';
 
 describe('Test notifications API', () => {
   const prisma = new PrismaService();
-  const notificationService = new NotificationService(prisma);
-  const postService = new PostService(prisma, notificationService);
-  const userService = new UserService(prisma, notificationService);
+  const notificationService = new NotificationServiceImpl(prisma);
+  const postService = new PostServiceImpl(prisma, notificationService);
+  const userService = new UserServiceImpl(prisma, notificationService);
   const filename = 'testimage.jpg';
 
   const initMockData = async () => {

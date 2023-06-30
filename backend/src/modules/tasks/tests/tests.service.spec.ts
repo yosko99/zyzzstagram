@@ -1,30 +1,30 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { NotificationService } from '../../../modules/notification/notification.service';
-import { UserService } from '../../../modules/user/user.service';
+import { NotificationServiceImpl } from '../../notification/notification.service.impl';
+import { UserServiceImpl } from '../../user/user.service.impl';
 import { PrismaService } from '../../../prisma/prisma.service';
-import { TasksService } from '../tasks.service';
+import { TasksServiceImpl } from '../task.service.impl';
 
 import { createUserForTasksDto } from '../../../dto/mock/user.mock';
 
 describe('test TasksService', () => {
   let prisma: PrismaService;
-  let tasksService: TasksService;
-  let userService: UserService;
+  let tasksService: TasksServiceImpl;
+  let userService: UserServiceImpl;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        TasksService,
+        TasksServiceImpl,
         PrismaService,
-        UserService,
-        NotificationService,
+        UserServiceImpl,
+        NotificationServiceImpl,
       ],
     }).compile();
 
-    tasksService = module.get<TasksService>(TasksService);
+    tasksService = module.get<TasksServiceImpl>(TasksServiceImpl);
     prisma = module.get<PrismaService>(PrismaService);
-    userService = module.get<UserService>(UserService);
+    userService = module.get<UserServiceImpl>(UserServiceImpl);
   });
 
   it('should delete old stories correctly', async () => {

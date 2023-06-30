@@ -20,6 +20,7 @@ const StickyNavigation = styled.div`
 
 const MainNavigation = () => {
   const [notifications, setNotifications] = useState<INotification[]>([]);
+  const [hoveredIndex, setHoveredIndex] = useState(-1);
   const navigate = useNavigate();
 
   const tabs = getNavigationTabs(setNotifications, notifications);
@@ -38,18 +39,22 @@ const MainNavigation = () => {
             <div
               onClick={() => handleRedirect(tab.href)}
               key={index}
+              onMouseOver={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(-1)}
               className={`m-1 ${
                 window.location.pathname === tab.href
                   ? 'text-dark'
                   : 'text-muted'
               }`}
             >
-              <div role={'button'} className="d-block d-lg-none">
-                {tab.icon}
+              <div className={` ${hoveredIndex === index && 'text-dark'}`}>
+                <div role={'button'} className={'d-block d-lg-none'}>
+                  {tab.icon}
+                </div>
+                <span role={'button'} className="d-none d-lg-block">
+                  {tab.label}
+                </span>
               </div>
-              <span role={'button'} className="d-none d-lg-block">
-                {tab.label}
-              </span>
             </div>
           ))}
         </Nav>

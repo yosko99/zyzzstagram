@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { HttpException } from '@nestjs/common';
 
-import { NotificationService } from '../../../modules/notification/notification.service';
+import { NotificationServiceImpl } from '../../notification/notification.service.impl';
 import { PrismaService } from '../../../prisma/prisma.service';
-import { UserService } from '../../user/user.service';
-import { PostService } from '../post.service';
+import { UserServiceImpl } from '../../user/user.service.impl';
+import { PostServiceImpl } from '../post.service.impl';
 
 import { createUserForPostDto } from '../../../dto/mock/user.mock';
 import { createPostDto } from '../../../dto/mock/post.mock';
@@ -13,9 +13,9 @@ import IToken from '../../../interfaces/IToken';
 
 describe('Test posts API', () => {
   const prisma = new PrismaService();
-  const notificationService = new NotificationService(prisma);
-  const postService = new PostService(prisma, notificationService);
-  const userService = new UserService(prisma, notificationService);
+  const notificationService = new NotificationServiceImpl(prisma);
+  const postService = new PostServiceImpl(prisma, notificationService);
+  const userService = new UserServiceImpl(prisma, notificationService);
 
   const initMockData = async () => {
     const createdUser = await userService.createUser(createUserForPostDto);

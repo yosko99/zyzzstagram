@@ -6,11 +6,13 @@ import { PrismaService } from '../../prisma/prisma.service';
 
 import deleteImage from '../../functions/deleteImage';
 
+import { TaksService } from './task.service';
+
 @Injectable()
-export class TasksService {
+export class TasksServiceImpl implements TaksService {
   constructor(private readonly prisma: PrismaService) {}
 
-  private readonly logger = new Logger(TasksService.name);
+  private readonly logger = new Logger(TasksServiceImpl.name);
 
   async cleanOldStories(): Promise<void> {
     const now = new Date();

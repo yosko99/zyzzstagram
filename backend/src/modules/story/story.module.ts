@@ -11,15 +11,19 @@ import { VerifyJWT } from '../../middleware/utils/verifyJWT.middleware';
 
 import { StoryController } from './story.controller';
 
-import { NotificationService } from '../notification/notification.service';
+import { NotificationServiceImpl } from '../notification/notification.service.impl';
 import { PrismaService } from '../../prisma/prisma.service';
+import { StoryServiceImpl } from './story.service.impl';
 import { StoryService } from './story.service';
 
 @Module({
   imports: [],
   controllers: [StoryController],
-  providers: [StoryService, PrismaService, NotificationService],
-  exports: [StoryService],
+  providers: [
+    { provide: StoryService, useClass: StoryServiceImpl },
+    PrismaService,
+    NotificationServiceImpl,
+  ],
 })
 export class StoryModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -6,18 +6,22 @@ import {
 } from '@nestjs/common';
 
 import { PrismaService } from '../../prisma/prisma.service';
-import { NotificationService } from './notification.service';
 
 import { NotificationController } from './notification.controller';
 
 import { CheckExistingNotificationById } from '../../middleware/notification/checkExistingNotificationById.middleware';
 import { VerifyJWT } from '../../middleware/utils/verifyJWT.middleware';
 
+import { NotificationServiceImpl } from './notification.service.impl';
+import { NotificationService } from './notification.service';
+
 @Module({
   imports: [],
   controllers: [NotificationController],
-  providers: [NotificationService, PrismaService],
-  exports: [NotificationService],
+  providers: [
+    { provide: NotificationService, useClass: NotificationServiceImpl },
+    PrismaService,
+  ],
 })
 export class NotificationModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

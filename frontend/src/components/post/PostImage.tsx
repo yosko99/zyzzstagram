@@ -36,7 +36,7 @@ const PostImage = ({ post, username }: Props) => {
           thumbnail
           onDoubleClick={handleDoubleClick}
           src={PUBLIC_IMAGES_PREFIX + post.imageURL}
-          className="post-image"
+          className="post-image shadow"
           style={{
             filter: showHeart ? 'brightness(0.5)' : 'brightness(1)',
             transition: 'all 1s'

@@ -5,6 +5,7 @@ import {
   FileTypeValidator,
   Get,
   HttpCode,
+  Inject,
   Param,
   ParseFilePipe,
   Post,
@@ -29,8 +30,6 @@ import { multerFilter } from '../../config/multer';
 
 import { RequestData } from '../../decorators/requestData.decorator';
 
-import { PostService } from './post.service';
-
 import { CreateCommentDto } from '../../dto/comment.dto';
 import { CreatePostDto } from '../../dto/post.dto';
 
@@ -40,10 +39,12 @@ import IPost from '../../interfaces/IPost';
 
 import PostsType from '../../types/posts.type';
 
+import { PostService } from './post.service';
+
 @Controller('/posts')
 @ApiTags('Posts')
 export class PostController {
-  constructor(private readonly postService: PostService) {}
+  constructor(@Inject(PostService) private readonly postService: PostService) {}
 
   @Get()
   @ApiOperation({ summary: 'Get posts' })

@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Put } from '@nestjs/common';
+import { Controller, Delete, Get, Inject, Put } from '@nestjs/common';
 import {
   ApiHeader,
   ApiOperation,
@@ -7,17 +7,22 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { NotificationService } from './notification.service';
+import { NotificationServiceImpl } from './notification.service.impl';
 
 import { RequestData } from '../../decorators/requestData.decorator';
 
 import INotification from '../../interfaces/INotification';
 import IToken from '../../interfaces/IToken';
 
+import { NotificationService } from './notification.service';
+
 @Controller('/notifications')
 @ApiTags('Notifications')
 export class NotificationController {
-  constructor(private readonly notificationService: NotificationService) {}
+  constructor(
+    @Inject(NotificationService)
+    private readonly notificationService: NotificationServiceImpl,
+  ) {}
 
   @Get()
   @ApiHeader({ name: 'Authorization', required: true })

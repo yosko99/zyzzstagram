@@ -10,7 +10,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { Get, HttpCode, Put, Query } from '@nestjs/common/decorators';
+import { Get, HttpCode, Inject, Put, Query } from '@nestjs/common/decorators';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiConsumes,
@@ -28,19 +28,18 @@ import {
   UpdateUserPhotoDto,
 } from '../../dto/user.dto';
 
-import { UserService } from './user.service';
-
 import { multerFilter } from '../../config/multer';
 
 import { RequestData } from '../../decorators/requestData.decorator';
 
 import IUser from '../../interfaces/IUser';
 import IToken from '../../interfaces/IToken';
+import { UserService } from './user.service';
 
 @Controller('/users')
 @ApiTags('Users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(@Inject(UserService) private readonly userService: UserService) {}
 
   @Get()
   @ApiQuery({
