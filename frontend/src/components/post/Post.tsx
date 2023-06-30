@@ -29,7 +29,7 @@ const Post = ({ user, post, className, showComments, isInModal }: Props) => {
   const [isCommentInputFocused, setCommentInputFocus] = useState(false);
 
   return (
-    <section className={`main ${className && className}`}>
+    <section className={`main shadow ${className && className}`}>
       <div className="wrapper">
         <div className="left-col">
           <div className="post">

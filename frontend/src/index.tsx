@@ -27,7 +27,7 @@ root.render(
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <App />
-      <ReactQueryDevtools initialIsOpen />
+      {/* <ReactQueryDevtools /> */}
     </BrowserRouter>
   </QueryClientProvider>
 );

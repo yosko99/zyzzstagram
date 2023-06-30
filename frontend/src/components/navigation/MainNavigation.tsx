@@ -2,9 +2,21 @@ import React, { useState } from 'react';
 
 import { Nav, Navbar } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 import getNavigationTabs from '../../data/navigationTabs';
 import INotification from '../../interfaces/INotification';
+
+const StickyNavigation = styled.div`
+  @media only screen and (max-width: 1000px) {
+    background-color: white;
+    width: 100%;
+    position: fixed;
+    height: 50px;
+    bottom: 0;
+    margin-top: 50px;
+  }
+`;
 
 const MainNavigation = () => {
   const [notifications, setNotifications] = useState<INotification[]>([]);
@@ -20,24 +32,28 @@ const MainNavigation = () => {
 
   return (
     <Navbar className="flex-column sticky-bottom fs-lg-5 fs-2 ms-lg-3 m-0 p-0">
-      <Nav className="d-flex w-100 flex-lg-column flex-row justify-content-around">
-        {tabs.map((tab, index: number) => (
-          <div
-            onClick={() => handleRedirect(tab.href)}
-            key={index}
-            className={`m-1 ${
-              window.location.pathname === tab.href ? 'text-dark' : 'text-muted'
-            }`}
-          >
-            <div role={'button'} className="d-block d-lg-none">
-              {tab.icon}
+      <StickyNavigation>
+        <Nav className="d-flex w-100 flex-lg-column flex-row justify-content-around">
+          {tabs.map((tab, index: number) => (
+            <div
+              onClick={() => handleRedirect(tab.href)}
+              key={index}
+              className={`m-1 ${
+                window.location.pathname === tab.href
+                  ? 'text-dark'
+                  : 'text-muted'
+              }`}
+            >
+              <div role={'button'} className="d-block d-lg-none">
+                {tab.icon}
+              </div>
+              <span role={'button'} className="d-none d-lg-block">
+                {tab.label}
+              </span>
             </div>
-            <span role={'button'} className="d-none d-lg-block">
-              {tab.label}
-            </span>
-          </div>
-        ))}
-      </Nav>
+          ))}
+        </Nav>
+      </StickyNavigation>
     </Navbar>
   );
 };

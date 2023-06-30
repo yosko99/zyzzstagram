@@ -3,6 +3,7 @@ import React from 'react';
 import { Container, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
+import { AnimatedPage } from '../animations/AnimatedPage';
 import MainNavigation from '../components/navigation/MainNavigation';
 import PostsThumbnailGrid from '../components/post/PostsThumbnailGrid';
 import { getExplorePostsRoute } from '../constants/apiRoutes';
@@ -36,9 +37,11 @@ const ExplorePage = () => {
       <Container className="mt-3 d-flex justify-content-center">
         <ProfileContainer>
           <p className="fs-3 text-center shadow p-1">Explore</p>
-          <Row className="mt-3">
-            <PostsThumbnailGrid isSameAsRequester posts={posts} />
-          </Row>
+          <AnimatedPage>
+            <Row className="mt-3">
+              <PostsThumbnailGrid isSameAsRequester posts={posts} />
+            </Row>
+          </AnimatedPage>
         </ProfileContainer>
       </Container>
     </div>
